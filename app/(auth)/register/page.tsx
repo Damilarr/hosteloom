@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FiMail, FiLock, FiUser, FiShield } from 'react-icons/fi';
+import { FiMail, FiLock, FiUser, FiShield, FiEye, FiEyeOff } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Loader } from '@/components/ui/Loader';
 import { useAuthStore, useStore } from '@/store';
 import { toast } from 'sonner';
 import type { UserRole } from '@/types';
@@ -19,6 +20,7 @@ export default function RegisterPage() {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -94,15 +96,21 @@ export default function RegisterPage() {
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
               <FiLock className="w-5 h-5" />
             </div>
-            <input type="password" name="password" value={formData.password} onChange={handleChange}
+            <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange}
               placeholder="Password"
-              className="w-full bg-transparent border border-hosteloom-border rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface/50 transition-all font-body"
+              className="w-full bg-transparent border border-hosteloom-border rounded-xl py-4 pl-12 pr-12 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface/50 transition-all font-body"
               required />
+            <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-hosteloom-muted hover:text-white transition-colors flex items-center justify-center p-1">
+                {showPassword ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
         </div>
 
         <button type="submit" disabled={isLoading}
-          className="w-full py-4 mt-8 bg-white text-black font-heading font-bold uppercase tracking-widest rounded-xl hover:bg-hosteloom-accent hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-hosteloom-accent focus:ring-offset-2 focus:ring-offset-hosteloom-bg border-none shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] disabled:opacity-50 disabled:cursor-not-allowed">
+          className="w-full py-4 mt-8 bg-white text-black font-heading font-bold uppercase tracking-widest rounded-xl hover:bg-hosteloom-accent hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-hosteloom-accent focus:ring-offset-2 focus:ring-offset-hosteloom-bg border-none shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          {isLoading && <Loader className="text-current" />}
           {isLoading ? 'Creating account…' : 'Create Account'}
         </button>
 

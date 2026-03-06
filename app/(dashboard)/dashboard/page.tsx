@@ -28,13 +28,22 @@ export default function StudentDashboard() {
   const activeAllocation = studentHistory.find((h) => h.status === 'ACTIVE');
   const openComplaints = myComplaints.filter((c) => c.status === 'PENDING' || c.status === 'IN_PROGRESS');
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  };
+
+  const greeting = getGreeting();
+
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       {/* Page Header */}
       <div>
         <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">Student Portal</p>
         <h1 className="font-heading text-3xl font-bold">
-          Good evening{profile?.firstName ? `, ${profile.firstName}` : ''} 👋
+          {greeting}{profile?.firstName ? `, ${profile.firstName}` : ''} 👋
         </h1>
         <p className="text-hosteloom-muted font-body text-sm mt-1">{user?.email}</p>
       </div>

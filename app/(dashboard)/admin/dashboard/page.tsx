@@ -41,6 +41,15 @@ export default function AdminDashboard() {
 
   const actualPendingStudents = students.filter((s) => s.registrationStatus === 'PENDING');
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  };
+
+  const greeting = getGreeting();
+
   const metrics = [
     { label: 'Total Rooms', value: activeRooms.length.toString(), sub: `${vacantCount} vacant`, icon: MdBedroomParent, color: 'text-hosteloom-accent', bg: 'bg-hosteloom-accent/10' },
     { label: 'Occupancy Rate', value: `${occupancyRate}%`, sub: `${totalOccupancy} of ${totalCapacity} filled`, icon: MdPeople, color: 'text-green-400', bg: 'bg-green-400/10' },
@@ -53,7 +62,7 @@ export default function AdminDashboard() {
       {/* Page Header */}
       <div>
         <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">Admin Portal</p>
-        <h1 className="font-heading text-3xl font-bold">Dashboard</h1>
+        <h1 className="font-heading text-3xl font-bold">{greeting} 👋</h1>
         <p className="text-hosteloom-muted font-body text-sm mt-1">{user?.email}</p>
       </div>
 

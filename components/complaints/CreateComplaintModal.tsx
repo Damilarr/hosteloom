@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MdOutlinedFlag } from 'react-icons/md';
 import type { ComplaintCategory, CreateComplaintPayload } from '@/types';
 
-const CATEGORIES: ComplaintCategory[] = ['SECURITY', 'MAINTENANCE', 'NOISE', 'OTHER'];
+const CATEGORIES: ComplaintCategory[] = ['SECURITY', 'PLUMBING', 'ELECTRICAL', 'OTHER'];
 
 const EMPTY: CreateComplaintPayload = { title: '', description: '', category: 'OTHER' };
 

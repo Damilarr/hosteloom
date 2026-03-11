@@ -35,7 +35,13 @@ export default function RegisterPage() {
       toast.error(authError);
     } else if (isAuthenticated && user) {
       toast.success('Account created! Welcome to Hosteloom 🎉');
-      router.push(user.role === 'HOSTEL_ADMIN' ? '/admin/dashboard' : '/dashboard');
+      if (user.role === 'HOSTEL_OWNER') {
+        router.push('/owner/dashboard');
+      } else if (user.role === 'HOSTEL_ADMIN') {
+        router.push('/admin/dashboard');
+      } else {
+        router.push('/dashboard');
+      }
     }
   };
 
@@ -63,10 +69,10 @@ export default function RegisterPage() {
             <FiUser className={`w-4 h-4 ${role === 'STUDENT' ? 'text-hosteloom-accent' : ''}`} />
             Student
           </button>
-          <button type="button" onClick={() => setRole('HOSTEL_ADMIN')}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-heading font-medium transition-all duration-300 relative z-10 ${role === 'HOSTEL_ADMIN' ? 'text-white' : 'text-hosteloom-muted hover:text-white'}`}>
-            <FiShield className={`w-4 h-4 ${role === 'HOSTEL_ADMIN' ? 'text-hosteloom-accent' : ''}`} />
-            Admin
+          <button type="button" onClick={() => setRole('HOSTEL_OWNER')}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-heading font-medium transition-all duration-300 relative z-10 ${role === 'HOSTEL_OWNER' ? 'text-white' : 'text-hosteloom-muted hover:text-white'}`}>
+            <FiShield className={`w-4 h-4 ${role === 'HOSTEL_OWNER' ? 'text-hosteloom-accent' : ''}`} />
+            Hostel Owner
           </button>
         </div>
 

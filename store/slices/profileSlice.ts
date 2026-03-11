@@ -3,6 +3,7 @@ import type {
   UserProfile, ProfilePayload, ApiError,
   ProfileApiResponse, UnifiedProfileResponse,
   AdminProfile, AdminProfilePayload, AdminProfileApiResponse,
+  OwnerProfile, OwnerProfilePayload, OwnerProfileApiResponse,
 } from '@/types';
 import { api } from '@/lib/api';
 
@@ -20,6 +21,12 @@ export interface ProfileSlice {
   adminProfileError: string | null;
   fetchAdminProfile: () => Promise<boolean>;
   saveAdminProfile: (payload: AdminProfilePayload) => Promise<boolean>;
+
+  ownerProfile: OwnerProfile | null;
+  ownerProfileLoading: boolean;
+  ownerProfileError: string | null;
+  fetchOwnerProfile: () => Promise<boolean>;
+  saveOwnerProfile: (payload: OwnerProfilePayload) => Promise<boolean>;
 
   clearProfileError: () => void;
 }
@@ -90,5 +97,36 @@ export const createProfileSlice: StateCreator<ProfileSlice & WithToken, [], [], 
     }
   },
 
-  clearProfileError: () => set({ profileError: null, adminProfileError: null }),
+  // ─── Owner ──────────────────────────────────────────────────────────────────
+  ownerProfile: null,
+  ownerProfileLoading: false,
+  ownerProfileError: null,
+
+  fetchOwnerProfile: async () => {
+    set({ ownerProfileLoading: true, ownerProfileError: null });
+    try {
+      const token = get().token ?? undefined;
+      const data = await api.get<UnifiedProfileResponse>('/auth/profile', token);
+      set({ ownerProfile: data.ownerProfile, ownerProfileLoading: false });
+      return true;
+    } catch (err) {
+      set({ ownerProfileLoading: false, ownerProfileError: (err as ApiError).message });
+      return false;
+    }
+  },
+
+  saveOwnerProfile: async (payload) => {
+    set({ ownerProfileLoading: true, ownerProfileError: null });
+    try {
+      const token = get().token ?? undefined;
+      const data = await api.post<OwnerProfileApiResponse>('/owner/profile', payload, token);
+      set({ ownerProfile: data.profile, ownerProfileLoading: false });
+      return true;
+    } catch (err) {
+      set({ ownerProfileLoading: false, ownerProfileError: (err as ApiError).message });
+      return false;
+    }
+  },
+
+  clearProfileError: () => set({ profileError: null, adminProfileError: null, ownerProfileError: null }),
 });

@@ -11,9 +11,17 @@ interface Props {
 }
 
 const statusBadge: Record<string, string> = {
-  VACANT:   'bg-green-400/15 text-green-400 border-green-400/30',
-  OCCUPIED: 'bg-yellow-400/15 text-yellow-400 border-yellow-400/30',
-  FULL:     'bg-red-400/15 text-red-400 border-red-400/30',
+  VACANT:              'bg-green-400/15 text-green-400 border-green-400/30',
+  OCCUPIED:            'bg-yellow-400/15 text-yellow-400 border-yellow-400/30',
+  PARTIALLY_OCCUPIED:  'bg-yellow-400/15 text-yellow-400 border-yellow-400/30',
+  FULL:                'bg-red-400/15 text-red-400 border-red-400/30',
+};
+
+const statusLabel: Record<string, string> = {
+  VACANT:              'Vacant',
+  OCCUPIED:            'Occupied',
+  PARTIALLY_OCCUPIED:  'Partial',
+  FULL:                'Full',
 };
 
 export default function RoomCard({ room, onUpdate, onClick }: Props) {
@@ -52,8 +60,8 @@ export default function RoomCard({ room, onUpdate, onClick }: Props) {
             </p>
           </div>
         </div>
-        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg border text-[10px] font-heading font-bold uppercase tracking-widest ${statusBadge[room.status] ?? statusBadge.VACANT}`}>
-          {room.status}
+        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg border text-[10px] font-heading font-bold uppercase tracking-widest shrink-0 ${statusBadge[room.status] ?? statusBadge.VACANT}`}>
+          {statusLabel[room.status] ?? room.status}
         </span>
       </div>
 

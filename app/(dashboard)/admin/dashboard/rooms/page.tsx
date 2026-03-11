@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { MdBedroomParent, MdAdd, MdPlaylistAdd, MdRefresh, MdSearch, MdPersonAdd } from 'react-icons/md';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRoomsStore, useStudentsStore } from '@/store';
+import { useRoomsStore, useStudentsStore, useSessionsStore } from '@/store';
 import type { RoomStatus } from '@/types';
 import RoomCard from '@/components/rooms/RoomCard';
 import CreateRoomModal from '@/components/rooms/CreateRoomModal';
@@ -24,26 +24,30 @@ const filterColor: Record<string, string> = {
 
 export default function RoomsPage() {
   const {
-    rooms, roomsLoading, roomsError,
+    rooms, roomsMeta, roomsLoading, roomsError,
     availableRooms,
     fetchRooms, fetchAvailableRooms,
     createRoom, bulkCreateRooms, updateRoom, allocateRoom,
   } = useRoomsStore();
 
   const { students, fetchStudents } = useStudentsStore();
+  const { sessions, fetchSessions } = useSessionsStore();
 
   const [filter, setFilter] = useState<RoomStatus | 'ALL' | 'INACTIVE'>('ALL');
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const LIMIT = 10;
   const [showCreate, setShowCreate] = useState(false);
   const [showBulkCreate, setShowBulkCreate] = useState(false);
   const [showAllocate, setShowAllocate] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<import('@/types').RoomWithDetails | null>(null);
 
   useEffect(() => {
-    fetchRooms();
+    fetchRooms(page, LIMIT);
     fetchAvailableRooms();
     fetchStudents();
-  }, [fetchRooms, fetchAvailableRooms, fetchStudents]);
+    fetchSessions();
+  }, [fetchRooms, fetchAvailableRooms, fetchStudents, fetchSessions, page]);
 
   useEffect(() => {
     if (roomsError) {
@@ -89,6 +93,31 @@ export default function RoomsPage() {
     return result;
   };
 
+  const handleAllocateClick = () => {
+    const hasActiveSession = sessions.some(s => s.isActive);
+    if (!hasActiveSession) {
+      toast.error('No active session found. Please create and activate a session first.', {
+        action: { label: 'Go to Sessions', onClick: () => window.location.href = '/admin/dashboard/sessions' },
+      });
+      return;
+    }
+
+    if (availableRooms.length === 0) {
+      toast.error('No available rooms found. Set up your hostel structure and ensure rooms have prices configured.', {
+        action: { label: 'Go to Structure', onClick: () => window.location.href = '/admin/dashboard/structure' },
+      });
+      return;
+    }
+
+    const roomsWithoutPrice = availableRooms.filter(r => !r.price || parseInt(String(r.price), 10) <= 0);
+    if (roomsWithoutPrice.length === availableRooms.length) {
+      toast.error('All available rooms have no price set. Please configure room prices in your hostel structure before allocating.');
+      return;
+    }
+
+    setShowAllocate(true);
+  };
+
   const handleUpdateRoom = async (roomId: string, payload: Parameters<typeof updateRoom>[1]) => {
     const ok = await updateRoom(roomId, payload);
     if (ok) {
@@ -108,6 +137,17 @@ export default function RoomsPage() {
   );
   const unallocatedStudents = students.filter(s => !activeAllocatedStudentIds.has(s.userId));
 
+  const generatePagination = (currentPage: number, totalPages: number) => {
+    if (totalPages <= 7) return Array.from({ length: totalPages }).map((_, i) => i + 1);
+    
+    if (currentPage <= 3) return [1, 2, 3, 4, '...', totalPages - 1, totalPages];
+    if (currentPage >= totalPages - 2) return [1, 2, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    
+    return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+  };
+
+  const pages = roomsMeta ? generatePagination(roomsMeta.page, roomsMeta.totalPages) : [];
+
   return (
     <div className="space-y-8">
 
@@ -122,7 +162,7 @@ export default function RoomsPage() {
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <button
-            onClick={() => setShowAllocate(true)}
+            onClick={handleAllocateClick}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent/15 text-hosteloom-accent hover:bg-hosteloom-accent/25 transition-all text-sm font-heading font-bold"
           >
             <MdPersonAdd className="w-4 h-4" /> Allocate
@@ -140,7 +180,7 @@ export default function RoomsPage() {
             <MdAdd className="w-4 h-4" /> Add Room
           </button>
           <button
-            onClick={() => { fetchRooms(); fetchAvailableRooms(); }}
+            onClick={() => { fetchRooms(page, LIMIT); fetchAvailableRooms(); }}
             disabled={roomsLoading}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
           >
@@ -222,6 +262,46 @@ export default function RoomsPage() {
               </motion.div>
             ))}
           </AnimatePresence>
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      {roomsMeta && roomsMeta.totalPages > 1 && (
+        <div className="flex items-center justify-between py-4 border-t border-hosteloom-border mt-6">
+          <button
+            onClick={() => setPage(p => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-4 py-2 bg-hosteloom-surface border border-hosteloom-border rounded-xl text-sm font-heading text-white hover:border-hosteloom-accent/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          >
+            Previous
+          </button>
+          
+          <div className="flex items-center gap-2">
+            {pages.map((p, i) => (
+              <button
+                key={i}
+                onClick={() => typeof p === 'number' && setPage(p)}
+                disabled={p === '...'}
+                className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-heading font-medium transition-all ${
+                  p === roomsMeta.page
+                    ? 'bg-hosteloom-accent text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]'
+                    : p === '...'
+                    ? 'text-hosteloom-muted cursor-default'
+                    : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent'
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setPage(p => Math.min(roomsMeta.totalPages, p + 1))}
+            disabled={page === roomsMeta.totalPages}
+            className="px-4 py-2 bg-hosteloom-surface border border-hosteloom-border rounded-xl text-sm font-heading text-white hover:border-hosteloom-accent/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          >
+            Next
+          </button>
         </div>
       )}
 

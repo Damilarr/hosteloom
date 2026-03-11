@@ -7,9 +7,14 @@ import { createStudentsSlice, type StudentsSlice } from './slices/studentsSlice'
 import { createComplaintsSlice, type ComplaintsSlice } from './slices/complaintsSlice';
 import { createRoomsSlice, type RoomsSlice } from './slices/roomsSlice';
 import { createSessionsSlice, type SessionsSlice } from './slices/sessionsSlice';
+import { createAdminsSlice, type AdminsSlice } from './slices/adminsSlice';
+import { createInvoicesSlice, type InvoicesSlice } from './slices/invoicesSlice';
+import { createPaymentsSlice, type PaymentsSlice } from './slices/paymentsSlice';
+import { createHostelsSlice, type HostelsSlice } from './slices/hostelsSlice';
+import { createBlocksSlice, type BlocksSlice } from './slices/blocksSlice';
+import { createFloorsSlice, type FloorsSlice } from './slices/floorsSlice';
 
-
-export type StoreState = AuthSlice & ProfileSlice & StudentsSlice & ComplaintsSlice & RoomsSlice & SessionsSlice & { _hasHydrated: boolean };
+export type StoreState = AuthSlice & ProfileSlice & StudentsSlice & ComplaintsSlice & RoomsSlice & SessionsSlice & AdminsSlice & InvoicesSlice & PaymentsSlice & HostelsSlice & BlocksSlice & FloorsSlice & { _hasHydrated: boolean };
 
 export const useStore = create<StoreState>()(
   persist(
@@ -20,6 +25,12 @@ export const useStore = create<StoreState>()(
       ...createComplaintsSlice(...args),
       ...createRoomsSlice(...args),
       ...createSessionsSlice(...args),
+      ...createAdminsSlice(...args),
+      ...createInvoicesSlice(...args),
+      ...createPaymentsSlice(...args),
+      ...createHostelsSlice(...args),
+      ...createBlocksSlice(...args),
+      ...createFloorsSlice(...args),
       _hasHydrated: false,
     }),
     {
@@ -69,6 +80,11 @@ export const useProfileStore = () => useStore(useShallow((s) => ({
   adminProfileError: s.adminProfileError,
   fetchAdminProfile: s.fetchAdminProfile,
   saveAdminProfile: s.saveAdminProfile,
+  ownerProfile: s.ownerProfile,
+  ownerProfileLoading: s.ownerProfileLoading,
+  ownerProfileError: s.ownerProfileError,
+  fetchOwnerProfile: s.fetchOwnerProfile,
+  saveOwnerProfile: s.saveOwnerProfile,
   clearProfileError: s.clearProfileError,
 })));
 export const useStudentsStore = () => useStore(useShallow((s) => ({
@@ -96,6 +112,7 @@ export const useComplaintsStore = () => useStore(useShallow((s) => ({
 
 export const useRoomsStore = () => useStore(useShallow((s) => ({
   rooms: s.rooms,
+  roomsMeta: s.roomsMeta,
   roomsLoading: s.roomsLoading,
   roomsError: s.roomsError,
   availableRooms: s.availableRooms,
@@ -123,4 +140,68 @@ export const useSessionsStore = () => useStore(useShallow((s) => ({
   fetchSessions: s.fetchSessions,
   createSession: s.createSession,
   activateSession: s.activateSession,
+})));
+
+export const useAdminsStore = () => useStore(useShallow((s) => ({
+  adminsLoading: s.adminsLoading,
+  adminsError: s.adminsError,
+  createAdmin: s.createAdmin,
+})));
+
+export const useInvoicesStore = () => useStore(useShallow((s) => ({
+  invoices: s.invoices,
+  myInvoices: s.myInvoices,
+  currentInvoice: s.currentInvoice,
+  invoicesLoading: s.invoicesLoading,
+  invoicesError: s.invoicesError,
+  fetchAllInvoices: s.fetchAllInvoices,
+  fetchMyInvoices: s.fetchMyInvoices,
+  fetchInvoiceById: s.fetchInvoiceById,
+})));
+
+export const usePaymentsStore = () => useStore(useShallow((s) => ({
+  paymentHistory: s.paymentHistory,
+  currentReceipt: s.currentReceipt,
+  paymentsLoading: s.paymentsLoading,
+  paymentsError: s.paymentsError,
+  initializePayment: s.initializePayment,
+  verifyPayment: s.verifyPayment,
+  fetchPaymentHistory: s.fetchPaymentHistory,
+  fetchPaymentReceipt: s.fetchPaymentReceipt,
+})));
+
+export const useHostelsStore = () => useStore(useShallow((s) => ({
+  hostels: s.hostels,
+  currentHostel: s.currentHostel,
+  hostelsLoading: s.hostelsLoading,
+  hostelsError: s.hostelsError,
+  fetchAllHostels: s.fetchAllHostels,
+  fetchHostelById: s.fetchHostelById,
+  createHostel: s.createHostel,
+  updateHostel: s.updateHostel,
+  deleteHostel: s.deleteHostel,
+})));
+
+export const useBlocksStore = () => useStore(useShallow((s) => ({
+  blocks: s.blocks,
+  currentBlock: s.currentBlock,
+  blocksLoading: s.blocksLoading,
+  blocksError: s.blocksError,
+  fetchBlocksByHostel: s.fetchBlocksByHostel,
+  fetchBlockById: s.fetchBlockById,
+  createBlock: s.createBlock,
+  updateBlock: s.updateBlock,
+  deleteBlock: s.deleteBlock,
+})));
+
+export const useFloorsStore = () => useStore(useShallow((s) => ({
+  floors: s.floors,
+  currentFloor: s.currentFloor,
+  floorsLoading: s.floorsLoading,
+  floorsError: s.floorsError,
+  fetchFloorsByBlock: s.fetchFloorsByBlock,
+  fetchFloorById: s.fetchFloorById,
+  createFloor: s.createFloor,
+  updateFloor: s.updateFloor,
+  deleteFloor: s.deleteFloor,
 })));

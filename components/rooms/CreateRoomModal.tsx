@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MdClose, MdAdd } from 'react-icons/md';
+import { useHostelsStore, useBlocksStore, useFloorsStore } from '@/store';
 import type { CreateRoomPayload } from '@/types';
 
 interface Props {
@@ -14,17 +15,40 @@ interface Props {
 export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
   const [roomNumber, setRoomNumber] = useState('');
   const [capacity, setCapacity] = useState(1);
+  const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const { hostels, fetchAllHostels } = useHostelsStore();
+  const { blocks, fetchBlocksByHostel } = useBlocksStore();
+  const { floors, fetchFloorsByBlock } = useFloorsStore();
+
+  const [selectedHostel, setSelectedHostel] = useState('');
+  const [selectedBlock, setSelectedBlock] = useState('');
+  const [floorId, setFloorId] = useState('');
+
+  React.useEffect(() => { 
+    if (open) fetchAllHostels(); 
+  }, [open, fetchAllHostels]);
+
+  React.useEffect(() => { 
+    if (selectedHostel) fetchBlocksByHostel(selectedHostel); 
+  }, [selectedHostel, fetchBlocksByHostel]);
+
+  React.useEffect(() => { 
+    if (selectedBlock) fetchFloorsByBlock(selectedBlock); 
+  }, [selectedBlock, fetchFloorsByBlock]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!roomNumber.trim()) return;
+    if (!roomNumber.trim() || !floorId) return;
     setLoading(true);
-    const ok = await onSubmit({ roomNumber: roomNumber.trim(), capacity });
+    const ok = await onSubmit({ roomNumber: roomNumber.trim(), capacity, price, floorId });
     setLoading(false);
     if (ok) {
       setRoomNumber('');
       setCapacity(1);
+      setPrice(0);
+      setFloorId('');
       onClose();
     }
   };
@@ -58,28 +82,78 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-heading font-medium text-hosteloom-muted mb-1.5">Room Number</label>
+                  <input
+                    type="text"
+                    value={roomNumber}
+                    onChange={(e) => setRoomNumber(e.target.value)}
+                    placeholder="e.g. A4"
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-heading font-medium text-hosteloom-muted mb-1.5">Capacity</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={20}
+                    value={capacity}
+                    onChange={(e) => setCapacity(Number(e.target.value))}
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    required
+                  />
+                </div>
+              </div>
+              
               <div>
-                <label className="block text-xs font-heading font-medium text-hosteloom-muted mb-1.5">Room Number</label>
+                <label className="block text-xs font-heading font-medium text-hosteloom-muted mb-1.5">Price (NGN)</label>
                 <input
-                  type="text"
-                  value={roomNumber}
-                  onChange={(e) => setRoomNumber(e.target.value)}
-                  placeholder="e.g. A4"
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                  type="number"
+                  min={0}
+                  step={100}
+                  value={price}
+                  onChange={(e) => setPrice(Number(e.target.value))}
+                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                   required
                 />
               </div>
-              <div>
-                <label className="block text-xs font-heading font-medium text-hosteloom-muted mb-1.5">Capacity</label>
-                <input
-                  type="number"
-                  min={1}
-                  max={20}
-                  value={capacity}
-                  onChange={(e) => setCapacity(Number(e.target.value))}
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+
+              <div className="space-y-3 p-3 bg-hosteloom-bg rounded-xl border border-hosteloom-border">
+                <p className="text-xs font-semibold text-hosteloom-muted">Location Mapping</p>
+                <select
+                  value={selectedHostel}
+                  onChange={(e) => { setSelectedHostel(e.target.value); setSelectedBlock(''); setFloorId(''); }}
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none"
                   required
-                />
+                >
+                  <option value="" disabled>Select Hostel</option>
+                  {hostels.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
+                </select>
+
+                <select
+                  value={selectedBlock}
+                  onChange={(e) => { setSelectedBlock(e.target.value); setFloorId(''); }}
+                  disabled={!selectedHostel}
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none disabled:opacity-50"
+                  required
+                >
+                  <option value="" disabled>Select Block</option>
+                  {blocks.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                </select>
+
+                <select
+                  value={floorId}
+                  onChange={(e) => setFloorId(e.target.value)}
+                  disabled={!selectedBlock}
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none disabled:opacity-50"
+                  required
+                >
+                  <option value="" disabled>Select Floor</option>
+                  {floors.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                </select>
               </div>
               <div className="flex gap-3 justify-end pt-1">
                 <button type="button" onClick={onClose}

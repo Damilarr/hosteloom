@@ -31,7 +31,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               ROOM.
             </h1>
             <p className="font-body text-hosteloom-muted text-lg max-w-md leading-relaxed mb-8">
-              Hosteloom makes it easy to find, book, and manage hostel rooms — whether you&apos;re a student looking for a place to stay or an admin running a hostel.
+              Hosteloom makes it easy to find, book, and manage hostel rooms — whether you&apos;re a student looking for a place to stay or a hostel owner.
             </p>
 
             <div className="flex items-center gap-2 text-xs font-heading tracking-widest text-hosteloom-muted uppercase">

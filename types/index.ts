@@ -1,6 +1,6 @@
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
-export type UserRole = 'STUDENT' | 'HOSTEL_ADMIN';
+export type UserRole = 'STUDENT' | 'HOSTEL_ADMIN' | 'HOSTEL_OWNER';
 
 export interface User {
   id: string;
@@ -63,6 +63,7 @@ export interface UnifiedProfileResponse {
   user: User;
   profile: UserProfile | null;
   adminProfile: AdminProfile | null;
+  ownerProfile: OwnerProfile | null;
 }
 
 // ─── Admin Profile ────────────────────────────────────────────────────────────
@@ -73,17 +74,51 @@ export interface AdminProfile {
   firstName: string;
   lastName: string;
   phone: string;
-  hostel: string;
+  hostelId: string;
   position: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export type AdminProfilePayload = Pick<AdminProfile, 'firstName' | 'lastName' | 'phone' | 'hostel' | 'position'>;
+export type AdminProfilePayload = Pick<AdminProfile, 'firstName' | 'lastName' | 'phone' | 'position'>;
 
 export interface AdminProfileApiResponse {
   message: string;
   profile: AdminProfile;
+}
+
+export interface CreateAdminPayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string;
+  hostelId: string;
+}
+
+export interface CreateAdminResponse {
+  message: string;
+  admin: User;
+  profile: AdminProfile;
+}
+
+// ─── Owner Profile ────────────────────────────────────────────────────────────
+
+export interface OwnerProfile {
+  id: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  companyName?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type OwnerProfilePayload = Pick<OwnerProfile, 'firstName' | 'lastName' | 'phone' | 'companyName'>;
+
+export interface OwnerProfileApiResponse {
+  message: string;
+  profile: OwnerProfile;
 }
 
 // ─── Admin → Students ─────────────────────────────────────────────────────────
@@ -121,7 +156,7 @@ export interface DeleteStudentResponse {
 // ─── Complaints ───────────────────────────────────────────────────────────────
 
 export type ComplaintStatus = 'PENDING' | 'IN_PROGRESS' | 'RESOLVED';
-export type ComplaintCategory = 'SECURITY' | 'MAINTENANCE' | 'NOISE' | 'OTHER';
+export type ComplaintCategory = 'SECURITY' | 'PLUMBING' | 'ELECTRICAL' | 'OTHER';
 
 export interface Complaint {
   id: string;
@@ -156,7 +191,82 @@ export interface UpdateComplaintStatusPayload {
   status: ComplaintStatus;
 }
 
+// ─── Hostels, Blocks, Floors ───────────────────────────────────────────────────
+
+export interface Hostel {
+  id: string;
+  name: string;
+  description: string;
+  address: string;
+  ownerId: string;
+  createdAt: string;
+  updatedAt: string;
+  owner?: User;
+}
+
+export interface CreateHostelPayload {
+  name: string;
+  description: string;
+  address: string;
+}
+
+export interface UpdateHostelPayload {
+  name?: string;
+  description?: string;
+  address?: string;
+}
+
+export interface Block {
+  id: string;
+  name: string;
+  hostelId: string;
+  createdAt: string;
+  updatedAt: string;
+  hostel?: Hostel;
+  floors?: Floor[];
+}
+
+export interface CreateBlockPayload {
+  name: string;
+  hostelId: string;
+}
+
+export interface UpdateBlockPayload {
+  name: string;
+}
+
+export interface Floor {
+  id: string;
+  name: string;
+  blockId: string;
+  createdAt: string;
+  updatedAt: string;
+  block?: Block;
+  rooms?: Room[];
+}
+
+export interface CreateFloorPayload {
+  name: string;
+  blockId: string;
+}
+
+export interface UpdateFloorPayload {
+  name: string;
+}
+
 // ─── Rooms ───────────────────────────────────────────────────────────────────
+
+export interface PaginatedMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: PaginatedMeta;
+}
 
 export type RoomStatus = 'VACANT' | 'OCCUPIED' | 'FULL';
 
@@ -164,9 +274,12 @@ export interface Room {
   id: string;
   roomNumber: string;
   capacity: number;
+  price?: string;
   isActive: boolean;
+  floorId?: string;
   createdAt: string;
   updatedAt: string;
+  floor?: Floor;
 }
 
 export interface Allocation {
@@ -194,6 +307,8 @@ export interface AvailableRoom extends Room {
 export interface CreateRoomPayload {
   roomNumber: string;
   capacity: number;
+  price: number;
+  floorId: string;
 }
 
 export interface BulkCreateRoomsPayload {
@@ -201,6 +316,8 @@ export interface BulkCreateRoomsPayload {
   start: number;
   end: number;
   capacity: number;
+  price: number;
+  floorId: string;
 }
 
 export interface BulkCreateRoomsResponse {
@@ -316,4 +433,112 @@ export interface CreateSessionPayload {
 export interface ApiError {
   message: string;
   statusCode?: number;
+}
+// ─── Invoices ────────────────────────────────────────────────────────────────
+
+export type InvoiceStatus = 'PAID' | 'UNPAID' | 'OVERDUE';
+
+export interface Invoice {
+  id: string;
+  amount: string;
+  description: string;
+  dueDate: string;
+  status: InvoiceStatus;
+  studentId: string;
+  allocationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface InvoiceWithDetails extends Invoice {
+  student?: {
+    id: string;
+    email: string;
+    profile: {
+      firstName: string;
+      lastName: string;
+      matricNo: string;
+    };
+  };
+  allocation?: {
+    id: string;
+    status: string;
+    studentId: string;
+    roomId: string;
+    academicSessionId: string;
+    createdAt: string;
+    updatedAt: string;
+    room: {
+      id?: string;
+      roomNumber: string;
+      capacity: number;
+      price: string;
+      isActive?: boolean;
+      floorId?: string;
+    };
+  };
+  payments?: Payment[];
+}
+
+// ─── Payments ────────────────────────────────────────────────────────────────
+
+export type PaymentStatus = 'SUCCESS' | 'PENDING' | 'FAILED';
+
+export interface PaymentReceiptData {
+  paidAt?: string;
+  channel?: string;
+  currency?: string;
+  paystackRef?: string;
+  customerEmail?: string;
+}
+
+export interface Payment {
+  id: string;
+  amount: string;
+  reference: string;
+  paystackId: string | null;
+  status: PaymentStatus;
+  receiptData: PaymentReceiptData | null;
+  studentId: string;
+  invoiceId: string;
+  createdAt: string;
+  updatedAt: string;
+  invoice?: Invoice;
+  student?: {
+    email: string;
+    profile: UserProfile;
+  };
+  refund?: any; 
+}
+
+export interface InitializePaymentPayload {
+  invoiceId: string;
+  amount: number;
+  email: string;
+  callback_url: string;
+}
+
+export interface InitializePaymentResponse {
+  message: string;
+  payment: {
+    id: string;
+    amount: string;
+    reference: string;
+    paystackId: string | null;
+    status: PaymentStatus;
+    receiptData: PaymentReceiptData | null;
+    studentId: string;
+    invoiceId: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  authorization_url: string;
+  access_code: string;
+  reference: string;
+}
+
+export interface VerifyPaymentResponse {
+  message?: string;
+  status?: string; 
+  data?: any;
 }

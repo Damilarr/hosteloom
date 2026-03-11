@@ -3,30 +3,92 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { MdBedroomParent, MdPayment, MdBuild, MdCheckCircle, MdHourglassTop, MdWarning } from 'react-icons/md';
-import { useAuthStore, useProfileStore, useRoomsStore, useComplaintsStore } from '@/store';
-
-const recentActivity = [
-  { icon: MdCheckCircle, color: 'text-green-400', label: 'Room allocated', sub: 'Block A · Room 204', time: '2 days ago' },
-  { icon: MdHourglassTop, color: 'text-yellow-400', label: 'Payment pending', sub: '₦150,000 due — Session 2025/2026', time: '1 week ago' },
-  { icon: MdWarning, color: 'text-orange-400', label: 'Maintenance filed', sub: 'Broken window latch', time: '3 days ago' },
-];
+import { FiCreditCard } from 'react-icons/fi';
+import { useAuthStore, useProfileStore, useRoomsStore, useComplaintsStore, useInvoicesStore, usePaymentsStore } from '@/store';
+import { formatDistanceToNow } from 'date-fns';
 
 export default function StudentDashboard() {
   const { user } = useAuthStore();
   const { profile } = useProfileStore();
   const { studentHistory, fetchStudentHistory } = useRoomsStore();
   const { myComplaints, fetchMyComplaints } = useComplaintsStore();
+  const { myInvoices, fetchMyInvoices } = useInvoicesStore();
+  const { paymentHistory, fetchPaymentHistory } = usePaymentsStore();
 
   useEffect(() => {
     if (user?.id) {
       fetchStudentHistory(user.id);
     }
     fetchMyComplaints();
-  }, [user, fetchStudentHistory, fetchMyComplaints]);
+    fetchMyInvoices();
+    fetchPaymentHistory();
+  }, [user, fetchStudentHistory, fetchMyComplaints, fetchMyInvoices, fetchPaymentHistory]);
 
   // Derived logic
   const activeAllocation = studentHistory.find((h) => h.status === 'ACTIVE');
   const openComplaints = myComplaints.filter((c) => c.status === 'PENDING' || c.status === 'IN_PROGRESS');
+
+  // Payment derivations
+  const unpaidInvoices = myInvoices.filter(i => i.status !== 'PAID');
+  const paidInvoices = myInvoices.filter(i => i.status === 'PAID');
+  const totalUnpaid = unpaidInvoices.reduce((sum, i) => sum + parseInt(i.amount, 10), 0);
+  const totalPaid = paidInvoices.reduce((sum, i) => sum + parseInt(i.amount, 10), 0);
+  const hasUnpaid = unpaidInvoices.length > 0;
+  const allPaid = myInvoices.length > 0 && unpaidInvoices.length === 0;
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(amount);
+  };
+
+  // Build recent activity from real data
+  const recentActivity: Array<{ icon: React.ElementType; color: string; label: string; sub: string; time: string }> = [];
+
+  // Recent allocation
+  if (activeAllocation) {
+    recentActivity.push({
+      icon: MdCheckCircle,
+      color: 'text-green-400',
+      label: 'Room allocated',
+      sub: `Room ${activeAllocation.room.roomNumber}`,
+      time: formatDistanceToNow(new Date(activeAllocation.createdAt), { addSuffix: true }),
+    });
+  }
+
+  // Recent unpaid invoice
+  const latestUnpaid = unpaidInvoices.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+  if (latestUnpaid) {
+    recentActivity.push({
+      icon: MdHourglassTop,
+      color: 'text-yellow-400',
+      label: 'Payment pending',
+      sub: `${formatCurrency(parseInt(latestUnpaid.amount, 10))} due${latestUnpaid.description ? ` — ${latestUnpaid.description}` : ''}`,
+      time: formatDistanceToNow(new Date(latestUnpaid.createdAt), { addSuffix: true }),
+    });
+  }
+
+  // Latest paid invoice
+  const latestPaid = paidInvoices.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())[0];
+  if (latestPaid) {
+    recentActivity.push({
+      icon: MdCheckCircle,
+      color: 'text-green-400',
+      label: 'Payment confirmed',
+      sub: `${formatCurrency(parseInt(latestPaid.amount, 10))}${latestPaid.description ? ` — ${latestPaid.description}` : ''}`,
+      time: formatDistanceToNow(new Date(latestPaid.updatedAt), { addSuffix: true }),
+    });
+  }
+
+  // Recent complaints
+  const latestComplaint = [...myComplaints].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+  if (latestComplaint) {
+    recentActivity.push({
+      icon: latestComplaint.status === 'RESOLVED' ? MdCheckCircle : MdWarning,
+      color: latestComplaint.status === 'RESOLVED' ? 'text-green-400' : 'text-orange-400',
+      label: latestComplaint.status === 'RESOLVED' ? 'Complaint resolved' : 'Complaint filed',
+      sub: latestComplaint.title,
+      time: formatDistanceToNow(new Date(latestComplaint.createdAt), { addSuffix: true }),
+    });
+  }
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -51,7 +113,7 @@ export default function StudentDashboard() {
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Room Status */}
-        <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-5 flex flex-col gap-4 hover:border-hosteloom-accent/30 transition-colors">
+        <Link href="/dashboard/room" className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-5 flex flex-col gap-4 hover:border-hosteloom-accent/30 transition-colors cursor-pointer">
           <div className="flex items-start justify-between">
             <div className={`w-10 h-10 rounded-xl bg-hosteloom-accent/10 flex items-center justify-center`}>
               <MdBedroomParent className="w-5 h-5 text-hosteloom-accent" />
@@ -69,27 +131,49 @@ export default function StudentDashboard() {
               {activeAllocation ? `Room ${activeAllocation.room.roomNumber}` : 'Waiting for allocation'}
             </p>
           </div>
-        </div>
+        </Link>
 
-        {/* Payment Status */}
-        <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-5 flex flex-col gap-4 hover:border-hosteloom-accent/30 transition-colors">
+        {/* Payment Status — LIVE DATA */}
+        <Link href="/dashboard/payments" className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-5 flex flex-col gap-4 hover:border-hosteloom-accent/30 transition-colors cursor-pointer">
           <div className="flex items-start justify-between">
-            <div className={`w-10 h-10 rounded-xl bg-yellow-400/10 flex items-center justify-center`}>
-              <MdPayment className={`w-5 h-5 text-yellow-400`} />
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+              allPaid ? 'bg-green-400/10' : hasUnpaid ? 'bg-yellow-400/10' : 'bg-hosteloom-muted/10'
+            }`}>
+              <MdPayment className={`w-5 h-5 ${
+                allPaid ? 'text-green-400' : hasUnpaid ? 'text-yellow-400' : 'text-hosteloom-muted'
+              }`} />
             </div>
-            <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full text-yellow-400 bg-yellow-400/10`}>
-              Pending
+            <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${
+              allPaid ? 'text-green-400 bg-green-400/10' : hasUnpaid ? 'text-yellow-400 bg-yellow-400/10' : 'text-hosteloom-muted bg-hosteloom-muted/10'
+            }`}>
+              {allPaid ? 'Paid' : hasUnpaid ? 'Pending' : 'No Invoices'}
             </span>
           </div>
           <div>
             <p className="text-xs text-hosteloom-muted font-body uppercase tracking-wider mb-1">Payment Status</p>
-            <p className="font-heading font-bold text-xl text-white">₦150,000</p>
-            <p className="text-xs text-hosteloom-muted mt-0.5">Session 2025/2026</p>
+            {hasUnpaid ? (
+              <>
+                <p className="font-heading font-bold text-xl text-white">{formatCurrency(totalUnpaid)}</p>
+                <p className="text-xs text-hosteloom-muted mt-0.5">
+                  {unpaidInvoices.length} unpaid invoice{unpaidInvoices.length !== 1 ? 's' : ''}
+                </p>
+              </>
+            ) : allPaid ? (
+              <>
+                <p className="font-heading font-bold text-xl text-white">{formatCurrency(totalPaid)}</p>
+                <p className="text-xs text-hosteloom-muted mt-0.5">All invoices paid</p>
+              </>
+            ) : (
+              <>
+                <p className="font-heading font-bold text-xl text-white">—</p>
+                <p className="text-xs text-hosteloom-muted mt-0.5">No invoices yet</p>
+              </>
+            )}
           </div>
-        </div>
+        </Link>
 
         {/* Maintenance / Complaints */}
-        <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-5 flex flex-col gap-4 hover:border-hosteloom-accent/30 transition-colors">
+        <Link href="/dashboard/complaints" className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-5 flex flex-col gap-4 hover:border-hosteloom-accent/30 transition-colors cursor-pointer">
           <div className="flex items-start justify-between">
             <div className={`w-10 h-10 rounded-xl bg-hosteloom-secondary/10 flex items-center justify-center`}>
               <MdBuild className={`w-5 h-5 text-hosteloom-secondary`} />
@@ -107,42 +191,46 @@ export default function StudentDashboard() {
               {openComplaints.length > 0 ? `${openComplaints.length} active request${openComplaints.length !== 1 ? 's' : ''}` : 'No open complaints'}
             </p>
           </div>
-        </div>
+        </Link>
       </div>
 
-      {/* Recent Activity */}
+      {/* Recent Activity — LIVE DATA */}
       <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6">
         <h2 className="font-heading font-bold text-lg mb-5">Recent Activity</h2>
-        <div className="space-y-1">
-          {recentActivity.map((item, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-4 py-3 border-b border-hosteloom-border last:border-0"
-            >
-              <div className={`w-9 h-9 rounded-full bg-hosteloom-surface-light flex items-center justify-center shrink-0`}>
-                <item.icon className={`w-4 h-4 ${item.color}`} />
+        {recentActivity.length === 0 ? (
+          <p className="text-sm text-hosteloom-muted py-4 text-center">No recent activity to display.</p>
+        ) : (
+          <div className="space-y-1">
+            {recentActivity.map((item, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-4 py-3 border-b border-hosteloom-border last:border-0"
+              >
+                <div className={`w-9 h-9 rounded-full bg-hosteloom-surface-light flex items-center justify-center shrink-0`}>
+                  <item.icon className={`w-4 h-4 ${item.color}`} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-white truncate">{item.label}</p>
+                  <p className="text-xs text-hosteloom-muted truncate">{item.sub}</p>
+                </div>
+                <span className="text-[10px] text-hosteloom-muted whitespace-nowrap">{item.time}</span>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">{item.label}</p>
-                <p className="text-xs text-hosteloom-muted truncate">{item.sub}</p>
-              </div>
-              <span className="text-[10px] text-hosteloom-muted whitespace-nowrap">{item.time}</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <button className="flex items-center gap-4 p-5 bg-hosteloom-surface border border-hosteloom-border rounded-2xl hover:border-hosteloom-accent/40 hover:bg-hosteloom-surface-light transition-all text-left group">
+        <Link href="/dashboard/payments" className="flex items-center gap-4 p-5 bg-hosteloom-surface border border-hosteloom-border rounded-2xl hover:border-hosteloom-accent/40 hover:bg-hosteloom-surface-light transition-all text-left group">
           <div className="w-10 h-10 rounded-xl bg-hosteloom-accent/10 flex items-center justify-center">
-            <MdPayment className="w-5 h-5 text-hosteloom-accent" />
+            <FiCreditCard className="w-5 h-5 text-hosteloom-accent" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-sm text-white">Make a Payment</p>
-            <p className="text-xs text-hosteloom-muted">Record or upload your payment receipt</p>
+            <p className="font-heading font-semibold text-sm text-white">View Payments</p>
+            <p className="text-xs text-hosteloom-muted">Manage invoices and payment history</p>
           </div>
-        </button>
+        </Link>
         <Link href="/dashboard/complaints" className="flex items-center gap-4 p-5 bg-hosteloom-surface border border-hosteloom-border rounded-2xl hover:border-hosteloom-secondary/40 hover:bg-hosteloom-surface-light transition-all text-left group">
           <div className="w-10 h-10 rounded-xl bg-hosteloom-secondary/10 flex items-center justify-center">
             <MdBuild className="w-5 h-5 text-hosteloom-secondary" />

@@ -23,7 +23,7 @@ export default function AdminDashboard() {
   const { students, fetchStudents } = useStudentsStore();
 
   useEffect(() => {
-    fetchRooms();
+    fetchRooms(1, 1000);
     fetchAllComplaints();
     fetchStudents();
   }, [fetchRooms, fetchAllComplaints, fetchStudents]);

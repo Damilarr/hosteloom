@@ -8,6 +8,7 @@ import type {
   ReassignRoomPayload, ReassignRoomResponse,
   OccupantAllocation, AllocationHistoryEntry,
   ApiError,
+  PaginatedMeta, PaginatedResponse,
 } from '@/types';
 import { api } from '@/lib/api';
 
@@ -15,6 +16,7 @@ interface WithToken { token: string | null; }
 
 export interface RoomsSlice {
   rooms: RoomWithDetails[];
+  roomsMeta: PaginatedMeta | null;
   roomsLoading: boolean;
   roomsError: string | null;
 
@@ -27,7 +29,7 @@ export interface RoomsSlice {
   studentHistory: AllocationHistoryEntry[];
   studentHistoryLoading: boolean;
 
-  fetchRooms: () => Promise<void>;
+  fetchRooms: (page?: number, limit?: number) => Promise<void>;
   fetchAvailableRooms: () => Promise<void>;
   createRoom: (payload: CreateRoomPayload) => Promise<boolean>;
   bulkCreateRooms: (payload: BulkCreateRoomsPayload) => Promise<number | false>;
@@ -37,10 +39,12 @@ export interface RoomsSlice {
   reassignRoom: (payload: ReassignRoomPayload) => Promise<boolean>;
   fetchOccupants: (roomId: string) => Promise<void>;
   fetchStudentHistory: (studentId: string) => Promise<void>;
+  fetchRoomById: (id: string) => Promise<RoomWithDetails | null>;
 }
 
 export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], RoomsSlice> = (set, get) => ({
   rooms: [],
+  roomsMeta: null,
   roomsLoading: false,
   roomsError: null,
 
@@ -53,12 +57,16 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
   studentHistory: [],
   studentHistoryLoading: false,
 
-  fetchRooms: async () => {
+  fetchRooms: async (page = 1, limit = 10) => {
     set({ roomsLoading: true, roomsError: null });
     try {
       const token = get().token ?? undefined;
-      const data = await api.get<RoomWithDetails[]>('/rooms/get-all-rooms', token);
-      set({ rooms: Array.isArray(data) ? data : [], roomsLoading: false });
+      const response = await api.get<PaginatedResponse<RoomWithDetails>>(`/rooms/get-all-rooms?page=${page}&limit=${limit}`, token);
+      set({ 
+        rooms: Array.isArray(response.data) ? response.data : [], 
+        roomsMeta: response.meta,
+        roomsLoading: false 
+      });
     } catch (err) {
       set({ roomsLoading: false, roomsError: (err as ApiError).message });
     }
@@ -92,7 +100,8 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
     try {
       const token = get().token ?? undefined;
       const data = await api.post<BulkCreateRoomsResponse>('/rooms/bulk-create-rooms', payload, token);
-      get().fetchRooms();
+      const meta = get().roomsMeta;
+      get().fetchRooms(meta?.page ?? 1, meta?.limit ?? 10);
       return data.count;
     } catch {
       return false;
@@ -118,7 +127,8 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
     try {
       const token = get().token ?? undefined;
       const data = await api.post<AllocateRoomResponse>('/allocations/allocate-room', payload, token);
-      get().fetchRooms();
+      const meta = get().roomsMeta;
+      get().fetchRooms(meta?.page ?? 1, meta?.limit ?? 10);
       get().fetchAvailableRooms();
       return data;
     } catch {
@@ -130,7 +140,8 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
     try {
       const token = get().token ?? undefined;
       await api.patch<CheckoutResponse>(`/allocations/${allocationId}/checkout`, {}, token);
-      get().fetchRooms();
+      const meta = get().roomsMeta;
+      get().fetchRooms(meta?.page ?? 1, meta?.limit ?? 10);
       get().fetchAvailableRooms();
       return true;
     } catch {
@@ -142,7 +153,8 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
     try {
       const token = get().token ?? undefined;
       await api.post<ReassignRoomResponse>('/allocations/reassign-room', payload, token);
-      get().fetchRooms();
+      const meta = get().roomsMeta;
+      get().fetchRooms(meta?.page ?? 1, meta?.limit ?? 10);
       get().fetchAvailableRooms();
       return true;
     } catch {
@@ -169,6 +181,20 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
       set({ studentHistory: Array.isArray(data) ? data : [], studentHistoryLoading: false });
     } catch {
       set({ studentHistory: [], studentHistoryLoading: false });
+    }
+  },
+
+  fetchRoomById: async (id) => {
+    set({ roomsLoading: true, roomsError: null });
+    try {
+      const token = get().token ?? undefined;
+      const data = await api.get<RoomWithDetails>(`/rooms/get-room-by-id/${id}`, token);
+      // Optional: add to state if necessary, but returning it is useful
+      set({ roomsLoading: false });
+      return data;
+    } catch (err) {
+      set({ roomsLoading: false, roomsError: (err as ApiError).message });
+      return null;
     }
   },
 });

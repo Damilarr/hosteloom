@@ -27,7 +27,13 @@ export default function LoginPage() {
       toast.error(authError);
     } else if (isAuthenticated && user) {
       toast.success('Welcome back!');
-      router.push(user.role === 'HOSTEL_ADMIN' ? '/admin/dashboard' : '/dashboard');
+      if (user.role === 'HOSTEL_OWNER') {
+        router.push('/owner/dashboard');
+      } else if (user.role === 'HOSTEL_ADMIN') {
+        router.push('/admin/dashboard');
+      } else {
+        router.push('/dashboard');
+      }
     }
   };
 
@@ -55,10 +61,10 @@ export default function LoginPage() {
             <FiUser className={`w-4 h-4 ${role === 'STUDENT' ? 'text-hosteloom-accent' : ''}`} />
             Student
           </button>
-          <button type="button" onClick={() => setRole('HOSTEL_ADMIN')}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-heading font-medium transition-all duration-300 relative z-10 ${role === 'HOSTEL_ADMIN' ? 'text-white' : 'text-hosteloom-muted hover:text-white'}`}>
-            <FiShield className={`w-4 h-4 ${role === 'HOSTEL_ADMIN' ? 'text-hosteloom-accent' : ''}`} />
-            Admin
+          <button type="button" onClick={() => setRole('HOSTEL_OWNER')}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-heading font-medium transition-all duration-300 relative z-10 ${role === 'HOSTEL_OWNER' ? 'text-white' : 'text-hosteloom-muted hover:text-white'}`}>
+            <FiShield className={`w-4 h-4 ${role === 'HOSTEL_OWNER' ? 'text-hosteloom-accent' : ''}`} />
+            Hostel Owner
           </button>
         </div>
 
@@ -111,6 +117,13 @@ export default function LoginPage() {
             Create one
           </Link>
         </p>
+
+        <div className="mt-6 pt-6 border-t border-hosteloom-border/50 text-center">
+          <p className="text-xs font-body text-hosteloom-muted italic">
+            Are you a hostel manager?{" "}
+            <Link href="/admin/login" className="text-hosteloom-accent hover:text-white transition-colors font-semibold">Admin Portal</Link>
+          </p>
+        </div>
       </form>
     </div>
   );

@@ -1,59 +1,67 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { FiUser, FiPhone, FiHome, FiBriefcase, FiSave } from 'react-icons/fi';
+import { FiUser, FiPhone, FiBriefcase, FiSave } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { useProfileStore } from '@/store';
-import type { AdminProfilePayload } from '@/types';
+import type { OwnerProfilePayload } from '@/types';
 import { inputClass, labelClass, submitButtonClass } from './styles';
+import { useRouter } from 'next/navigation';
 
-const EMPTY: AdminProfilePayload = {
+const EMPTY: OwnerProfilePayload = {
   firstName: '',
   lastName: '',
   phone: '',
-  position: '',
+  companyName: '',
 };
 
-export default function AdminProfileForm() {
-  const { adminProfile, adminProfileLoading, saveAdminProfile } = useProfileStore();
+export default function OwnerProfileForm() {
+  const router = useRouter();
+  const { ownerProfile, ownerProfileLoading, saveOwnerProfile } = useProfileStore();
 
-  const [form, setForm] = useState<AdminProfilePayload>(EMPTY);
+  const [form, setForm] = useState<OwnerProfilePayload>(EMPTY);
 
   useEffect(() => {
-    if (adminProfile) {
+    if (ownerProfile) {
       setForm({
-        firstName: adminProfile.firstName ?? '',
-        lastName:  adminProfile.lastName  ?? '',
-        phone:     adminProfile.phone     ?? '',
-        position:  adminProfile.position  ?? '',
+        firstName:   ownerProfile.firstName   ?? '',
+        lastName:    ownerProfile.lastName    ?? '',
+        phone:       ownerProfile.phone       ?? '',
+        companyName: ownerProfile.companyName ?? '',
       });
     }
-  }, [adminProfile]);
+  }, [ownerProfile]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const isDirty = !adminProfile || (
-    form.firstName !== (adminProfile.firstName ?? '') ||
-    form.lastName  !== (adminProfile.lastName  ?? '') ||
-    form.phone     !== (adminProfile.phone     ?? '') ||
-    form.position  !== (adminProfile.position  ?? '')
+  const isDirty = !ownerProfile || (
+    form.firstName   !== (ownerProfile.firstName   ?? '') ||
+    form.lastName    !== (ownerProfile.lastName    ?? '') ||
+    form.phone       !== (ownerProfile.phone       ?? '') ||
+    form.companyName !== (ownerProfile.companyName ?? '')
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const ok = await saveAdminProfile(form);
-    if (ok) toast.success(adminProfile ? 'Profile updated!' : 'Profile created!');
-    else toast.error('Something went wrong. Please try again.');
+    const ok = await saveOwnerProfile(form);
+    if (ok) {
+      toast.success(ownerProfile ? 'Profile updated!' : 'Profile created!');
+      if (!ownerProfile) {
+        router.push('/owner/dashboard');
+      }
+    } else {
+      toast.error('Something went wrong. Please try again.');
+    }
   };
 
-  const isDisabled = adminProfileLoading || !isDirty;
+  const isDisabled = ownerProfileLoading || !isDirty;
 
   return (
     <form onSubmit={handleSubmit} className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6 space-y-6">
-
+      
       {/* Name row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
@@ -63,7 +71,7 @@ export default function AdminProfileForm() {
               <FiUser className="w-4 h-4" />
             </div>
             <input type="text" name="firstName" value={form.firstName} onChange={handleChange}
-              placeholder="e.g. Favour" className={inputClass} required />
+              placeholder="e.g. John" className={inputClass} required />
           </div>
         </div>
 
@@ -91,17 +99,15 @@ export default function AdminProfileForm() {
         </div>
       </div>
 
-
-
-      {/* Position */}
+      {/* Company Name */}
       <div>
-        <label className={labelClass}>Position / Role</label>
+        <label className={labelClass}>Company Name <span className="text-sm text-hosteloom-muted font-normal">(Optional)</span></label>
         <div className="relative group">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
             <FiBriefcase className="w-4 h-4" />
           </div>
-          <input type="text" name="position" value={form.position} onChange={handleChange}
-            placeholder="e.g. Manager, Security, Warden" className={inputClass} required />
+          <input type="text" name="companyName" value={form.companyName} onChange={handleChange}
+            placeholder="e.g. ABC Corp" className={inputClass} />
         </div>
       </div>
 
@@ -109,7 +115,7 @@ export default function AdminProfileForm() {
       <div className="pt-2">
         <button type="submit" disabled={isDisabled} className={submitButtonClass(isDisabled)}>
           <FiSave className="w-4 h-4" />
-          {adminProfileLoading ? 'Saving…' : adminProfile ? 'Update Profile' : 'Save Profile'}
+          {ownerProfileLoading ? 'Saving…' : ownerProfile ? 'Update Profile' : 'Save Profile'}
         </button>
       </div>
     </form>

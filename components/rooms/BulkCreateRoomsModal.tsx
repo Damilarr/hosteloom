@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MdClose, MdPlaylistAdd } from 'react-icons/md';
+import { useHostelsStore, useBlocksStore, useFloorsStore } from '@/store';
 import type { BulkCreateRoomsPayload } from '@/types';
 
 interface Props {
@@ -16,19 +17,42 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
   const [start, setStart] = useState(1);
   const [end, setEnd] = useState(6);
   const [capacity, setCapacity] = useState(4);
+  const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const { hostels, fetchAllHostels } = useHostelsStore();
+  const { blocks, fetchBlocksByHostel } = useBlocksStore();
+  const { floors, fetchFloorsByBlock } = useFloorsStore();
+
+  const [selectedHostel, setSelectedHostel] = useState('');
+  const [selectedBlock, setSelectedBlock] = useState('');
+  const [floorId, setFloorId] = useState('');
+
+  React.useEffect(() => { 
+    if (open) fetchAllHostels(); 
+  }, [open, fetchAllHostels]);
+
+  React.useEffect(() => { 
+    if (selectedHostel) fetchBlocksByHostel(selectedHostel); 
+  }, [selectedHostel, fetchBlocksByHostel]);
+
+  React.useEffect(() => { 
+    if (selectedBlock) fetchFloorsByBlock(selectedBlock); 
+  }, [selectedBlock, fetchFloorsByBlock]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!prefix.trim() || start > end) return;
+    if (!prefix.trim() || start > end || !floorId) return;
     setLoading(true);
-    const result = await onSubmit({ prefix: prefix.trim(), start, end, capacity });
+    const result = await onSubmit({ prefix: prefix.trim(), start, end, capacity, price, floorId });
     setLoading(false);
     if (result !== false) {
       setPrefix('');
       setStart(1);
       setEnd(6);
       setCapacity(4);
+      setPrice(0);
+      setFloorId('');
       onClose();
     }
   };
@@ -102,17 +126,66 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-xs font-heading font-medium text-hosteloom-muted mb-1.5">Capacity per room</label>
-                <input
-                  type="number"
-                  min={1}
-                  max={20}
-                  value={capacity}
-                  onChange={(e) => setCapacity(Number(e.target.value))}
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-heading font-medium text-hosteloom-muted mb-1.5">Capacity per room</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={20}
+                    value={capacity}
+                    onChange={(e) => setCapacity(Number(e.target.value))}
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-heading font-medium text-hosteloom-muted mb-1.5">Price (NGN)</label>
+                  <input
+                    type="number"
+                    min={0}
+                    step={100}
+                    value={price}
+                    onChange={(e) => setPrice(Number(e.target.value))}
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-3 p-3 bg-hosteloom-bg rounded-xl border border-hosteloom-border">
+                <p className="text-xs font-semibold text-hosteloom-muted">Location Mapping</p>
+                <select
+                  value={selectedHostel}
+                  onChange={(e) => { setSelectedHostel(e.target.value); setSelectedBlock(''); setFloorId(''); }}
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none"
                   required
-                />
+                >
+                  <option value="" disabled>Select Hostel</option>
+                  {hostels.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
+                </select>
+
+                <select
+                  value={selectedBlock}
+                  onChange={(e) => { setSelectedBlock(e.target.value); setFloorId(''); }}
+                  disabled={!selectedHostel}
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none disabled:opacity-50"
+                  required
+                >
+                  <option value="" disabled>Select Block</option>
+                  {blocks.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                </select>
+
+                <select
+                  value={floorId}
+                  onChange={(e) => setFloorId(e.target.value)}
+                  disabled={!selectedBlock}
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none disabled:opacity-50"
+                  required
+                >
+                  <option value="" disabled>Select Floor</option>
+                  {floors.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                </select>
               </div>
 
               {prefix.trim() && (

@@ -9,8 +9,8 @@ const statusClass: Record<string, string> = {
 
 const categoryClass: Record<string, string> = {
   SECURITY:    'bg-red-400/10 text-red-300',
-  MAINTENANCE: 'bg-orange-400/10 text-orange-300',
-  NOISE:       'bg-yellow-400/10 text-yellow-300',
+  PLUMBING:    'bg-blue-400/10 text-blue-300',
+  ELECTRICAL:  'bg-yellow-400/10 text-yellow-300',
   OTHER:       'bg-hosteloom-muted/10 text-hosteloom-muted',
 };
 

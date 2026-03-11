@@ -20,9 +20,16 @@ const studentNav = [
   { href: '/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints' },
 ];
 
+const ownerNav = [
+  { href: '/owner/dashboard', icon: MdDashboard, label: 'Overview' },
+  { href: '/owner/profile', icon: MdPersonOutline, label: 'My Profile' },
+  { href: '/owner/dashboard/hostels', icon: MdBedroomParent, label: 'Hostels' }
+];
+
 const adminNav = [
   { href: '/admin/dashboard', icon: MdDashboard, label: 'Overview' },
   { href: '/admin/dashboard/sessions', icon: MdDateRange, label: 'Sessions' },
+  { href: '/admin/dashboard/structure', icon: MdBuild, label: 'Hostel Structure' },
   { href: '/admin/dashboard/rooms', icon: MdBedroomParent, label: 'Rooms' },
   { href: '/admin/dashboard/students', icon: MdPeople, label: 'Students' },
   { href: '/admin/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints' },
@@ -36,15 +43,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter();
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuthStore();
-  const { profile, adminProfile, fetchProfile, fetchAdminProfile } = useProfileStore();
+  const { 
+    profile, adminProfile, ownerProfile, 
+    fetchProfile, fetchAdminProfile, fetchOwnerProfile 
+  } = useProfileStore();
   const hasHydrated = useStore((s) => s._hasHydrated);
 
   const [isCheckingProfile, setIsCheckingProfile] = React.useState(false);
   const [hasCheckedProfile, setHasCheckedProfile] = React.useState(false);
 
   const isAdmin = user?.role === 'HOSTEL_ADMIN';
-  const PROFILE_ROUTE = '/dashboard/profile';
-  const needsProfile = isAdmin ? !adminProfile : !profile;
+  const isOwner = user?.role === 'HOSTEL_OWNER';
+  
+  const PROFILE_ROUTE = isAdmin ? '/admin/dashboard' : isOwner ? '/owner/profile' : '/dashboard/profile';
+  const needsProfile = isAdmin ? !adminProfile : (isOwner ? !ownerProfile : !profile);
 
   useEffect(() => {
     if (!hasHydrated || !isAuthenticated || hasCheckedProfile) return;
@@ -56,25 +68,39 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     const checkServer = async () => {
       setIsCheckingProfile(true);
-      if (isAdmin) await fetchAdminProfile();
-      else await fetchProfile();
+      let profileStillMissing = true;
+      
+      if (isAdmin) {
+        const ok = await fetchAdminProfile();
+        profileStillMissing = !useStore.getState().adminProfile;
+      } else if (isOwner) {
+        await fetchOwnerProfile();
+        profileStillMissing = !useStore.getState().ownerProfile;
+      } else {
+        await fetchProfile();
+        profileStillMissing = !useStore.getState().profile;
+      }
+      
       setIsCheckingProfile(false);
       setHasCheckedProfile(true);
+      
+      if (profileStillMissing && !isAdmin) {
+        router.replace(PROFILE_ROUTE);
+      }
     };
 
     checkServer();
-  }, [hasHydrated, isAuthenticated, needsProfile, hasCheckedProfile, isAdmin, fetchAdminProfile, fetchProfile]);
+  }, [hasHydrated, isAuthenticated, needsProfile, hasCheckedProfile, isAdmin, isOwner, fetchAdminProfile, fetchOwnerProfile, fetchProfile, router, PROFILE_ROUTE]);
 
-  // 2. Profile gate redirect — evaluate AFTER hydration and network check
   useEffect(() => {
-    if (hasHydrated && isAuthenticated && hasCheckedProfile && needsProfile && pathname !== PROFILE_ROUTE) {
+    if (hasHydrated && isAuthenticated && hasCheckedProfile && needsProfile && !isAdmin && pathname !== PROFILE_ROUTE) {
       router.replace(PROFILE_ROUTE);
     }
-  }, [hasHydrated, isAuthenticated, hasCheckedProfile, needsProfile, pathname, router]);
+  }, [hasHydrated, isAuthenticated, hasCheckedProfile, needsProfile, isAdmin, pathname, router, PROFILE_ROUTE]);
 
   const displayName = isAdmin
     ? adminProfile ? `${adminProfile.firstName} ${adminProfile.lastName}`.trim() : user?.email ?? ''
-    : profile ? `${profile.firstName} ${profile.lastName}`.trim() : user?.email ?? '';
+    : isOwner ? user?.email ?? 'Hostel Owner' : profile ? `${profile.firstName} ${profile.lastName}`.trim() : user?.email ?? '';
 
   if (!hasHydrated || isCheckingProfile) {
     return (
@@ -84,11 +110,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
-  const navItems = isAdmin ? adminNav : studentNav;
+  const navItems = isAdmin ? adminNav : isOwner ? ownerNav : studentNav;
 
-  const handleLogout = () => {
-    logout();
-    router.push('/login');
+  const handleLogout = async () => {
+    await logout();
+    router.replace('/login');
   };
 
   return (
@@ -132,7 +158,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               : 'bg-hosteloom-secondary/15 text-hosteloom-secondary'
           }`}>
             <span className="w-1.5 h-1.5 rounded-full bg-current" />
-            {isAdmin ? 'Hostel Admin' : 'Student'}
+            {isAdmin ? 'Hostel Admin' : isOwner ? 'Hostel Owner' : 'Student'}
           </span>
         </div>
 

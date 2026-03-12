@@ -542,3 +542,127 @@ export interface VerifyPaymentResponse {
   status?: string; 
   data?: any;
 }
+// ─── Dashboard & Reports ─────────────────────────────────────────────────────
+
+export interface DashboardSummary {
+  totalHostels: number;
+  totalRooms: number;
+  totalStudents: number;
+  capacity: {
+    totalBeds: number;
+    occupiedBeds: number;
+    vacantBeds: number;
+    occupiedRooms: number;
+    vacantRooms: number;
+    occupancyRatePercentage: number;
+  };
+  financials: {
+    totalRevenue: number;
+    pendingPayments: number;
+  };
+}
+
+export type ReportType = 'allocations' | 'payments' | 'maintenance' | 'occupancy';
+
+export interface ReportRoomData extends Omit<Room, 'floor'> {
+  allocations: Allocation[];
+  floor?: {
+    id: string;
+    name: string;
+    blockId: string;
+    createdAt?: string;
+    updatedAt?: string;
+    block?: {
+      id: string;
+      name: string;
+      hostelId: string;
+      createdAt?: string;
+      updatedAt?: string;
+      hostel?: {
+        id: string;
+        name: string;
+        description: string;
+        address: string;
+        ownerId: string;
+        createdAt?: string;
+        updatedAt?: string;
+      };
+    };
+  };
+}
+
+export interface DashboardSummaryResponse {
+  message: string;
+  data: DashboardSummary;
+}
+
+export interface ReportAllocationData {
+  id: string;
+  status: string;
+  studentId: string;
+  roomId: string;
+  academicSessionId: string;
+  createdAt: string;
+  updatedAt: string;
+  student: {
+    profile: UserProfile;
+    email: string;
+  };
+  room: ReportRoomData;
+}
+
+export interface ReportPaymentData {
+  id: string;
+  amount: string;
+  description: string;
+  dueDate: string;
+  status: string;
+  studentId: string;
+  allocationId: string;
+  createdAt: string;
+  updatedAt: string;
+  student: {
+    profile: UserProfile;
+    email: string;
+  };
+  allocation: {
+    id: string;
+    status: string;
+    studentId: string;
+    roomId: string;
+    academicSessionId: string;
+    createdAt: string;
+    updatedAt: string;
+    room: Room;
+  };
+  payments: Array<{
+    id: string;
+    amount: string;
+    reference: string;
+    paystackId: string;
+    status: string;
+    receiptData: any;
+    createdAt: string;
+    updatedAt: string;
+  }>;
+}
+
+export interface ReportMaintenanceData {
+  id: string;
+  title: string;
+  description: string;
+  category: ComplaintCategory;
+  status: ComplaintStatus;
+  studentId: string;
+  createdAt: string;
+  updatedAt: string;
+  student: {
+    profile: UserProfile;
+    email: string;
+  };
+}
+
+export interface DashboardReportResponse {
+  message: string;
+  data: ReportRoomData[] | ReportAllocationData[] | ReportPaymentData[] | ReportMaintenanceData[];
+}

@@ -13,8 +13,9 @@ import { createPaymentsSlice, type PaymentsSlice } from './slices/paymentsSlice'
 import { createHostelsSlice, type HostelsSlice } from './slices/hostelsSlice';
 import { createBlocksSlice, type BlocksSlice } from './slices/blocksSlice';
 import { createFloorsSlice, type FloorsSlice } from './slices/floorsSlice';
+import { createDashboardSlice, type DashboardSlice } from './slices/dashboardSlice';
 
-export type StoreState = AuthSlice & ProfileSlice & StudentsSlice & ComplaintsSlice & RoomsSlice & SessionsSlice & AdminsSlice & InvoicesSlice & PaymentsSlice & HostelsSlice & BlocksSlice & FloorsSlice & { _hasHydrated: boolean };
+export type StoreState = AuthSlice & ProfileSlice & StudentsSlice & ComplaintsSlice & RoomsSlice & SessionsSlice & AdminsSlice & InvoicesSlice & PaymentsSlice & HostelsSlice & BlocksSlice & FloorsSlice & DashboardSlice & { _hasHydrated: boolean };
 
 export const useStore = create<StoreState>()(
   persist(
@@ -31,6 +32,7 @@ export const useStore = create<StoreState>()(
       ...createHostelsSlice(...args),
       ...createBlocksSlice(...args),
       ...createFloorsSlice(...args),
+      ...createDashboardSlice(...args),
       _hasHydrated: false,
     }),
     {
@@ -204,4 +206,14 @@ export const useFloorsStore = () => useStore(useShallow((s) => ({
   createFloor: s.createFloor,
   updateFloor: s.updateFloor,
   deleteFloor: s.deleteFloor,
+})));
+export const useDashboardStore = () => useStore(useShallow((s) => ({
+  summaryData: s.summaryData,
+  summaryLoading: s.summaryLoading,
+  summaryError: s.summaryError,
+  reportData: s.reportData,
+  reportLoading: s.reportLoading,
+  reportError: s.reportError,
+  fetchSummaryData: s.fetchSummaryData,
+  fetchReport: s.fetchReport,
 })));

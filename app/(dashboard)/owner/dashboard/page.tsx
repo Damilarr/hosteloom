@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { MdAdd, MdClose } from 'react-icons/md';
-import { useAuthStore, useAdminsStore, useHostelsStore } from '@/store';
+import { useAuthStore, useAdminsStore, useHostelsStore, useDashboardStore } from '@/store';
+import { MdBedroomParent, MdPeople, MdPayment, MdHome } from 'react-icons/md';
 import { toast } from 'sonner';
 import { Loader } from '@/components/ui/Loader';
 
@@ -10,11 +11,13 @@ export default function OwnerDashboard() {
   const { user } = useAuthStore();
   const { createAdmin, adminsLoading } = useAdminsStore();
   const { hostels, fetchAllHostels } = useHostelsStore();
+  const { summaryData, summaryLoading, fetchSummaryData } = useDashboardStore();
   const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     fetchAllHostels();
-  }, [fetchAllHostels]);
+    fetchSummaryData();
+  }, [fetchAllHostels, fetchSummaryData]);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -71,6 +74,25 @@ export default function OwnerDashboard() {
           <MdAdd className="w-5 h-5" />
           Create Admin
         </button>
+      </div>
+
+      {/* Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: 'Total Hostels', value: summaryData?.totalHostels.toString() ?? hostels.length.toString(), sub: 'Managed properties', icon: MdHome, color: 'text-hosteloom-accent', bg: 'bg-hosteloom-accent/10' },
+          { label: 'Total Rooms', value: summaryData?.totalRooms.toString() ?? '0', sub: `${summaryData?.capacity.vacantRooms ?? 0} vacant`, icon: MdBedroomParent, color: 'text-blue-400', bg: 'bg-blue-400/10' },
+          { label: 'Occupancy Rate', value: `${summaryData?.capacity.occupancyRatePercentage ?? 0}%`, sub: `${summaryData?.capacity.occupiedBeds ?? 0} beds filled`, icon: MdPeople, color: 'text-green-400', bg: 'bg-green-400/10' },
+          { label: 'Total Revenue', value: `₦${((summaryData?.financials.totalRevenue ?? 0) / 1000000).toFixed(1)}M`, sub: `${summaryData?.financials.pendingPayments ? `₦${summaryData.financials.pendingPayments.toLocaleString()} pending` : 'No pending payments'}`, icon: MdPayment, color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
+        ].map((m) => (
+          <div key={m.label} className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-5 hover:border-hosteloom-accent/30 transition-colors">
+            <div className={`w-10 h-10 rounded-xl ${m.bg} flex items-center justify-center mb-4`}>
+              <m.icon className={`w-5 h-5 ${m.color}`} />
+            </div>
+            <p className="font-heading font-bold text-2xl text-white">{summaryData ? m.value : '—'}</p>
+            <p className="text-xs text-hosteloom-muted font-body mt-0.5">{m.label}</p>
+            <p className="text-[10px] text-hosteloom-muted/70 mt-1">{m.sub}</p>
+          </div>
+        ))}
       </div>
 
       <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-8">

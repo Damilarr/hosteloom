@@ -6,7 +6,7 @@ import {
   MdBedroomParent, MdPeople, MdPayment, MdBuild,
   MdCheckCircle, MdHourglassTop, MdPersonAdd, MdWarning,
 } from 'react-icons/md';
-import { useAuthStore, useRoomsStore, useComplaintsStore, useStudentsStore } from '@/store';
+import { useAuthStore, useRoomsStore, useComplaintsStore, useStudentsStore, useDashboardStore } from '@/store';
 
 const recentActivity = [
   { icon: MdPersonAdd, color: 'text-hosteloom-accent', label: 'New registration', sub: 'Sarah Okoye — Pending approval', time: '5m ago' },
@@ -21,12 +21,14 @@ export default function AdminDashboard() {
   const { rooms, fetchRooms } = useRoomsStore();
   const { allComplaints, fetchAllComplaints } = useComplaintsStore();
   const { students, fetchStudents } = useStudentsStore();
+  const { summaryData, summaryLoading, fetchSummaryData } = useDashboardStore();
 
   useEffect(() => {
     fetchRooms(1, 1000);
     fetchAllComplaints();
     fetchStudents();
-  }, [fetchRooms, fetchAllComplaints, fetchStudents]);
+    fetchSummaryData();
+  }, [fetchRooms, fetchAllComplaints, fetchStudents, fetchSummaryData]);
 
   // Derived metrics
   const activeRooms = rooms.filter((r) => r.isActive);
@@ -51,10 +53,30 @@ export default function AdminDashboard() {
   const greeting = getGreeting();
 
   const metrics = [
-    { label: 'Total Rooms', value: activeRooms.length.toString(), sub: `${vacantCount} vacant`, icon: MdBedroomParent, color: 'text-hosteloom-accent', bg: 'bg-hosteloom-accent/10' },
-    { label: 'Occupancy Rate', value: `${occupancyRate}%`, sub: `${totalOccupancy} of ${totalCapacity} filled`, icon: MdPeople, color: 'text-green-400', bg: 'bg-green-400/10' },
-    { label: 'Revenue This Session', value: '₦4.2M', sub: '12 payments pending', icon: MdPayment, color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
-    { label: 'Open Complaints', value: openComplaintsCount.toString(), sub: `${pendingComplaintsCount} marked pending`, icon: MdBuild, color: 'text-hosteloom-secondary', bg: 'bg-hosteloom-secondary/10' },
+    { 
+      label: 'Total Rooms', 
+      value: summaryData?.totalRooms.toString() ?? activeRooms.length.toString(), 
+      sub: `${summaryData?.capacity.vacantRooms ?? vacantCount} vacant`, 
+      icon: MdBedroomParent, color: 'text-hosteloom-accent', bg: 'bg-hosteloom-accent/10' 
+    },
+    { 
+      label: 'Occupancy Rate', 
+      value: `${summaryData?.capacity.occupancyRatePercentage ?? occupancyRate}%`, 
+      sub: `${summaryData?.capacity.occupiedBeds ?? totalOccupancy} of ${summaryData?.capacity.totalBeds ?? totalCapacity} filled`, 
+      icon: MdPeople, color: 'text-green-400', bg: 'bg-green-400/10' 
+    },
+    { 
+      label: 'Revenue This Session', 
+      value: `₦${((summaryData?.financials.totalRevenue ?? 0) / 1000000).toFixed(1)}M`, 
+      sub: `${summaryData?.financials.pendingPayments ? `₦${summaryData.financials.pendingPayments.toLocaleString()} pending` : 'No pending payments'}`, 
+      icon: MdPayment, color: 'text-yellow-400', bg: 'bg-yellow-400/10' 
+    },
+    { 
+      label: 'Open Complaints', 
+      value: openComplaintsCount.toString(), 
+      sub: `${pendingComplaintsCount} marked pending`, 
+      icon: MdBuild, color: 'text-hosteloom-secondary', bg: 'bg-hosteloom-secondary/10' 
+    },
   ];
 
   return (

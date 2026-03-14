@@ -15,8 +15,6 @@ export interface StudentsSlice {
   studentsError: string | null;
 
   fetchStudents: () => Promise<void>;
-  approveStudent: (userId: string) => Promise<boolean>;
-  rejectStudent: (userId: string, reason: string) => Promise<boolean>;
   deleteStudent: (userId: string) => Promise<boolean>;
 }
 
@@ -29,48 +27,10 @@ export const createStudentsSlice: StateCreator<StudentsSlice & WithToken, [], []
     set({ studentsLoading: true, studentsError: null });
     try {
       const token = get().token ?? undefined;
-      const data = await api.get<StudentRecord[]>('/admin/students', token);
+      const data = await api.get<StudentRecord[]>('/users/students', token);
       set({ students: Array.isArray(data) ? data : [], studentsLoading: false });
     } catch (err) {
       set({ studentsLoading: false, studentsError: (err as ApiError).message });
-    }
-  },
-
-  approveStudent: async (userId) => {
-    try {
-      const token = get().token ?? undefined;
-      const data = await api.post<StudentActionResponse>(
-        `/admin/students/${userId}/approve`,
-        {},
-        token,
-      );
-      set((state) => ({
-        students: state.students.map((s) =>
-          s.userId === userId ? { ...s, ...data.profile } : s,
-        ),
-      }));
-      return true;
-    } catch {
-      return false;
-    }
-  },
-
-  rejectStudent: async (userId, reason) => {
-    try {
-      const token = get().token ?? undefined;
-      const data = await api.post<StudentActionResponse>(
-        `/admin/students/${userId}/reject`,
-        { reason },
-        token,
-      );
-      set((state) => ({
-        students: state.students.map((s) =>
-          s.userId === userId ? { ...s, ...data.profile } : s,
-        ),
-      }));
-      return true;
-    } catch {
-      return false;
     }
   },
 

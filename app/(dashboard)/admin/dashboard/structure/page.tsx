@@ -8,6 +8,7 @@ import type { Block, Floor, Hostel } from '@/types';
 import BlockList from '@/components/rooms/BlockList';
 import FloorRoomsList from '@/components/rooms/FloorRoomsList';
 import StructureModal from '@/components/rooms/StructureModal';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 export default function AdminStructurePage() {
   const { adminProfile, fetchAdminProfile } = useProfileStore();
@@ -24,6 +25,13 @@ export default function AdminStructurePage() {
   const [creatingType, setCreatingType] = useState<'block'|'floor'|'room'|'bulk-rooms'|null>(null);
   const [formData, setFormData] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Delete Confirmation
+  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; type: 'block' | 'floor'; id: string }>({
+    isOpen: false,
+    type: 'block',
+    id: ''
+  });
 
   useEffect(() => {
     const init = async () => {
@@ -115,7 +123,12 @@ export default function AdminStructurePage() {
 
   const handleDelete = async (type: 'block'|'floor', id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+    setDeleteConfirm({ isOpen: true, type, id });
+  };
+
+  const confirmDelete = async () => {
+    const { type, id } = deleteConfirm;
+    if (!id) return;
 
     let res = false;
     if (type === 'block') res = await deleteBlock(id);
@@ -184,6 +197,16 @@ export default function AdminStructurePage() {
         formData={formData}
         setFormData={setFormData}
         isSubmitting={isSubmitting}
+      />
+
+      <ConfirmModal
+        isOpen={deleteConfirm.isOpen}
+        onClose={() => setDeleteConfirm({ ...deleteConfirm, isOpen: false })}
+        onConfirm={confirmDelete}
+        title={`Delete ${deleteConfirm.type}`}
+        message={`Are you sure you want to delete this ${deleteConfirm.type}? This action cannot be undone and may affect associated items.`}
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
       />
 
       <style jsx global>{`

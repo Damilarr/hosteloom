@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { FiUser, FiPhone, FiBriefcase, FiSave } from 'react-icons/fi';
+import { FiUser, FiPhone, FiBriefcase, FiSave, FiMail } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { useProfileStore } from '@/store';
 import type { OwnerProfilePayload } from '@/types';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 const EMPTY: OwnerProfilePayload = {
   firstName: '',
   lastName: '',
+  email: '',
   phone: '',
   companyName: '',
 };
@@ -26,6 +27,7 @@ export default function OwnerProfileForm() {
       setForm({
         firstName:   ownerProfile.firstName   ?? '',
         lastName:    ownerProfile.lastName    ?? '',
+        email:       ownerProfile.email       ?? '',
         phone:       ownerProfile.phone       ?? '',
         companyName: ownerProfile.companyName ?? '',
       });
@@ -40,6 +42,7 @@ export default function OwnerProfileForm() {
   const isDirty = !ownerProfile || (
     form.firstName   !== (ownerProfile.firstName   ?? '') ||
     form.lastName    !== (ownerProfile.lastName    ?? '') ||
+    form.email       !== (ownerProfile.email       ?? '') ||
     form.phone       !== (ownerProfile.phone       ?? '') ||
     form.companyName !== (ownerProfile.companyName ?? '')
   );
@@ -87,15 +90,28 @@ export default function OwnerProfileForm() {
         </div>
       </div>
 
-      {/* Phone */}
-      <div>
-        <label className={labelClass}>Phone number</label>
-        <div className="relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
-            <FiPhone className="w-4 h-4" />
+      {/* Contact row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label className={labelClass}>Email address</label>
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+              <FiMail className="w-4 h-4" />
+            </div>
+            <input type="email" name="email" value={form.email} onChange={handleChange}
+              placeholder="e.g. john@example.com" className={inputClass} required />
           </div>
-          <input type="tel" name="phone" value={form.phone} onChange={handleChange}
-            placeholder="e.g. 08012345678" className={inputClass} required />
+        </div>
+
+        <div>
+          <label className={labelClass}>Phone number</label>
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+              <FiPhone className="w-4 h-4" />
+            </div>
+            <input type="tel" name="phone" value={form.phone} onChange={handleChange}
+              placeholder="e.g. 08012345678" className={inputClass} required />
+          </div>
         </div>
       </div>
 

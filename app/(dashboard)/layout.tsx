@@ -31,6 +31,7 @@ const adminNav = [
   { href: '/admin/dashboard/sessions', icon: MdDateRange, label: 'Sessions' },
   { href: '/admin/dashboard/structure', icon: MdBuild, label: 'Hostel Structure' },
   { href: '/admin/dashboard/rooms', icon: MdBedroomParent, label: 'Rooms' },
+  { href: '/admin/dashboard/applications', icon: MdOutlinedFlag, label: 'Applications' },
   { href: '/admin/dashboard/students', icon: MdPeople, label: 'Students' },
   { href: '/admin/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints' },
   { href: '/admin/dashboard/payments', icon: MdPayment, label: 'Payments' },

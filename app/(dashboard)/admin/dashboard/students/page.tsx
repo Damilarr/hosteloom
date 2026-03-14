@@ -7,7 +7,6 @@ import { FiUser } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStudentsStore } from '@/store';
 import type { StudentRecord, RegistrationStatus } from '@/types';
-import RejectModal from '@/components/students/RejectModal';
 import StudentRow from '@/components/students/StudentRow';
 
 const STATUS_FILTERS: Array<RegistrationStatus | 'ALL'> = ['ALL', 'PENDING', 'APPROVED', 'REJECTED'];
@@ -21,12 +20,11 @@ const statusColor: Record<RegistrationStatus, string> = {
 export { statusColor };
 
 export default function StudentsPage() {
-  const { students, studentsLoading, studentsError, fetchStudents, approveStudent, rejectStudent, deleteStudent } =
+  const { students, studentsLoading, studentsError, fetchStudents, deleteStudent } =
     useStudentsStore();
 
   const [filter, setFilter] = useState<RegistrationStatus | 'ALL'>('ALL');
   const [search, setSearch] = useState('');
-  const [rejectTarget, setRejectTarget] = useState<StudentRecord | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<StudentRecord | null>(null);
 
   const [processingIds, setProcessingIds] = useState<Set<string>>(new Set());
@@ -55,24 +53,6 @@ export default function StudentsPage() {
       s.matricNo.toLowerCase().includes(q);
     return matchStatus && matchSearch;
   });
-
-  const handleApprove = async (student: StudentRecord) => {
-    startProcessing(student.userId);
-    const ok = await approveStudent(student.userId);
-    stopProcessing(student.userId);
-    if (ok) toast.success(`${student.firstName} ${student.lastName} approved`);
-    else toast.error('Failed to approve student');
-  };
-
-  const handleReject = async (reason: string) => {
-    if (!rejectTarget) return;
-    startProcessing(rejectTarget.userId);
-    const ok = await rejectStudent(rejectTarget.userId, reason);
-    stopProcessing(rejectTarget.userId);
-    setRejectTarget(null);
-    if (ok) toast.success(`${rejectTarget.firstName} ${rejectTarget.lastName} rejected`);
-    else toast.error('Failed to reject student');
-  };
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -181,8 +161,6 @@ export default function StudentsPage() {
                 <StudentRow
                   student={student}
                   isProcessing={processingIds.has(student.userId)}
-                  onApprove={() => handleApprove(student)}
-                  onReject={() => setRejectTarget(student)}
                   onDelete={() => setDeleteTarget(student)}
                 />
               </motion.div>
@@ -191,12 +169,6 @@ export default function StudentsPage() {
         </div>
       )}
 
-      {/* Reject modal */}
-      <RejectModal
-        student={rejectTarget}
-        onConfirm={handleReject}
-        onClose={() => setRejectTarget(null)}
-      />
 
       {/* Delete confirmation modal */}
       <AnimatePresence>

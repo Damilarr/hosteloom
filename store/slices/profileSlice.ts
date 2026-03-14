@@ -56,7 +56,7 @@ export const createProfileSlice: StateCreator<ProfileSlice & WithToken, [], [], 
       const token = get().token ?? undefined;
       const data = await api.post<ProfileApiResponse>('/users/profile', {
         ...payload,
-        registrationStatus: 'PENDING',
+        registrationStatus: 'APPROVED',
       }, token);
       set({ profile: data.profile, profileLoading: false });
       return true;

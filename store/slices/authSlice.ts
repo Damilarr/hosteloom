@@ -1,5 +1,5 @@
 import type { StateCreator } from 'zustand';
-import type { User, LoginPayload, RegisterPayload, ApiError, RefreshResponse } from '@/types';
+import type { User, LoginPayload, RegisterPayload, ApiError, RefreshResponse, ForgotPasswordPayload, ResetPasswordPayload } from '@/types';
 import { api } from '@/lib/api';
 import type { AuthResponse } from '@/types';
 
@@ -32,6 +32,8 @@ export interface AuthSlice {
   logout: () => Promise<void>;
   clearError: () => void;
   refreshSession: () => Promise<boolean>;
+  forgotPassword: (payload: ForgotPasswordPayload) => Promise<boolean>;
+  resetPassword: (payload: ResetPasswordPayload) => Promise<boolean>;
 }
 
 // ─── Auth Slice ───────────────────────────────────────────────────────────────
@@ -118,6 +120,30 @@ export const createAuthSlice: StateCreator<AuthSlice & WithProfile, [], [], Auth
       return true;
     } catch {
       get().logout();
+      return false;
+    }
+  },
+
+  forgotPassword: async (payload) => {
+    set({ isLoading: true, error: null });
+    try {
+      await api.post('/auth/forgot-password', payload);
+      set({ isLoading: false });
+      return true;
+    } catch (err) {
+      set({ isLoading: false, error: (err as ApiError).message });
+      return false;
+    }
+  },
+
+  resetPassword: async (payload) => {
+    set({ isLoading: true, error: null });
+    try {
+      await api.post('/auth/reset-password', payload);
+      set({ isLoading: false });
+      return true;
+    } catch (err) {
+      set({ isLoading: false, error: (err as ApiError).message });
       return false;
     }
   },

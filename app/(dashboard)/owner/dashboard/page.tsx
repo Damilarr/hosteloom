@@ -6,6 +6,7 @@ import { useAuthStore, useAdminsStore, useHostelsStore, useDashboardStore } from
 import { MdBedroomParent, MdPeople, MdPayment, MdHome } from 'react-icons/md';
 import { toast } from 'sonner';
 import { Loader } from '@/components/ui/Loader';
+import { PasswordInput } from '@/components/ui/PasswordInput';
 
 export default function OwnerDashboard() {
   const { user } = useAuthStore();
@@ -151,17 +152,16 @@ export default function OwnerDashboard() {
                 />
               </div>
 
-              <div>
-                 <label className="block text-xs font-heading tracking-widest text-hosteloom-muted uppercase mb-1">Password</label>
-                 <input
-                   type="password"
-                   name="password"
-                   value={formData.password}
-                   onChange={handleChange}
-                   placeholder="Optional"
-                   className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-white placeholder:text-hosteloom-muted/50 focus:outline-none focus:border-hosteloom-accent transition-colors text-sm"
-                 />
-              </div>
+                <div>
+                  <label className="block text-xs font-heading tracking-widest text-hosteloom-muted uppercase mb-1">Password</label>
+                  <PasswordInput
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Optional"
+                    className="py-3"
+                  />
+                </div>
 
               <div>
                  <label className="block text-xs font-heading tracking-widest text-hosteloom-muted uppercase mb-1">Select Hostel</label>

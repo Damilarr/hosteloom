@@ -3,9 +3,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FiMail, FiLock, FiUser, FiShield, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiMail, FiUser, FiShield } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader } from '@/components/ui/Loader';
+import { PasswordInput } from '@/components/ui/PasswordInput';
 import { useAuthStore, useStore } from '@/store';
 import { toast } from 'sonner';
 import type { UserRole } from '@/types';
@@ -16,11 +17,9 @@ export default function RegisterPage() {
 
   const [role, setRole] = useState<UserRole>('STUDENT');
   const [formData, setFormData] = useState({
-    fullName: '',
     email: '',
     password: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -78,15 +77,7 @@ export default function RegisterPage() {
 
 
         <div className="space-y-4">
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
-              <span className="font-heading font-bold text-lg select-none">H</span>
-            </div>
-            <input type="text" name="fullName" value={formData.fullName} onChange={handleChange}
-              placeholder="Full name"
-              className="w-full bg-transparent border border-hosteloom-border rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface/50 transition-all font-body"
-              required />
-          </div>
+
 
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
@@ -98,20 +89,13 @@ export default function RegisterPage() {
               required />
           </div>
 
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
-              <FiLock className="w-5 h-5" />
-            </div>
-            <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange}
-              placeholder="Password"
-              className="w-full bg-transparent border border-hosteloom-border rounded-xl py-4 pl-12 pr-12 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface/50 transition-all font-body"
-              required />
-            <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-hosteloom-muted hover:text-white transition-colors flex items-center justify-center p-1">
-                {showPassword ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
-              </button>
-            </div>
-          </div>
+          <PasswordInput
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Password"
+            required
+          />
         </div>
 
         <button type="submit" disabled={isLoading}

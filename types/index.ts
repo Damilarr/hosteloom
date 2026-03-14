@@ -19,6 +19,15 @@ export interface RegisterPayload {
   role: UserRole;
 }
 
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
+export interface ResetPasswordPayload {
+  password: string;
+  token: string;
+}
+
 export interface AuthResponse {
   message: string;
   accessToken: string;
@@ -108,13 +117,14 @@ export interface OwnerProfile {
   userId: string;
   firstName: string;
   lastName: string;
+  email: string;
   phone: string;
   companyName?: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export type OwnerProfilePayload = Pick<OwnerProfile, 'firstName' | 'lastName' | 'phone' | 'companyName'>;
+export type OwnerProfilePayload = Pick<OwnerProfile, 'firstName' | 'lastName' | 'email' | 'phone' | 'companyName'>;
 
 export interface OwnerProfileApiResponse {
   message: string;
@@ -214,6 +224,39 @@ export interface UpdateHostelPayload {
   name?: string;
   description?: string;
   address?: string;
+}
+
+export interface HostelApplication {
+  id: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  applicationDate: string;
+  approvalDate: string | null;
+  rejectionReason: string | null;
+  studentId: string;
+  hostelId: string;
+  createdAt: string;
+  updatedAt: string;
+  hostel?: {
+    id: string;
+    name: string;
+    address: string;
+  };
+  student?: {
+    id: string;
+    email: string;
+    profile: {
+      firstName: string;
+      lastName: string;
+      phone: string;
+      school: string;
+      matricNo: string;
+      academicLevel: string;
+    };
+  };
+}
+
+export interface ApplyToHostelPayload {
+  hostelId: string;
 }
 
 export interface Block {

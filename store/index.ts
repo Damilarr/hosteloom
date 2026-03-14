@@ -14,8 +14,9 @@ import { createHostelsSlice, type HostelsSlice } from './slices/hostelsSlice';
 import { createBlocksSlice, type BlocksSlice } from './slices/blocksSlice';
 import { createFloorsSlice, type FloorsSlice } from './slices/floorsSlice';
 import { createDashboardSlice, type DashboardSlice } from './slices/dashboardSlice';
+import { createApplicationsSlice, type ApplicationsSlice } from './slices/applicationsSlice';
 
-export type StoreState = AuthSlice & ProfileSlice & StudentsSlice & ComplaintsSlice & RoomsSlice & SessionsSlice & AdminsSlice & InvoicesSlice & PaymentsSlice & HostelsSlice & BlocksSlice & FloorsSlice & DashboardSlice & { _hasHydrated: boolean };
+export type StoreState = AuthSlice & ProfileSlice & StudentsSlice & ComplaintsSlice & RoomsSlice & SessionsSlice & AdminsSlice & InvoicesSlice & PaymentsSlice & HostelsSlice & BlocksSlice & FloorsSlice & DashboardSlice & ApplicationsSlice & { _hasHydrated: boolean };
 
 export const useStore = create<StoreState>()(
   persist(
@@ -33,6 +34,7 @@ export const useStore = create<StoreState>()(
       ...createBlocksSlice(...args),
       ...createFloorsSlice(...args),
       ...createDashboardSlice(...args),
+      ...createApplicationsSlice(...args),
       _hasHydrated: false,
     }),
     {
@@ -69,6 +71,8 @@ export const useAuthStore = () => useStore(useShallow((s) => ({
   logout: s.logout,
   clearError: s.clearError,
   refreshSession: s.refreshSession,
+  forgotPassword: s.forgotPassword,
+  resetPassword: s.resetPassword,
 })));
 
 export const useProfileStore = () => useStore(useShallow((s) => ({
@@ -94,8 +98,6 @@ export const useStudentsStore = () => useStore(useShallow((s) => ({
   studentsLoading: s.studentsLoading,
   studentsError: s.studentsError,
   fetchStudents: s.fetchStudents,
-  approveStudent: s.approveStudent,
-  rejectStudent: s.rejectStudent,
   deleteStudent: s.deleteStudent,
 })));
 
@@ -177,11 +179,14 @@ export const useHostelsStore = () => useStore(useShallow((s) => ({
   currentHostel: s.currentHostel,
   hostelsLoading: s.hostelsLoading,
   hostelsError: s.hostelsError,
+  searchResults: s.searchResults,
+  searchLoading: s.searchLoading,
   fetchAllHostels: s.fetchAllHostels,
   fetchHostelById: s.fetchHostelById,
   createHostel: s.createHostel,
   updateHostel: s.updateHostel,
   deleteHostel: s.deleteHostel,
+  searchHostels: s.searchHostels,
 })));
 
 export const useBlocksStore = () => useStore(useShallow((s) => ({
@@ -216,4 +221,15 @@ export const useDashboardStore = () => useStore(useShallow((s) => ({
   reportError: s.reportError,
   fetchSummaryData: s.fetchSummaryData,
   fetchReport: s.fetchReport,
+})));
+
+export const useApplicationsStore = () => useStore(useShallow((s) => ({
+  myApplications: s.myApplications,
+  appsLoading: s.appsLoading,
+  appsError: s.appsError,
+  fetchMyApplications: s.fetchMyApplications,
+  fetchAllApplications: s.fetchAllApplications,
+  applyToHostel: s.applyToHostel,
+  approveApplication: s.approveApplication,
+  rejectApplication: s.rejectApplication,
 })));

@@ -11,12 +11,15 @@ export interface HostelsSlice {
   currentHostel: Hostel | null;
   hostelsLoading: boolean;
   hostelsError: string | null;
+  searchResults: Hostel[];
+  searchLoading: boolean;
 
   fetchAllHostels: () => Promise<void>;
   fetchHostelById: (id: string) => Promise<Hostel | null>;
   createHostel: (payload: CreateHostelPayload) => Promise<Hostel | false>;
   updateHostel: (id: string, payload: UpdateHostelPayload) => Promise<Hostel | false>;
   deleteHostel: (id: string) => Promise<boolean>;
+  searchHostels: (query: string) => Promise<void>;
 }
 
 export const createHostelsSlice: StateCreator<HostelsSlice & WithToken, [], [], HostelsSlice> = (set, get) => ({
@@ -24,6 +27,8 @@ export const createHostelsSlice: StateCreator<HostelsSlice & WithToken, [], [], 
   currentHostel: null,
   hostelsLoading: false,
   hostelsError: null,
+  searchResults: [],
+  searchLoading: false,
 
   fetchAllHostels: async () => {
     set({ hostelsLoading: true, hostelsError: null });
@@ -98,5 +103,20 @@ export const createHostelsSlice: StateCreator<HostelsSlice & WithToken, [], [], 
       set({ hostelsLoading: false, hostelsError: (err as ApiError).message });
       return false;
     }
-  }
+  },
+
+  searchHostels: async (query) => {
+    if (!query) {
+      set({ searchResults: [] });
+      return;
+    }
+    set({ searchLoading: true, hostelsError: null });
+    try {
+      const token = get().token ?? undefined;
+      const response = await api.get<{ message: string, data: Hostel[] }>(`/hostels/search-hostels?q=${encodeURIComponent(query)}`, token);
+      set({ searchResults: Array.isArray(response.data) ? response.data : [], searchLoading: false });
+    } catch (err) {
+      set({ searchLoading: false, hostelsError: (err as ApiError).message });
+    }
+  },
 });

@@ -151,7 +151,7 @@ export interface StudentRecord {
 
 export interface StudentsListResponse {
   message?: string;
-  students: StudentRecord[];
+  data: StudentRecord[];
 }
 
 export interface StudentActionResponse {

@@ -3,6 +3,7 @@ import type {
   StudentRecord,
   StudentActionResponse,
   DeleteStudentResponse,
+  StudentsListResponse,
   ApiError,
 } from '@/types';
 import { api } from '@/lib/api';
@@ -27,8 +28,11 @@ export const createStudentsSlice: StateCreator<StudentsSlice & WithToken, [], []
     set({ studentsLoading: true, studentsError: null });
     try {
       const token = get().token ?? undefined;
-      const data = await api.get<StudentRecord[]>('/users/students', token);
-      set({ students: Array.isArray(data) ? data : [], studentsLoading: false });
+      const response = await api.get<StudentsListResponse>('/users/students', token);
+      set({ 
+        students: Array.isArray(response.data) ? response.data : [], 
+        studentsLoading: false 
+      });
     } catch (err) {
       set({ studentsLoading: false, studentsError: (err as ApiError).message });
     }

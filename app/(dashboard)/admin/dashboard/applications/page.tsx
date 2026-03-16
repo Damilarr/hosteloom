@@ -14,6 +14,9 @@ export default function AdminApplicationsPage() {
     fetchAllApplications, approveApplication, rejectApplication 
   } = useApplicationsStore();
 
+  const [processingId, setProcessingId] = React.useState<string | null>(null);
+  const [processingAction, setProcessingAction] = React.useState<'approve' | 'reject' | null>(null);
+
   const hostelId = adminProfile?.hostelId;
 
   useEffect(() => {
@@ -23,7 +26,11 @@ export default function AdminApplicationsPage() {
   }, [fetchAllApplications, hostelId]);
 
   const handleApprove = async (id: string) => {
+    setProcessingId(id);
+    setProcessingAction('approve');
     const success = await approveApplication(id);
+    setProcessingId(null);
+    setProcessingAction(null);
     if (success) {
       toast.success('Application approved successfully');
     } else {
@@ -35,7 +42,11 @@ export default function AdminApplicationsPage() {
     const reason = window.prompt('Please enter a reason for rejection:');
     if (reason === null) return;
     
+    setProcessingId(id);
+    setProcessingAction('reject');
     const success = await rejectApplication(id, reason);
+    setProcessingId(null);
+    setProcessingAction(null);
     if (success) {
       toast.success('Application rejected');
     } else {
@@ -132,17 +143,37 @@ export default function AdminApplicationsPage() {
                   <div className="flex items-center gap-3 lg:pl-10 lg:border-l lg:border-hosteloom-border">
                     <button
                       onClick={() => handleReject(app.id)}
-                      className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex"
+                      disabled={!!processingId || appsLoading}
+                      className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <MdCancel className="w-4 h-4" />
-                      Reject
+                      {processingId === app.id && processingAction === 'reject' ? (
+                        <>
+                          <Loader size={16} />
+                          Rejecting...
+                        </>
+                      ) : (
+                        <>
+                          <MdCancel className="w-4 h-4" />
+                          Reject
+                        </>
+                      )}
                     </button>
                     <button
                       onClick={() => handleApprove(app.id)}
-                      className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 bg-white text-black hover:bg-hosteloom-accent hover:text-white rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex"
+                      disabled={!!processingId || appsLoading}
+                      className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 bg-white text-black hover:bg-hosteloom-accent hover:text-white rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <MdCheckCircle className="w-4 h-4" />
-                      Approve
+                      {processingId === app.id && processingAction === 'approve' ? (
+                        <>
+                          <Loader size={16} />
+                          Approving...
+                        </>
+                      ) : (
+                        <>
+                          <MdCheckCircle className="w-4 h-4" />
+                          Approve
+                        </>
+                      )}
                     </button>
                   </div>
                 )}

@@ -25,7 +25,7 @@ export default function AllocateRoomModal({ open, onClose, students, availableRo
     }
   }, [open]);
 
-  const approvedStudents = students.filter((s) => s.registrationStatus === 'APPROVED');
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,7 +76,7 @@ export default function AllocateRoomModal({ open, onClose, students, availableRo
                   required
                 >
                   <option value="">Select a student…</option>
-                  {approvedStudents.map((s) => (
+                  {students.map((s) => (
                     <option key={s.userId} value={s.userId}>
                       {s.firstName} {s.lastName} — {s.matricNo}
                     </option>

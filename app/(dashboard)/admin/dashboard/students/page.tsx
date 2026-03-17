@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useStudentsStore } from '@/store';
 import type { StudentRecord, RegistrationStatus } from '@/types';
 import StudentRow from '@/components/students/StudentRow';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 const STATUS_FILTERS: Array<RegistrationStatus | 'ALL'> = ['ALL', 'PENDING', 'APPROVED', 'REJECTED'];
 
@@ -170,46 +171,15 @@ export default function StudentsPage() {
       )}
 
 
-      {/* Delete confirmation modal */}
-      <AnimatePresence>
-        {deleteTarget && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6 w-full max-w-sm space-y-5"
-              initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-red-500/15 flex items-center justify-center">
-                  <MdDelete className="w-5 h-5 text-red-400" />
-                </div>
-                <div>
-                  <p className="font-heading font-semibold text-white text-sm">Delete student</p>
-                  <p className="text-xs text-hosteloom-muted">This action cannot be undone.</p>
-                </div>
-              </div>
-              <p className="text-sm text-hosteloom-muted">
-                Are you sure you want to remove{' '}
-                <span className="text-white font-medium">
-                  {deleteTarget.firstName} {deleteTarget.lastName}
-                </span>?
-              </p>
-              <div className="flex gap-3 justify-end pt-1">
-                <button onClick={() => setDeleteTarget(null)}
-                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-white border border-hosteloom-border rounded-xl transition-all">
-                  Cancel
-                </button>
-                <button onClick={handleDelete}
-                  className="px-4 py-2 text-sm font-heading font-bold bg-red-500 hover:bg-red-600 text-white rounded-xl transition-all">
-                  Delete
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDelete}
+        title="Delete Student"
+        message={deleteTarget ? `Are you sure you want to remove ${deleteTarget.firstName} ${deleteTarget.lastName}? This action cannot be undone.` : ''}
+        confirmText="Delete"
+        variant="danger"
+      />
     </div>
   );
 }

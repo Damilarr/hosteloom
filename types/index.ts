@@ -119,12 +119,13 @@ export interface OwnerProfile {
   lastName: string;
   email: string;
   phone: string;
+  address: string;
   companyName?: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export type OwnerProfilePayload = Pick<OwnerProfile, 'firstName' | 'lastName' | 'email' | 'phone' | 'companyName'>;
+export type OwnerProfilePayload = Pick<OwnerProfile, 'firstName' | 'lastName' | 'email' | 'phone' | 'address' | 'companyName'>;
 
 export interface OwnerProfileApiResponse {
   message: string;
@@ -708,4 +709,25 @@ export interface ReportMaintenanceData {
 export interface DashboardReportResponse {
   message: string;
   data: ReportRoomData[] | ReportAllocationData[] | ReportPaymentData[] | ReportMaintenanceData[];
+}
+// ─── Notifications ───────────────────────────────────────────────────────────
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: string;
+  title: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface NotificationsResponse {
+  notifications: Notification[];
+  unreadCount: number;
+}
+
+export interface BroadcastAnnouncementPayload {
+  title: string;
+  message: string;
 }

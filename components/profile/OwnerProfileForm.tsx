@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { FiUser, FiPhone, FiBriefcase, FiSave, FiMail } from 'react-icons/fi';
+import { FiUser, FiPhone, FiBriefcase, FiSave, FiMail, FiMapPin } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { useProfileStore } from '@/store';
 import type { OwnerProfilePayload } from '@/types';
@@ -13,6 +13,7 @@ const EMPTY: OwnerProfilePayload = {
   lastName: '',
   email: '',
   phone: '',
+  address: '',
   companyName: '',
 };
 
@@ -29,6 +30,7 @@ export default function OwnerProfileForm() {
         lastName:    ownerProfile.lastName    ?? '',
         email:       ownerProfile.email       ?? '',
         phone:       ownerProfile.phone       ?? '',
+        address:     ownerProfile.address     ?? '',
         companyName: ownerProfile.companyName ?? '',
       });
     }
@@ -44,6 +46,7 @@ export default function OwnerProfileForm() {
     form.lastName    !== (ownerProfile.lastName    ?? '') ||
     form.email       !== (ownerProfile.email       ?? '') ||
     form.phone       !== (ownerProfile.phone       ?? '') ||
+    form.address     !== (ownerProfile.address     ?? '') ||
     form.companyName !== (ownerProfile.companyName ?? '')
   );
 
@@ -112,6 +115,18 @@ export default function OwnerProfileForm() {
             <input type="tel" name="phone" value={form.phone} onChange={handleChange}
               placeholder="e.g. 08012345678" className={inputClass} required />
           </div>
+        </div>
+      </div>
+
+      {/* Address */}
+      <div>
+        <label className={labelClass}>Home/Contact Address</label>
+        <div className="relative group">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <FiMapPin className="w-4 h-4" />
+          </div>
+          <input type="text" name="address" value={form.address} onChange={handleChange}
+            placeholder="e.g. 123 Business St, Lagos" className={inputClass} required />
         </div>
       </div>
 

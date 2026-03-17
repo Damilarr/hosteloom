@@ -4,8 +4,9 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import {
   MdBedroomParent, MdPeople, MdPayment, MdBuild,
-  MdCheckCircle, MdHourglassTop, MdPersonAdd, MdWarning,
+  MdCheckCircle, MdHourglassTop, MdPersonAdd, MdWarning, MdCampaign
 } from 'react-icons/md';
+import BroadcastAnnouncementModal from '@/components/notifications/BroadcastAnnouncementModal';
 import { useAuthStore, useRoomsStore, useComplaintsStore, useStudentsStore, useDashboardStore } from '@/store';
 
 const recentActivity = [
@@ -22,6 +23,7 @@ export default function AdminDashboard() {
   const { allComplaints, fetchAllComplaints } = useComplaintsStore();
   const { students, fetchStudents } = useStudentsStore();
   const { summaryData, summaryLoading, fetchSummaryData } = useDashboardStore();
+  const [broadcastModal, setBroadcastModal] = React.useState(false);
 
   useEffect(() => {
     fetchRooms(1, 1000);
@@ -82,10 +84,19 @@ export default function AdminDashboard() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Page Header */}
-      <div>
-        <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">Admin Portal</p>
-        <h1 className="font-heading text-3xl font-bold">{greeting} 👋</h1>
-        <p className="text-hosteloom-muted font-body text-sm mt-1">{user?.email}</p>
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">Admin Portal</p>
+          <h1 className="font-heading text-3xl font-bold">{greeting} 👋</h1>
+          <p className="text-hosteloom-muted font-body text-sm mt-1">{user?.email}</p>
+        </div>
+        <button
+          onClick={() => setBroadcastModal(true)}
+          className="px-5 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-white font-heading font-bold text-[10px] uppercase tracking-widest hover:bg-hosteloom-accent hover:border-hosteloom-accent transition-all duration-300 flex items-center gap-2 group"
+        >
+          <MdCampaign className="w-5 h-5 text-hosteloom-accent group-hover:text-white transition-colors" />
+          Broadcast Announcement
+        </button>
       </div>
 
       {/* Metrics */}
@@ -161,6 +172,11 @@ export default function AdminDashboard() {
           </Link>
         </div>
       </div>
+
+      <BroadcastAnnouncementModal 
+        isOpen={broadcastModal} 
+        onClose={() => setBroadcastModal(false)} 
+      />
     </div>
   );
 }

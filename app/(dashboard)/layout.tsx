@@ -10,6 +10,8 @@ import {
   MdOutlinedFlag, MdDateRange
 } from 'react-icons/md';
 import { useAuthStore, useProfileStore, useStore } from '@/store';
+import NotificationsDropdown from '@/components/layout/NotificationsDropdown';
+import { useNotificationsSocket } from '@/hooks/useNotificationsSocket';
 
 const studentNav = [
   { href: '/dashboard', icon: MdDashboard, label: 'Overview' },
@@ -40,6 +42,7 @@ const adminNav = [
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  useNotificationsSocket();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -215,7 +218,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               H
             </div>
           </div>
-          <div className="w-6" />
+          <NotificationsDropdown />
+        </header>
+
+        {/* Top bar desktop */}
+        <header className="hidden lg:flex sticky top-0 z-20 h-16 items-center justify-end px-8 border-b border-hosteloom-border bg-hosteloom-bg/80 backdrop-blur-md">
+          <NotificationsDropdown />
         </header>
 
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto">

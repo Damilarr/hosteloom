@@ -102,9 +102,9 @@ export const createAuthSlice: StateCreator<AuthSlice & WithProfile, [], [], Auth
       token: null,
       refreshToken: null,
       isAuthenticated: false,
-      profile: null,
-      adminProfile: null,
     });
+    const { resetAllSlices } = require('@/store');
+    resetAllSlices();
   },
 
   clearError: () => set({ error: null }),

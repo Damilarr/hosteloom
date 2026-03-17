@@ -9,6 +9,7 @@ import HostelList from '@/components/rooms/HostelList';
 import BlockList from '@/components/rooms/BlockList';
 import FloorRoomsList from '@/components/rooms/FloorRoomsList';
 import StructureModal from '@/components/rooms/StructureModal';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 export default function HostelsManagerPage() {
   const { hostels, hostelsLoading, fetchAllHostels, createHostel, deleteHostel } = useHostelsStore();
@@ -24,6 +25,15 @@ export default function HostelsManagerPage() {
   const [creatingType, setCreatingType] = useState<'hostel'|'block'|'floor'|'room'|'bulk-rooms'|null>(null);
   const [formData, setFormData] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    type: 'hostel'|'block'|'floor' | null;
+    id: string | null;
+  }>({
+    isOpen: false,
+    type: null,
+    id: null
+  });
 
   useEffect(() => {
     fetchAllHostels();
@@ -100,9 +110,18 @@ export default function HostelsManagerPage() {
     }
   };
 
-  const handleDelete = async (type: 'hostel'|'block'|'floor', id: string, e: React.MouseEvent) => {
+  const handleDelete = (type: 'hostel'|'block'|'floor', id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+    setConfirmModal({
+      isOpen: true,
+      type,
+      id
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    const { type, id } = confirmModal;
+    if (!type || !id) return;
 
     let res = false;
     if (type === 'hostel') res = await deleteHostel(id);
@@ -120,6 +139,7 @@ export default function HostelsManagerPage() {
     } else {
       toast.error(`Error deleting ${type}`);
     }
+    setConfirmModal({ isOpen: false, type: null, id: null });
   };
 
   return (
@@ -150,6 +170,16 @@ export default function HostelsManagerPage() {
         formData={formData}
         setFormData={setFormData}
         isSubmitting={isSubmitting}
+      />
+
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={() => setConfirmModal({ ...confirmModal, isOpen: false })}
+        onConfirm={handleConfirmDelete}
+        title={`Delete ${confirmModal.type}`}
+        message={`Are you sure you want to delete this ${confirmModal.type}? This action cannot be undone.`}
+        confirmText="Delete"
+        variant="danger"
       />
 
       <style jsx global>{`

@@ -15,8 +15,47 @@ import { createBlocksSlice, type BlocksSlice } from './slices/blocksSlice';
 import { createFloorsSlice, type FloorsSlice } from './slices/floorsSlice';
 import { createDashboardSlice, type DashboardSlice } from './slices/dashboardSlice';
 import { createApplicationsSlice, type ApplicationsSlice } from './slices/applicationsSlice';
+import { createNotificationsSlice, type NotificationsSlice } from './slices/notificationsSlice';
 
-export type StoreState = AuthSlice & ProfileSlice & StudentsSlice & ComplaintsSlice & RoomsSlice & SessionsSlice & AdminsSlice & InvoicesSlice & PaymentsSlice & HostelsSlice & BlocksSlice & FloorsSlice & DashboardSlice & ApplicationsSlice & { _hasHydrated: boolean };
+export type StoreState = AuthSlice & ProfileSlice & StudentsSlice & ComplaintsSlice & RoomsSlice & SessionsSlice & AdminsSlice & InvoicesSlice & PaymentsSlice & HostelsSlice & BlocksSlice & FloorsSlice & DashboardSlice & ApplicationsSlice & NotificationsSlice & { _hasHydrated: boolean };
+
+/** Initial (empty) state for every non-auth slice. Called on logout to wipe stale data. */
+const initialNonAuthState: Partial<StoreState> = {
+  profile: null, profileLoading: false, profileError: null,
+  adminProfile: null, adminProfileLoading: false, adminProfileError: null,
+  ownerProfile: null, ownerProfileLoading: false, ownerProfileError: null,
+  students: [], studentsLoading: false, studentsError: null,
+
+  myComplaints: [], myComplaintsLoading: false, myComplaintsError: null,
+  allComplaints: [], allComplaintsLoading: false, allComplaintsError: null,
+  // rooms
+  rooms: [], roomsMeta: null, roomsLoading: false, roomsError: null,
+  availableRooms: [], availableRoomsLoading: false,
+  occupants: [], occupantsLoading: false,
+  studentHistory: [], studentHistoryLoading: false,
+  // sessions
+  sessions: [], sessionsLoading: false, sessionsError: null,
+  
+  adminsLoading: false, adminsError: null,
+  
+  invoices: [], myInvoices: [], currentInvoice: null, invoicesLoading: false, invoicesError: null,
+  
+  paymentHistory: [], currentReceipt: null, paymentsLoading: false, paymentsError: null,
+  // hostels
+  hostels: [], currentHostel: null, hostelsLoading: false, hostelsError: null,
+  searchResults: [], searchLoading: false,
+  
+  blocks: [], currentBlock: null, blocksLoading: false, blocksError: null,
+  
+  floors: [], currentFloor: null, floorsLoading: false, floorsError: null,
+  // dashboard
+  summaryData: null, summaryLoading: false, summaryError: null,
+  reportData: [], reportLoading: false, reportError: null,
+  // applications
+  myApplications: [], appsLoading: false, appsError: null,
+  // notifications
+  notifications: [], unreadCount: 0, notificationsLoading: false, notificationsError: null,
+};
 
 export const useStore = create<StoreState>()(
   persist(
@@ -35,6 +74,7 @@ export const useStore = create<StoreState>()(
       ...createFloorsSlice(...args),
       ...createDashboardSlice(...args),
       ...createApplicationsSlice(...args),
+      ...createNotificationsSlice(...args),
       _hasHydrated: false,
     }),
     {
@@ -44,8 +84,6 @@ export const useStore = create<StoreState>()(
         token: state.token,
         refreshToken: state.refreshToken,
         user: state.user,
-        profile: state.profile,
-        adminProfile: state.adminProfile,
       }),
       onRehydrateStorage: () => (state) => {
         if (state?.token && state?.user) {
@@ -56,6 +94,10 @@ export const useStore = create<StoreState>()(
     }
   )
 );
+
+export function resetAllSlices() {
+  useStore.setState(initialNonAuthState);
+}
 
 // ─── Typed selector hooks ─────────────────────────────────────────────────────
 
@@ -232,4 +274,16 @@ export const useApplicationsStore = () => useStore(useShallow((s) => ({
   applyToHostel: s.applyToHostel,
   approveApplication: s.approveApplication,
   rejectApplication: s.rejectApplication,
+})));
+
+export const useNotificationsStore = () => useStore(useShallow((s) => ({
+  notifications: s.notifications,
+  unreadCount: s.unreadCount,
+  notificationsLoading: s.notificationsLoading,
+  notificationsError: s.notificationsError,
+  fetchNotifications: s.fetchNotifications,
+  markAsRead: s.markAsRead,
+  markAllAsRead: s.markAllAsRead,
+  broadcastAnnouncement: s.broadcastAnnouncement,
+  addNotification: s.addNotification,
 })));

@@ -6,7 +6,6 @@ import { toast } from 'sonner';
 import { useProfileStore } from '@/store';
 import type { ProfilePayload } from '@/types';
 import { inputClass, labelClass, submitButtonClass } from './styles';
-import StatusBanner from './StatusBanner';
 import { useRouter } from 'next/navigation';
 
 const ACADEMIC_LEVELS = ['100', '200', '300', '400', '500', '600', 'Postgraduate'];
@@ -146,8 +145,6 @@ export default function StudentProfileForm() {
         </div>
       </div>
 
-      {/* Status banner only shows once profile exists */}
-      <StatusBanner profile={profile} />
 
       {/* Submit */}
       <div className="pt-2">

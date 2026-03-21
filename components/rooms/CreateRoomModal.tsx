@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MdClose, MdAdd } from 'react-icons/md';
-import { useHostelsStore, useBlocksStore, useFloorsStore } from '@/store';
+import { useHostelsStore, useBlocksStore, useFloorsStore, useProfileStore, useAuthStore } from '@/store';
 import type { CreateRoomPayload } from '@/types';
 
 interface Props {
@@ -18,25 +18,39 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const { hostels, fetchAllHostels } = useHostelsStore();
+  const { hostels, fetchAllHostels, currentHostel, fetchHostelById } = useHostelsStore();
   const { blocks, fetchBlocksByHostel } = useBlocksStore();
   const { floors, fetchFloorsByBlock } = useFloorsStore();
+  const { adminProfile } = useProfileStore();
+  const { user } = useAuthStore();
 
   const [selectedHostel, setSelectedHostel] = useState('');
   const [selectedBlock, setSelectedBlock] = useState('');
   const [floorId, setFloorId] = useState('');
 
   React.useEffect(() => { 
-    if (open) fetchAllHostels(); 
-  }, [open, fetchAllHostels]);
+    if (open) {
+      if (user?.role === 'HOSTEL_ADMIN' && adminProfile?.hostelId) {
+        fetchHostelById(adminProfile.hostelId).then((hostel) => {
+          if (hostel) setSelectedHostel(hostel.id);
+        });
+      } else {
+        fetchAllHostels();
+      }
+    } 
+  }, [open, user?.role, adminProfile?.hostelId, fetchHostelById, fetchAllHostels]);
 
   React.useEffect(() => { 
-    if (selectedHostel) fetchBlocksByHostel(selectedHostel); 
-  }, [selectedHostel, fetchBlocksByHostel]);
+    if (selectedHostel && user?.role !== 'HOSTEL_ADMIN') {
+      fetchBlocksByHostel(selectedHostel); 
+    }
+  }, [selectedHostel, user?.role, fetchBlocksByHostel]);
 
   React.useEffect(() => { 
-    if (selectedBlock) fetchFloorsByBlock(selectedBlock); 
-  }, [selectedBlock, fetchFloorsByBlock]);
+    if (selectedBlock && user?.role !== 'HOSTEL_ADMIN') {
+      fetchFloorsByBlock(selectedBlock); 
+    }
+  }, [selectedBlock, user?.role, fetchFloorsByBlock]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,6 +66,12 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
       onClose();
     }
   };
+
+  const displayHostels = (user?.role === 'HOSTEL_ADMIN' && currentHostel) ? [currentHostel] : hostels;
+  const displayBlocks = (user?.role === 'HOSTEL_ADMIN' && currentHostel) ? (currentHostel.blocks || []) : blocks;
+  const displayFloors = (user?.role === 'HOSTEL_ADMIN' && currentHostel) 
+    ? (displayBlocks.find(b => b.id === selectedBlock)?.floors || []) 
+    : floors;
 
   return (
     <AnimatePresence>
@@ -128,9 +148,10 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                   onChange={(e) => { setSelectedHostel(e.target.value); setSelectedBlock(''); setFloorId(''); }}
                   className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none"
                   required
+                  disabled={user?.role === 'HOSTEL_ADMIN'}
                 >
                   <option value="" disabled>Select Hostel</option>
-                  {hostels.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
+                  {displayHostels.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
                 </select>
 
                 <select
@@ -141,7 +162,7 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                   required
                 >
                   <option value="" disabled>Select Block</option>
-                  {blocks.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                  {displayBlocks.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
                 </select>
 
                 <select
@@ -152,7 +173,7 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                   required
                 >
                   <option value="" disabled>Select Floor</option>
-                  {floors.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                  {displayFloors.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
                 </select>
               </div>
               <div className="flex gap-3 justify-end pt-1">

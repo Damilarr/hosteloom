@@ -213,6 +213,7 @@ export interface Hostel {
   createdAt: string;
   updatedAt: string;
   owner?: User;
+  blocks?: Block[];
 }
 
 export interface CreateHostelPayload {

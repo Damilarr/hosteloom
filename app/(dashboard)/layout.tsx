@@ -18,7 +18,6 @@ const studentNav = [
   { href: '/dashboard/profile', icon: MdPersonOutline, label: 'My Profile' },
   { href: '/dashboard/room', icon: MdBedroomParent, label: 'My Room' },
   { href: '/dashboard/payments', icon: MdPayment, label: 'Payments' },
-  { href: '/dashboard/maintenance', icon: MdBuild, label: 'Maintenance' },
   { href: '/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints' },
 ];
 
@@ -37,13 +36,13 @@ const adminNav = [
   { href: '/admin/dashboard/students', icon: MdPeople, label: 'Students' },
   { href: '/admin/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints' },
   { href: '/admin/dashboard/payments', icon: MdPayment, label: 'Payments' },
-  { href: '/admin/dashboard/maintenance', icon: MdBuild, label: 'Maintenance' },
   { href: '/admin/dashboard/reports', icon: MdBarChart, label: 'Reports' },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   useNotificationsSocket();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
   const router = useRouter();
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -102,6 +101,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   }, [hasHydrated, isAuthenticated, hasCheckedProfile, needsProfile, isAdmin, pathname, router, PROFILE_ROUTE]);
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const displayName = isAdmin
     ? adminProfile ? `${adminProfile.firstName} ${adminProfile.lastName}`.trim() : user?.email ?? ''
     : isOwner ? user?.email ?? 'Hostel Owner' : profile ? `${profile.firstName} ${profile.lastName}`.trim() : user?.email ?? '';
@@ -122,8 +129,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   };
 
   return (
-    <div className="h-screen overflow-hidden flex bg-hosteloom-bg text-hosteloom-text relative">
-      <div className="fixed top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-hosteloom-accent opacity-[0.06] blur-[120px] pointer-events-none" />
+    <div className="h-screen overflow-hidden flex bg-[#06040A] bg-gradient-to-br from-[#06040A] via-[#0B0914] to-[#040306] text-hosteloom-text relative selection:bg-hosteloom-accent/30 selection:text-white">
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden mix-blend-screen">
+        <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-hosteloom-accent/10 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-hosteloom-secondary/10 blur-[130px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
+        <div className="absolute top-[20%] right-[10%] w-[40vw] h-[40vw] rounded-full bg-blue-500/5 blur-[100px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '4s' }} />
+      </div>
+
+      {/* Interactive Cursor Spotlight */}
+      <div 
+        className="fixed top-0 left-0 w-[800px] h-[800px] pointer-events-none z-0 mix-blend-screen transition-transform duration-[50ms] ease-out hidden lg:block"
+        style={{
+          background: `radial-gradient(circle closest-side, rgba(168, 85, 247, 0.08), transparent)`,
+          transform: `translate(${mousePos.x - 400}px, ${mousePos.y - 400}px)`
+        }}
+      />
 
       {sidebarOpen && (
         <div

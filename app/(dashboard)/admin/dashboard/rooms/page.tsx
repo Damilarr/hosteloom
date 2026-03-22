@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { MdBedroomParent, MdAdd, MdPlaylistAdd, MdRefresh, MdSearch, MdPersonAdd } from 'react-icons/md';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRoomsStore, useStudentsStore, useSessionsStore } from '@/store';
+import { useRoomsStore, useStudentsStore, useSessionsStore, useHostelsStore, useProfileStore, useAuthStore } from '@/store';
 import type { RoomStatus } from '@/types';
 import RoomCard from '@/components/rooms/RoomCard';
 import CreateRoomModal from '@/components/rooms/CreateRoomModal';
@@ -32,6 +32,9 @@ export default function RoomsPage() {
 
   const { students, fetchStudents } = useStudentsStore();
   const { sessions, fetchSessions } = useSessionsStore();
+  const { currentHostel, fetchHostelById, hostelsLoading } = useHostelsStore();
+  const { adminProfile } = useProfileStore();
+  const { user } = useAuthStore();
 
   const [filter, setFilter] = useState<RoomStatus | 'ALL' | 'INACTIVE'>('ALL');
   const [search, setSearch] = useState('');
@@ -42,12 +45,46 @@ export default function RoomsPage() {
   const [showAllocate, setShowAllocate] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<import('@/types').RoomWithDetails | null>(null);
 
+  const checkHostelStructure = () => {
+    if (hostelsLoading) return true; 
+    if (!currentHostel) return true;
+    
+    const hasBlocks = currentHostel.blocks && currentHostel.blocks.length > 0;
+    const hasFloors = currentHostel.blocks?.some(b => b.floors && b.floors.length > 0);
+
+    if (!hasBlocks || !hasFloors) {
+      toast.error('Hostel setup incomplete. Please create a block and floor first.', {
+        action: { label: 'Go to Structure', onClick: () => window.location.href = '/admin/dashboard/structure' },
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleOpenCreateRoom = () => {
+    if (checkHostelStructure()) {
+      setShowCreate(true);
+    }
+  };
+
+  const handleOpenBulkCreateRoom = () => {
+    if (checkHostelStructure()) {
+      setShowBulkCreate(true);
+    }
+  };
+
   useEffect(() => {
     fetchRooms(page, LIMIT);
     fetchAvailableRooms();
     fetchStudents();
     fetchSessions();
   }, [fetchRooms, fetchAvailableRooms, fetchStudents, fetchSessions, page]);
+
+  useEffect(() => {
+    if (user?.role === 'HOSTEL_ADMIN' && adminProfile?.hostelId) {
+      fetchHostelById(adminProfile.hostelId);
+    }
+  }, [user?.role, adminProfile?.hostelId, fetchHostelById]);
 
   useEffect(() => {
     if (roomsError) {
@@ -168,13 +205,13 @@ export default function RoomsPage() {
             <MdPersonAdd className="w-4 h-4" /> Allocate
           </button>
           <button
-            onClick={() => setShowBulkCreate(true)}
+            onClick={handleOpenBulkCreateRoom}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-green-400/30 text-green-400 hover:bg-green-400/10 transition-all text-sm font-heading"
           >
             <MdPlaylistAdd className="w-4 h-4" /> Bulk Create
           </button>
           <button
-            onClick={() => setShowCreate(true)}
+            onClick={handleOpenCreateRoom}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
           >
             <MdAdd className="w-4 h-4" /> Add Room

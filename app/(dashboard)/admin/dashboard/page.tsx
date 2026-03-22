@@ -9,13 +9,7 @@ import {
 import BroadcastAnnouncementModal from '@/components/notifications/BroadcastAnnouncementModal';
 import { useAuthStore, useRoomsStore, useComplaintsStore, useStudentsStore, useDashboardStore } from '@/store';
 
-const recentActivity = [
-  { icon: MdPersonAdd, color: 'text-hosteloom-accent', label: 'New registration', sub: 'Sarah Okoye — Pending approval', time: '5m ago' },
-  { icon: MdCheckCircle, color: 'text-green-400', label: 'Room allocated', sub: 'Block B · Room 12 → John Ade', time: '20m ago' },
-  { icon: MdPayment, color: 'text-yellow-400', label: 'Payment verified', sub: '₦150,000 from Chidi Nwosu', time: '1h ago' },
-  { icon: MdWarning, color: 'text-orange-400', label: 'Complaint escalated', sub: 'Water supply — Block C', time: '2h ago' },
-  { icon: MdHourglassTop, color: 'text-hosteloom-muted', label: 'Overdue payment', sub: 'Tunde Bello — ₦150,000', time: '3h ago' },
-];
+const recentActivity: any[] = [];
 
 export default function AdminDashboard() {
   const { user } = useAuthStore();
@@ -118,18 +112,28 @@ export default function AdminDashboard() {
         <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6">
           <h2 className="font-heading font-bold text-lg mb-5">Live Activity</h2>
           <div className="space-y-1">
-            {recentActivity.map((item, i) => (
-              <div key={i} className="flex items-center gap-4 py-3 border-b border-hosteloom-border last:border-0">
-                <div className="w-9 h-9 rounded-full bg-hosteloom-surface-light flex items-center justify-center shrink-0">
-                  <item.icon className={`w-4 h-4 ${item.color}`} />
+            {recentActivity.length > 0 ? (
+              recentActivity.map((item, i) => (
+                <div key={i} className="flex items-center gap-4 py-3 border-b border-hosteloom-border last:border-0">
+                  <div className="w-9 h-9 rounded-full bg-hosteloom-surface-light flex items-center justify-center shrink-0">
+                    <item.icon className={`w-4 h-4 ${item.color}`} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white truncate">{item.label}</p>
+                    <p className="text-xs text-hosteloom-muted truncate">{item.sub}</p>
+                  </div>
+                  <span className="text-[10px] text-hosteloom-muted whitespace-nowrap">{item.time}</span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">{item.label}</p>
-                  <p className="text-xs text-hosteloom-muted truncate">{item.sub}</p>
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="w-12 h-12 rounded-full border border-dashed border-hosteloom-border bg-hosteloom-surface-light flex items-center justify-center mb-3">
+                  <MdHourglassTop className="w-5 h-5 text-hosteloom-muted opacity-50" />
                 </div>
-                <span className="text-[10px] text-hosteloom-muted whitespace-nowrap">{item.time}</span>
+                <p className="text-sm font-heading font-medium text-white">No recent activity</p>
+                <p className="text-xs text-hosteloom-muted mt-1 max-w-[220px]">New registrations, allocations, and payments will appear here.</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
 

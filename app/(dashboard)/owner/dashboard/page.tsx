@@ -158,7 +158,6 @@ export default function OwnerDashboard() {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder="Optional"
                     className="py-3"
                   />
                 </div>

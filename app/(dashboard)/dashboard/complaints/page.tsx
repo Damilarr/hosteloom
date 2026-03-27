@@ -8,6 +8,7 @@ import { useComplaintsStore } from '@/store';
 import type { ComplaintCategory, ComplaintStatus, CreateComplaintPayload } from '@/types';
 import ComplaintCard from '@/components/complaints/ComplaintCard';
 import CreateComplaintModal from '@/components/complaints/CreateComplaintModal';
+import Tooltip from '@/components/ui/Tooltip';
 
 const STATUS_FILTERS: Array<ComplaintStatus | 'ALL'> = ['ALL', 'PENDING', 'IN_PROGRESS', 'RESOLVED'];
 
@@ -64,13 +65,15 @@ export default function StudentComplaintsPage() {
             <MdRefresh className={`w-4 h-4 ${myComplaintsLoading ? 'animate-spin' : ''}`} />
             Refresh
           </button>
-          <button
-            onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent hover:bg-hosteloom-accent-hover text-white text-sm font-heading font-bold transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)]"
-          >
-            <MdAdd className="w-4 h-4" />
-            New Complaint
-          </button>
+          <Tooltip content="Report a maintenance issue or file a complaint" position="bottom">
+            <button
+              onClick={() => setShowCreate(true)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent hover:bg-hosteloom-accent-hover text-white text-sm font-heading font-bold transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+            >
+              <MdAdd className="w-4 h-4" />
+              New Complaint
+            </button>
+          </Tooltip>
         </div>
       </div>
 

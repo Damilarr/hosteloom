@@ -107,3 +107,8 @@ body {
       background: linear-gradient(to right, transparent, var(--color-hosteloom-border), transparent);
   }
 }
+
+@keyframes tour-glow-breathe {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}

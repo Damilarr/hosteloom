@@ -6,6 +6,7 @@ import { MdAdd, MdDateRange, MdCheckCircle, MdRefresh } from 'react-icons/md';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSessionsStore } from '@/store';
 import CreateSessionModal from '@/components/sessions/CreateSessionModal';
+import Tooltip from '@/components/ui/Tooltip';
 
 export default function SessionsPage() {
   const {
@@ -52,12 +53,14 @@ export default function SessionsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <button
-            onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent hover:bg-hosteloom-accent/80 transition-all text-sm font-heading font-bold text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]"
-          >
-            <MdAdd className="w-4 h-4" /> Create Session
-          </button>
+          <Tooltip content="Create a new academic session for allocations" position="bottom">
+            <button
+              onClick={() => setShowCreate(true)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent hover:bg-hosteloom-accent/80 transition-all text-sm font-heading font-bold text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+            >
+              <MdAdd className="w-4 h-4" /> Create Session
+            </button>
+          </Tooltip>
           <button
             onClick={() => fetchSessions()}
             disabled={sessionsLoading}
@@ -133,14 +136,16 @@ export default function SessionsPage() {
                   </span>
 
                   {!session.isActive && (
-                    <button
-                      onClick={() => handleActivate(session.id, session.name)}
-                      disabled={activatingId === session.id}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading font-medium text-hosteloom-muted hover:text-white hover:border-hosteloom-accent/50 hover:bg-hosteloom-accent/10 transition-all disabled:opacity-50"
-                    >
-                      <MdCheckCircle className="w-4 h-4" />
-                      {activatingId === session.id ? 'Activating…' : 'Activate'}
-                    </button>
+                    <Tooltip content="Activating will deactivate the current session" position="top">
+                      <button
+                        onClick={() => handleActivate(session.id, session.name)}
+                        disabled={activatingId === session.id}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading font-medium text-hosteloom-muted hover:text-white hover:border-hosteloom-accent/50 hover:bg-hosteloom-accent/10 transition-all disabled:opacity-50"
+                      >
+                        <MdCheckCircle className="w-4 h-4" />
+                        {activatingId === session.id ? 'Activating…' : 'Activate'}
+                      </button>
+                    </Tooltip>
                   )}
                 </div>
               </motion.div>

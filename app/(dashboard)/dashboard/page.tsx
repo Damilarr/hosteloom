@@ -140,7 +140,7 @@ export default function StudentDashboard() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" data-tour-id="student-stats">
         {/* Room Status */}
         <Link href="/dashboard/room" className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-5 flex flex-col gap-4 hover:border-hosteloom-accent/30 transition-colors cursor-pointer">
           <div className="flex items-start justify-between">
@@ -225,7 +225,7 @@ export default function StudentDashboard() {
 
       {/* Hostel Discovery / Application Section */}
       {!hasHostelAccess ? (
-        <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-8 relative overflow-hidden">
+        <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-8 relative overflow-hidden" data-tour-id="hostel-search">
           <div className="absolute top-0 right-0 w-64 h-64 bg-hosteloom-accent/5 rounded-full -mr-32 -mt-32 blur-3xl pointer-events-none" />
           
           <div className="relative z-10 max-w-2xl">

@@ -11,6 +11,7 @@ import CreateRoomModal from '@/components/rooms/CreateRoomModal';
 import BulkCreateRoomsModal from '@/components/rooms/BulkCreateRoomsModal';
 import AllocateRoomModal from '@/components/rooms/AllocateRoomModal';
 import RoomDetailModal from '@/components/rooms/RoomDetailModal';
+import Tooltip from '@/components/ui/Tooltip';
 
 const STATUS_FILTERS: Array<RoomStatus | 'ALL' | 'INACTIVE'> = ['ALL', 'VACANT', 'OCCUPIED', 'FULL', 'INACTIVE'];
 
@@ -198,24 +199,30 @@ export default function RoomsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <button
-            onClick={handleAllocateClick}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent/15 text-hosteloom-accent hover:bg-hosteloom-accent/25 transition-all text-sm font-heading font-bold"
-          >
-            <MdPersonAdd className="w-4 h-4" /> Allocate
-          </button>
-          <button
-            onClick={handleOpenBulkCreateRoom}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-green-400/30 text-green-400 hover:bg-green-400/10 transition-all text-sm font-heading"
-          >
-            <MdPlaylistAdd className="w-4 h-4" /> Bulk Create
-          </button>
-          <button
-            onClick={handleOpenCreateRoom}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
-          >
-            <MdAdd className="w-4 h-4" /> Add Room
-          </button>
+          <Tooltip content="Assign a student to an available room (requires active session)" position="bottom">
+            <button
+              onClick={handleAllocateClick}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent/15 text-hosteloom-accent hover:bg-hosteloom-accent/25 transition-all text-sm font-heading font-bold"
+            >
+              <MdPersonAdd className="w-4 h-4" /> Allocate
+            </button>
+          </Tooltip>
+          <Tooltip content="Create multiple rooms at once for a floor" position="bottom">
+            <button
+              onClick={handleOpenBulkCreateRoom}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-green-400/30 text-green-400 hover:bg-green-400/10 transition-all text-sm font-heading"
+            >
+              <MdPlaylistAdd className="w-4 h-4" /> Bulk Create
+            </button>
+          </Tooltip>
+          <Tooltip content="Add a single room to a floor" position="bottom">
+            <button
+              onClick={handleOpenCreateRoom}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
+            >
+              <MdAdd className="w-4 h-4" /> Add Room
+            </button>
+          </Tooltip>
           <button
             onClick={() => { fetchRooms(page, LIMIT); fetchAvailableRooms(); }}
             disabled={roomsLoading}

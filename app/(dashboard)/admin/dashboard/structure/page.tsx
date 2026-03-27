@@ -9,6 +9,8 @@ import BlockList from '@/components/rooms/BlockList';
 import FloorRoomsList from '@/components/rooms/FloorRoomsList';
 import StructureModal from '@/components/rooms/StructureModal';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import Tooltip from '@/components/ui/Tooltip';
+import { MdInfoOutline } from 'react-icons/md';
 
 export default function AdminStructurePage() {
   const { adminProfile, fetchAdminProfile } = useProfileStore();
@@ -163,6 +165,10 @@ export default function AdminStructurePage() {
         </p>
         <h1 className="text-3xl font-heading font-bold">Hostel Structure</h1>
         <p className="text-hosteloom-muted font-body text-sm mt-1">Manage blocks, floors, and rooms for your hostel.</p>
+        <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg bg-hosteloom-accent/5 border border-hosteloom-accent/10 w-fit">
+          <MdInfoOutline className="w-4 h-4 text-hosteloom-accent shrink-0" />
+          <p className="text-xs text-hosteloom-muted font-body">Select a <span className="text-white font-medium">Block</span> → then a <span className="text-white font-medium">Floor</span> → to add or manage rooms under it.</p>
+        </div>
       </div>
 
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 overflow-hidden min-h-0 text-white">

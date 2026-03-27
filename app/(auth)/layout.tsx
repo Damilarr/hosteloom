@@ -15,13 +15,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="flex w-full h-screen z-10 relative">
         {/* Left Side: Visual/Editorial Presentation */}
         <div className="hidden lg:flex flex-col justify-between w-[45%] p-12 lg:p-16 border-r border-hosteloom-border bg-hosteloom-surface/30 backdrop-blur-3xl relative">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center">
             <Link href="/">
-              <div className="w-10 h-10 rounded-sm bg-hosteloom-text text-hosteloom-bg flex items-center justify-center font-heading font-bold text-xl cursor-pointer hover:bg-hosteloom-accent hover:text-white transition-colors">
-                H
-              </div>
+              <img src="/hosteloom-logo.png" alt="Hosteloom Logo" className="h-10 w-auto" />
             </Link>
-            <span className="font-heading font-medium tracking-widest uppercase text-sm opacity-80">Hosteloom</span>
           </div>
 
           <div className="mt-auto mb-32">
@@ -44,13 +41,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {/* Right Side: Form Area */}
         <div className="flex-1 flex flex-col justify-center items-center p-6 sm:p-12 relative overflow-y-auto w-full">
           {/* Mobile Header */}
-          <div className="lg:hidden absolute top-8 left-8 flex items-center gap-3">
+          <div className="lg:hidden absolute top-8 left-8 flex items-center">
             <Link href="/">
-              <div className="w-8 h-8 rounded-sm bg-hosteloom-text text-hosteloom-bg flex items-center justify-center font-heading font-bold text-lg">
-                H
-              </div>
+              <img src="/hosteloom-logo.png" alt="Hosteloom Logo" className="h-8 w-auto" />
             </Link>
-            <span className="font-heading font-medium tracking-widest uppercase text-xs opacity-80">Hosteloom</span>
           </div>
 
           <div className="w-full max-w-md my-auto flex flex-col items-center">

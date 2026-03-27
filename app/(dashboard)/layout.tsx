@@ -7,36 +7,39 @@ import Link from 'next/link';
 import {
   MdDashboard, MdBedroomParent, MdPeople, MdPayment,
   MdBuild, MdBarChart, MdLogout, MdMenu, MdClose, MdPersonOutline,
-  MdOutlinedFlag, MdDateRange
+  MdOutlinedFlag, MdDateRange, MdHelpOutline
 } from 'react-icons/md';
 import { useAuthStore, useProfileStore, useStore } from '@/store';
 import NotificationsDropdown from '@/components/layout/NotificationsDropdown';
 import { useNotificationsSocket } from '@/hooks/useNotificationsSocket';
+import TourProvider, { useTour, resetTourForRole } from '@/components/ui/TourProvider';
+import GuidedTour from '@/components/ui/GuidedTour';
+import Tooltip from '@/components/ui/Tooltip';
 
 const studentNav = [
-  { href: '/dashboard', icon: MdDashboard, label: 'Overview' },
-  { href: '/dashboard/profile', icon: MdPersonOutline, label: 'My Profile' },
-  { href: '/dashboard/room', icon: MdBedroomParent, label: 'My Room' },
-  { href: '/dashboard/payments', icon: MdPayment, label: 'Payments' },
-  { href: '/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints' },
+  { href: '/dashboard', icon: MdDashboard, label: 'Overview', tourId: 'nav-overview' },
+  { href: '/dashboard/profile', icon: MdPersonOutline, label: 'My Profile', tourId: 'nav-my-profile' },
+  { href: '/dashboard/room', icon: MdBedroomParent, label: 'My Room', tourId: 'nav-my-room' },
+  { href: '/dashboard/payments', icon: MdPayment, label: 'Payments', tourId: 'nav-payments' },
+  { href: '/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints', tourId: 'nav-complaints' },
 ];
 
 const ownerNav = [
-  { href: '/owner/dashboard', icon: MdDashboard, label: 'Overview' },
-  { href: '/owner/profile', icon: MdPersonOutline, label: 'My Profile' },
-  { href: '/owner/dashboard/hostels', icon: MdBedroomParent, label: 'Hostels' }
+  { href: '/owner/dashboard', icon: MdDashboard, label: 'Overview', tourId: 'nav-overview' },
+  { href: '/owner/profile', icon: MdPersonOutline, label: 'My Profile', tourId: 'nav-my-profile' },
+  { href: '/owner/dashboard/hostels', icon: MdBedroomParent, label: 'Hostels', tourId: 'nav-hostels' }
 ];
 
 const adminNav = [
-  { href: '/admin/dashboard', icon: MdDashboard, label: 'Overview' },
-  { href: '/admin/dashboard/sessions', icon: MdDateRange, label: 'Sessions' },
-  { href: '/admin/dashboard/structure', icon: MdBuild, label: 'Hostel Structure' },
-  { href: '/admin/dashboard/rooms', icon: MdBedroomParent, label: 'Rooms' },
-  { href: '/admin/dashboard/applications', icon: MdOutlinedFlag, label: 'Applications' },
-  { href: '/admin/dashboard/students', icon: MdPeople, label: 'Students' },
-  { href: '/admin/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints' },
-  { href: '/admin/dashboard/payments', icon: MdPayment, label: 'Payments' },
-  { href: '/admin/dashboard/reports', icon: MdBarChart, label: 'Reports' },
+  { href: '/admin/dashboard', icon: MdDashboard, label: 'Overview', tourId: 'nav-overview' },
+  { href: '/admin/dashboard/sessions', icon: MdDateRange, label: 'Sessions', tourId: 'nav-sessions' },
+  { href: '/admin/dashboard/structure', icon: MdBuild, label: 'Hostel Structure', tourId: 'nav-hostel-structure' },
+  { href: '/admin/dashboard/rooms', icon: MdBedroomParent, label: 'Rooms', tourId: 'nav-rooms' },
+  { href: '/admin/dashboard/applications', icon: MdOutlinedFlag, label: 'Applications', tourId: 'nav-applications' },
+  { href: '/admin/dashboard/students', icon: MdPeople, label: 'Students', tourId: 'nav-students' },
+  { href: '/admin/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints', tourId: 'nav-complaints' },
+  { href: '/admin/dashboard/payments', icon: MdPayment, label: 'Payments', tourId: 'nav-payments' },
+  { href: '/admin/dashboard/reports', icon: MdBarChart, label: 'Reports', tourId: 'nav-reports' },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -129,7 +132,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   };
 
   return (
-    <div className="h-screen overflow-hidden flex bg-[#06040A] bg-gradient-to-br from-[#06040A] via-[#0B0914] to-[#040306] text-hosteloom-text relative selection:bg-hosteloom-accent/30 selection:text-white">
+    <TourProvider role={user?.role} profileReady={!needsProfile}>
+    <DashboardInner>
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden mix-blend-screen">
         <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-hosteloom-accent/10 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
         <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-hosteloom-secondary/10 blur-[130px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
@@ -162,10 +166,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       `}>
         <div className="flex items-center gap-3 px-6 py-6 border-b border-hosteloom-border">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-sm bg-hosteloom-text text-hosteloom-bg flex items-center justify-center font-heading font-bold text-lg group-hover:bg-hosteloom-accent group-hover:text-white transition-colors">
-              H
-            </div>
-            <span className="font-heading font-medium tracking-widest uppercase text-xs opacity-80">Hosteloom</span>
+            <img src="/hosteloom-logo.png" alt="Hosteloom Logo" className="h-8 w-auto" />
           </Link>
           <button
             className="ml-auto lg:hidden text-hosteloom-muted hover:text-white transition-colors"
@@ -188,13 +189,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Nav */}
         <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
-          {navItems.map(({ href, icon: Icon, label }) => {
+          {navItems.map(({ href, icon: Icon, label, tourId }) => {
             const active = pathname === href;
             return (
               <Link
                 key={href}
                 href={href}
                 onClick={() => setSidebarOpen(false)}
+                data-tour-id={tourId}
                 className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-heading font-medium transition-all duration-200 ${
                   active
                     ? 'bg-hosteloom-accent/15 text-white border border-hosteloom-accent/30'
@@ -234,15 +236,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <MdMenu className="w-6 h-6" />
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-sm bg-hosteloom-text text-hosteloom-bg flex items-center justify-center font-heading font-bold text-sm">
-              H
-            </div>
+            <img src="/hosteloom-logo.png" alt="Hosteloom Logo" className="h-7 w-auto" />
           </div>
-          <NotificationsDropdown />
+          <div className="flex items-center gap-2">
+            <RestartTourButton role={user?.role} />
+            <NotificationsDropdown />
+          </div>
         </header>
 
         {/* Top bar desktop */}
-        <header className="hidden lg:flex sticky top-0 z-20 h-16 items-center justify-end px-8 border-b border-hosteloom-border bg-hosteloom-bg/80 backdrop-blur-md">
+        <header className="hidden lg:flex sticky top-0 z-20 h-16 items-center justify-end px-8 border-b border-hosteloom-border bg-hosteloom-bg/80 backdrop-blur-md gap-2">
+          <RestartTourButton role={user?.role} />
           <NotificationsDropdown />
         </header>
 
@@ -250,6 +254,38 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {children}
         </main>
       </div>
+
+      <GuidedTour />
+    </DashboardInner>
+    </TourProvider>
+  );
+}
+
+function DashboardInner({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="h-screen overflow-hidden flex bg-[#06040A] bg-gradient-to-br from-[#06040A] via-[#0B0914] to-[#040306] text-hosteloom-text relative selection:bg-hosteloom-accent/30 selection:text-white">
+      {children}
     </div>
+  );
+}
+
+function RestartTourButton({ role }: { role?: string }) {
+  const { isActive, startForRole } = useTour();
+
+  if (isActive) return null;
+
+  return (
+    <Tooltip content="Take a tour" position="bottom">
+      <button
+        onClick={() => {
+          resetTourForRole(role);
+          startForRole(role);
+        }}
+        className="w-8 h-8 rounded-full flex items-center justify-center text-hosteloom-muted hover:text-white hover:bg-white/5 transition-all"
+        aria-label="Start guided tour"
+      >
+        <MdHelpOutline className="w-5 h-5" />
+      </button>
+    </Tooltip>
   );
 }

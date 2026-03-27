@@ -10,6 +10,7 @@ import BlockList from '@/components/rooms/BlockList';
 import FloorRoomsList from '@/components/rooms/FloorRoomsList';
 import StructureModal from '@/components/rooms/StructureModal';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { MdInfoOutline } from 'react-icons/md';
 
 export default function HostelsManagerPage() {
   const { hostels, hostelsLoading, fetchAllHostels, createHostel, deleteHostel } = useHostelsStore();
@@ -150,6 +151,10 @@ export default function HostelsManagerPage() {
         </p>
         <h1 className="text-3xl font-heading font-bold">Hostels</h1>
         <p className="text-hosteloom-muted font-body text-sm mt-1">Manage your properties and assign admins to them.</p>
+        <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg bg-hosteloom-accent/5 border border-hosteloom-accent/10 w-fit">
+          <MdInfoOutline className="w-4 h-4 text-hosteloom-accent shrink-0" />
+          <p className="text-xs text-hosteloom-muted font-body">Create a <span className="text-white font-medium">Hostel</span> first, then add <span className="text-white font-medium">Blocks</span>, <span className="text-white font-medium">Floors</span>, and <span className="text-white font-medium">Rooms</span> to it.</p>
+        </div>
       </div>
 
       <div className="flex-1 max-w-2xl overflow-hidden min-h-0 text-white">

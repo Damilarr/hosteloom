@@ -6,6 +6,7 @@ import { MdCheckCircle, MdCancel, MdHourglassTop, MdPerson, MdHome } from 'react
 import { Loader } from '@/components/ui/Loader';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'sonner';
+import Tooltip from '@/components/ui/Tooltip';
 
 export default function AdminApplicationsPage() {
   const { adminProfile } = useProfileStore();
@@ -141,40 +142,44 @@ export default function AdminApplicationsPage() {
 
                 {app.status === 'PENDING' && (
                   <div className="flex items-center gap-3 lg:pl-10 lg:border-l lg:border-hosteloom-border">
-                    <button
-                      onClick={() => handleReject(app.id)}
-                      disabled={!!processingId || appsLoading}
-                      className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {processingId === app.id && processingAction === 'reject' ? (
-                        <>
-                          <Loader size={16} />
-                          Rejecting...
-                        </>
-                      ) : (
-                        <>
-                          <MdCancel className="w-4 h-4" />
-                          Reject
-                        </>
-                      )}
-                    </button>
-                    <button
-                      onClick={() => handleApprove(app.id)}
-                      disabled={!!processingId || appsLoading}
-                      className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 bg-white text-black hover:bg-hosteloom-accent hover:text-white rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {processingId === app.id && processingAction === 'approve' ? (
-                        <>
-                          <Loader size={16} />
-                          Approving...
-                        </>
-                      ) : (
-                        <>
-                          <MdCheckCircle className="w-4 h-4" />
-                          Approve
-                        </>
-                      )}
-                    </button>
+                    <Tooltip content="You'll be asked to provide a rejection reason" position="top">
+                      <button
+                        onClick={() => handleReject(app.id)}
+                        disabled={!!processingId || appsLoading}
+                        className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {processingId === app.id && processingAction === 'reject' ? (
+                          <>
+                            <Loader size={16} />
+                            Rejecting...
+                          </>
+                        ) : (
+                          <>
+                            <MdCancel className="w-4 h-4" />
+                            Reject
+                          </>
+                        )}
+                      </button>
+                    </Tooltip>
+                    <Tooltip content="Approve this student's hostel application" position="top">
+                      <button
+                        onClick={() => handleApprove(app.id)}
+                        disabled={!!processingId || appsLoading}
+                        className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 bg-white text-black hover:bg-hosteloom-accent hover:text-white rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {processingId === app.id && processingAction === 'approve' ? (
+                          <>
+                            <Loader size={16} />
+                            Approving...
+                          </>
+                        ) : (
+                          <>
+                            <MdCheckCircle className="w-4 h-4" />
+                            Approve
+                          </>
+                        )}
+                      </button>
+                    </Tooltip>
                   </div>
                 )}
                 

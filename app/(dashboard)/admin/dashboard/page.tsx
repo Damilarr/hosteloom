@@ -86,6 +86,7 @@ export default function AdminDashboard() {
         </div>
         <button
           onClick={() => setBroadcastModal(true)}
+          data-tour-id="admin-broadcast"
           className="px-5 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-white font-heading font-bold text-[10px] uppercase tracking-widest hover:bg-hosteloom-accent hover:border-hosteloom-accent transition-all duration-300 flex items-center gap-2 group"
         >
           <MdCampaign className="w-5 h-5 text-hosteloom-accent group-hover:text-white transition-colors" />
@@ -94,7 +95,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4" data-tour-id="admin-metrics">
         {metrics.map((m) => (
           <div key={m.label} className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-5 hover:border-hosteloom-accent/30 transition-colors">
             <div className={`w-10 h-10 rounded-xl ${m.bg} flex items-center justify-center mb-4`}>

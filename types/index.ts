@@ -366,10 +366,13 @@ export interface RoomWithDetails extends Room {
   status: RoomStatus;
 }
 
-export interface AvailableRoom extends Room {
+export interface AvailableRoom extends Omit<Room, 'floor'> {
   allocations: Allocation[];
   occupancy: number;
   remainingCapacity: number;
+  block?: string;
+  floor?: any;
+  price?: any;
 }
 
 export interface CreateRoomPayload {

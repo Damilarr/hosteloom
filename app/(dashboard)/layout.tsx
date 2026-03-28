@@ -20,6 +20,7 @@ const studentNav = [
   { href: '/dashboard', icon: MdDashboard, label: 'Overview', tourId: 'nav-overview' },
   { href: '/dashboard/profile', icon: MdPersonOutline, label: 'My Profile', tourId: 'nav-my-profile' },
   { href: '/dashboard/room', icon: MdBedroomParent, label: 'My Room', tourId: 'nav-my-room' },
+  { href: '/dashboard/select-room', icon: MdBedroomParent, label: 'Select Room', tourId: 'nav-select-room' },
   { href: '/dashboard/payments', icon: MdPayment, label: 'Payments', tourId: 'nav-payments' },
   { href: '/dashboard/complaints', icon: MdOutlinedFlag, label: 'Complaints', tourId: 'nav-complaints' },
 ];

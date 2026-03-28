@@ -62,7 +62,7 @@ export default function Home() {
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
-                      <p className="text-hosteloom-text font-medium text-[0.95rem]">Room 402 Allocated</p>
+                      <p className="text-hosteloom-text font-medium text-[0.95rem]">Room 402 Selected</p>
                       <span className="text-[0.7rem] text-hosteloom-muted mt-1">Just now</span>
                     </div>
                     <p className="text-[0.8rem] text-hosteloom-muted mt-0.5">Block A • John Doe</p>
@@ -117,7 +117,7 @@ export default function Home() {
       <section className="py-8 bg-hosteloom-accent text-hosteloom-bg overflow-hidden -rotate-[1.5deg] scale-105 my-10 relative z-10">
         <div className="flex whitespace-nowrap">
           <div className="font-heading font-extrabold text-3xl uppercase animate-ticker flex gap-10">
-            <span>NO OVERBOOKING</span> • <span>INSTANT UPDATES</span> • <span>EASY ROOM ASSIGNMENT</span> • <span>COMPLAINT TRACKING</span> • <span>ONE-CLICK APPROVALS</span> • <span>CSV REPORTS</span> • <span>SIMPLE MANAGEMENT</span> • <span>NO OVERBOOKING</span> • <span>INSTANT UPDATES</span> • <span>EASY ROOM ASSIGNMENT</span> • <span>COMPLAINT TRACKING</span> • <span>ONE-CLICK APPROVALS</span> • <span>CSV REPORTS</span> • <span>SIMPLE MANAGEMENT</span> •
+            <span>NO OVERBOOKING</span> • <span>INSTANT UPDATES</span> • <span>SELF-SERVICE ROOM SELECTION</span> • <span>COMPLAINT TRACKING</span> • <span>ONE-CLICK APPROVALS</span> • <span>CSV REPORTS</span> • <span>SIMPLE MANAGEMENT</span> • <span>NO OVERBOOKING</span> • <span>INSTANT UPDATES</span> • <span>SELF-SERVICE ROOM SELECTION</span> • <span>COMPLAINT TRACKING</span> • <span>ONE-CLICK APPROVALS</span> • <span>CSV REPORTS</span> • <span>SIMPLE MANAGEMENT</span> •
           </div>
         </div>
       </section>
@@ -131,7 +131,7 @@ export default function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-[1400px] mx-auto">
           {[
-            { num: '01', title: 'Smart Room Assignment', desc: 'Assign rooms based on availability with zero overbooking. Manage blocks, floors, and rooms in a clear hierarchy.' },
+            { num: '01', title: 'Student Room Selection', desc: 'Once approved, students browse available rooms and pick the one they want — with filters for block, floor, and price.' },
             { num: '02', title: 'Payment Tracking', desc: 'See who has paid, who is pending, and who is overdue. Auto-generate invoices and export records as CSV.' },
             { num: '03', title: 'Student Portal', desc: 'Students apply to hostels, file complaints, track payments, and receive broadcast announcements — all in one place.' },
             { num: '04', title: 'Admin Command Center', desc: 'Approve applications, resolve complaints, manage sessions, send broadcasts, and generate detailed reports.' },
@@ -172,8 +172,8 @@ export default function Home() {
             <div className="w-[120px] h-[120px] rounded-[2rem] bg-hosteloom-accent/10 border border-hosteloom-accent/20 flex items-center justify-center mb-8 relative z-10 group-hover:bg-hosteloom-accent/20 group-hover:border-hosteloom-accent/40 transition-all duration-300">
               <span className="font-heading font-extrabold text-5xl text-hosteloom-accent">2</span>
             </div>
-            <h3 className="font-heading font-bold text-xl mb-3">Get Approved &amp; Assigned</h3>
-            <p className="text-hosteloom-muted font-light text-[0.95rem] max-w-[280px] leading-relaxed">Admins review your application and assign you a room. You get notified instantly.</p>
+            <h3 className="font-heading font-bold text-xl mb-3">Get Approved &amp; Choose Your Room</h3>
+            <p className="text-hosteloom-muted font-light text-[0.95rem] max-w-[280px] leading-relaxed">Once your application is approved, browse available rooms and select the one that fits you best.</p>
           </div>
 
           {/* Step 3 */}
@@ -207,7 +207,7 @@ export default function Home() {
             <h3 className="font-heading font-bold text-xl mb-2 text-white">Students</h3>
             <p className="text-hosteloom-muted text-sm font-light mb-6">Your hostel life, simplified.</p>
             <ul className="space-y-3">
-              {['Apply to any hostel', 'View room & payment status', 'File & track complaints', 'Receive broadcast updates'].map((item) => (
+              {['Apply to any hostel', 'Choose your own room', 'View room & payment status', 'File & track complaints', 'Receive broadcast updates'].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm text-hosteloom-text">
                   <span className="w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 text-[10px] font-bold shrink-0">✓</span>
                   {item}
@@ -230,7 +230,7 @@ export default function Home() {
             <h3 className="font-heading font-bold text-xl mb-2 text-white">Hostel Admins</h3>
             <p className="text-hosteloom-muted text-sm font-light mb-6">Full control, zero chaos.</p>
             <ul className="space-y-3">
-              {['Manage hostel structure (blocks, floors, rooms)', 'Approve or reject applications', 'Allocate rooms & track payments', 'Handle complaints & generate reports', 'Broadcast announcements', 'Manage academic sessions'].map((item) => (
+              {['Manage hostel structure (blocks, floors, rooms)', 'Approve or reject applications', 'Track room occupancy & payments', 'Handle complaints & generate reports', 'Broadcast announcements', 'Manage academic sessions'].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm text-hosteloom-text">
                   <span className="w-5 h-5 rounded-full bg-hosteloom-accent/10 flex items-center justify-center text-hosteloom-accent text-[10px] font-bold shrink-0">✓</span>
                   {item}

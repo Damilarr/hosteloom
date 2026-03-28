@@ -2,14 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { MdBedroomParent, MdAdd, MdPlaylistAdd, MdRefresh, MdSearch, MdPersonAdd } from 'react-icons/md';
+import { MdBedroomParent, MdAdd, MdPlaylistAdd, MdRefresh, MdSearch } from 'react-icons/md';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRoomsStore, useStudentsStore, useSessionsStore, useHostelsStore, useProfileStore, useAuthStore } from '@/store';
+import { useRoomsStore, useHostelsStore, useProfileStore, useAuthStore } from '@/store';
 import type { RoomStatus } from '@/types';
 import RoomCard from '@/components/rooms/RoomCard';
 import CreateRoomModal from '@/components/rooms/CreateRoomModal';
 import BulkCreateRoomsModal from '@/components/rooms/BulkCreateRoomsModal';
-import AllocateRoomModal from '@/components/rooms/AllocateRoomModal';
 import RoomDetailModal from '@/components/rooms/RoomDetailModal';
 import Tooltip from '@/components/ui/Tooltip';
 
@@ -26,13 +25,10 @@ const filterColor: Record<string, string> = {
 export default function RoomsPage() {
   const {
     rooms, roomsMeta, roomsLoading, roomsError,
-    availableRooms,
-    fetchRooms, fetchAvailableRooms,
-    createRoom, bulkCreateRooms, updateRoom, allocateRoom,
+    fetchRooms,
+    createRoom, bulkCreateRooms, updateRoom,
   } = useRoomsStore();
 
-  const { students, fetchStudents } = useStudentsStore();
-  const { sessions, fetchSessions } = useSessionsStore();
   const { currentHostel, fetchHostelById, hostelsLoading } = useHostelsStore();
   const { adminProfile } = useProfileStore();
   const { user } = useAuthStore();
@@ -43,7 +39,6 @@ export default function RoomsPage() {
   const LIMIT = 10;
   const [showCreate, setShowCreate] = useState(false);
   const [showBulkCreate, setShowBulkCreate] = useState(false);
-  const [showAllocate, setShowAllocate] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<import('@/types').RoomWithDetails | null>(null);
 
   const checkHostelStructure = () => {
@@ -76,10 +71,7 @@ export default function RoomsPage() {
 
   useEffect(() => {
     fetchRooms(page, LIMIT);
-    fetchAvailableRooms();
-    fetchStudents();
-    fetchSessions();
-  }, [fetchRooms, fetchAvailableRooms, fetchStudents, fetchSessions, page]);
+  }, [fetchRooms, page]);
 
   useEffect(() => {
     if (user?.role === 'HOSTEL_ADMIN' && adminProfile?.hostelId) {
@@ -124,37 +116,6 @@ export default function RoomsPage() {
     return count;
   };
 
-  const handleAllocate = async (payload: Parameters<typeof allocateRoom>[0]) => {
-    const result = await allocateRoom(payload);
-    if (result) toast.success('Room allocated successfully');
-    else toast.error('Failed to allocate room');
-    return result;
-  };
-
-  const handleAllocateClick = () => {
-    const hasActiveSession = sessions.some(s => s.isActive);
-    if (!hasActiveSession) {
-      toast.error('No active session found. Please create and activate a session first.', {
-        action: { label: 'Go to Sessions', onClick: () => window.location.href = '/admin/dashboard/sessions' },
-      });
-      return;
-    }
-
-    if (availableRooms.length === 0) {
-      toast.error('No available rooms found. Set up your hostel structure and ensure rooms have prices configured.', {
-        action: { label: 'Go to Structure', onClick: () => window.location.href = '/admin/dashboard/structure' },
-      });
-      return;
-    }
-
-    const roomsWithoutPrice = availableRooms.filter(r => !r.price || parseInt(String(r.price), 10) <= 0);
-    if (roomsWithoutPrice.length === availableRooms.length) {
-      toast.error('All available rooms have no price set. Please configure room prices in your hostel structure before allocating.');
-      return;
-    }
-
-    setShowAllocate(true);
-  };
 
   const handleUpdateRoom = async (roomId: string, payload: Parameters<typeof updateRoom>[1]) => {
     const ok = await updateRoom(roomId, payload);
@@ -170,10 +131,7 @@ export default function RoomsPage() {
     return ok;
   };
 
-  const activeAllocatedStudentIds = new Set(
-    rooms.flatMap((r) => r.allocations?.filter((a) => a.status === 'ACTIVE').map((a) => a.studentId) || [])
-  );
-  const unallocatedStudents = students.filter(s => !activeAllocatedStudentIds.has(s.userId));
+
 
   const generatePagination = (currentPage: number, totalPages: number) => {
     if (totalPages <= 7) return Array.from({ length: totalPages }).map((_, i) => i + 1);
@@ -195,18 +153,10 @@ export default function RoomsPage() {
           <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">Admin</p>
           <h1 className="font-heading text-3xl font-bold">Rooms</h1>
           <p className="text-hosteloom-muted font-body text-sm mt-1">
-            Manage rooms, capacity and allocations.
+            Manage rooms and capacity. Students select their own rooms after approval.
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <Tooltip content="Assign a student to an available room (requires active session)" position="bottom">
-            <button
-              onClick={handleAllocateClick}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent/15 text-hosteloom-accent hover:bg-hosteloom-accent/25 transition-all text-sm font-heading font-bold"
-            >
-              <MdPersonAdd className="w-4 h-4" /> Allocate
-            </button>
-          </Tooltip>
           <Tooltip content="Create multiple rooms at once for a floor" position="bottom">
             <button
               onClick={handleOpenBulkCreateRoom}
@@ -224,7 +174,7 @@ export default function RoomsPage() {
             </button>
           </Tooltip>
           <button
-            onClick={() => { fetchRooms(page, LIMIT); fetchAvailableRooms(); }}
+            onClick={() => { fetchRooms(page, LIMIT); }}
             disabled={roomsLoading}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
           >
@@ -351,13 +301,6 @@ export default function RoomsPage() {
 
       <CreateRoomModal open={showCreate} onClose={() => setShowCreate(false)} onSubmit={handleCreateRoom} />
       <BulkCreateRoomsModal open={showBulkCreate} onClose={() => setShowBulkCreate(false)} onSubmit={handleBulkCreate} />
-      <AllocateRoomModal
-        open={showAllocate}
-        onClose={() => setShowAllocate(false)}
-        students={unallocatedStudents}
-        availableRooms={availableRooms}
-        onSubmit={handleAllocate}
-      />
       <RoomDetailModal room={selectedRoom} onClose={() => setSelectedRoom(null)} />
     </div>
   );

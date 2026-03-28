@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MdBedroomParent, MdPayment, MdBuild, MdCheckCircle, MdHourglassTop, MdWarning, MdCancel } from 'react-icons/md';
-import { FiCreditCard, FiSearch, FiHome, FiArrowRight } from 'react-icons/fi';
+import { MdBedroomParent, MdPayment, MdBuild, MdCheckCircle, MdHourglassTop, MdWarning, MdCancel, MdClose, MdLocationOn } from 'react-icons/md';
+import { FiCreditCard, FiSearch, FiHome, FiArrowRight, FiEye } from 'react-icons/fi';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useAuthStore, useProfileStore, useRoomsStore, useComplaintsStore, useInvoicesStore, usePaymentsStore, useHostelsStore, useApplicationsStore } from '@/store';
 import { formatDistanceToNow } from 'date-fns';
 import { Loader } from '@/components/ui/Loader';
@@ -12,14 +13,15 @@ import { toast } from 'sonner';
 export default function StudentDashboard() {
   const { user } = useAuthStore();
   const { profile } = useProfileStore();
-  const { studentHistory, fetchStudentHistory } = useRoomsStore();
+  const { studentHistory, fetchStudentHistory, availableRoomsForStudent, availableRoomsForStudentLoading, fetchAvailableRoomsForStudent, pickRoom } = useRoomsStore();
   const { myComplaints, fetchMyComplaints } = useComplaintsStore();
   const { myInvoices, fetchMyInvoices } = useInvoicesStore();
   const { paymentHistory, fetchPaymentHistory } = usePaymentsStore();
   const { searchResults, searchHostels, searchLoading } = useHostelsStore();
   const { myApplications, fetchMyApplications, applyToHostel, appsLoading } = useApplicationsStore();
 
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedHostel, setSelectedHostel] = useState<any>(null);
 
   useEffect(() => {
     if (user?.id) {
@@ -31,7 +33,6 @@ export default function StudentDashboard() {
     fetchMyApplications();
   }, [user, fetchStudentHistory, fetchMyComplaints, fetchMyInvoices, fetchPaymentHistory, fetchMyApplications]);
 
-  // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
       searchHostels(searchQuery);
@@ -265,17 +266,25 @@ export default function StudentDashboard() {
                           <p className="text-xs text-hosteloom-muted font-body">{hostel.address}</p>
                         </div>
                       </div>
-                      <button 
-                        onClick={async () => {
-                          const ok = await applyToHostel({ hostelId: hostel.id });
-                          if (ok) toast.success(`Application sent to ${hostel.name}`);
-                        }}
-                        disabled={appsLoading}
-                        className="flex items-center gap-2 px-4 py-2 bg-white text-black text-xs font-heading font-bold rounded-lg hover:bg-hosteloom-accent hover:text-white transition-all disabled:opacity-50"
-                      >
-                        {appsLoading ? 'Applying...' : 'Apply Now'}
-                        <FiArrowRight />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => setSelectedHostel(hostel)}
+                          className="flex items-center gap-2 px-3 py-2 bg-hosteloom-bg text-white text-xs font-heading font-medium rounded-lg hover:text-hosteloom-accent transition-all"
+                        >
+                          <FiEye /> View
+                        </button>
+                        <button 
+                          onClick={async () => {
+                            const ok = await applyToHostel({ hostelId: hostel.id });
+                            if (ok) toast.success(`Application sent to ${hostel.name}`);
+                          }}
+                          disabled={appsLoading}
+                          className="flex items-center gap-2 px-4 py-2 bg-white text-black text-xs font-heading font-bold rounded-lg hover:bg-hosteloom-accent hover:text-white transition-all disabled:opacity-50"
+                        >
+                          {appsLoading ? 'Applying...' : 'Apply Now'}
+                          <FiArrowRight />
+                        </button>
+                      </div>
                     </div>
                   ))
                 ) : !searchLoading && (
@@ -286,30 +295,49 @@ export default function StudentDashboard() {
           </div>
         </div>
       ) : currentApplication ? (
-        <div className={`bg-hosteloom-surface border ${currentApplication.status === 'APPROVED' ? 'border-green-500/20' : 'border-yellow-400/20'} rounded-2xl p-6 flex items-center justify-between transition-all`}>
-          <div className="flex items-center gap-4">
-            <div className={`w-12 h-12 rounded-full ${currentApplication.status === 'APPROVED' ? 'bg-green-500/10' : 'bg-yellow-500/10'} flex items-center justify-center`}>
-              {currentApplication.status === 'APPROVED' ? (
-                <MdCheckCircle className="w-6 h-6 text-green-400" />
-              ) : (
-                <MdHourglassTop className="w-6 h-6 text-yellow-400" />
-              )}
+        <div className="space-y-6">
+          <div className={`bg-hosteloom-surface border ${currentApplication.status === 'APPROVED' ? 'border-green-500/20' : 'border-yellow-400/20'} rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all`}>
+            <div className="flex items-center gap-4">
+              <div className={`w-12 h-12 rounded-full ${currentApplication.status === 'APPROVED' ? 'bg-green-500/10' : 'bg-yellow-500/10'} flex items-center justify-center shrink-0`}>
+                {currentApplication.status === 'APPROVED' ? (
+                  <MdCheckCircle className="w-6 h-6 text-green-400" />
+                ) : (
+                  <MdHourglassTop className="w-6 h-6 text-yellow-400" />
+                )}
+              </div>
+              <div>
+                <h3 className="font-heading font-bold text-lg text-white">
+                  {currentApplication.status === 'APPROVED' ? 'Application Approved' : 'Application Pending'}
+                </h3>
+                <p className="text-hosteloom-muted text-sm font-body max-w-lg">
+                  {currentApplication.status === 'APPROVED' 
+                    ? `Your application to ${currentApplication.hostel?.name || 'a hostel'} has been approved! Select a room below to finalize your booking.` 
+                    : `Your application to ${currentApplication.hostel?.name || 'a hostel'} is currently being reviewed.`
+                  }
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-heading font-bold text-lg text-white">
-                {currentApplication.status === 'APPROVED' ? 'Application Approved' : 'Application Pending'}
-              </h3>
-              <p className="text-hosteloom-muted text-sm font-body">
-                {currentApplication.status === 'APPROVED' 
-                  ? `Your application to ${currentApplication.hostel?.name || 'a hostel'} has been approved! Use the sidebar to manage your stay.` 
-                  : `Your application to ${currentApplication.hostel?.name || 'a hostel'} is currently being reviewed.`
-                }
-              </p>
+            <div className={`shrink-0 px-4 py-2 ${currentApplication.status === 'APPROVED' ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'} rounded-lg text-xs font-heading font-bold uppercase tracking-widest text-center`}>
+              {currentApplication.status === 'APPROVED' ? 'Approved' : 'Pending Review'}
             </div>
           </div>
-          <div className={`px-4 py-2 ${currentApplication.status === 'APPROVED' ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'} rounded-lg text-xs font-heading font-bold uppercase tracking-widest`}>
-            {currentApplication.status === 'APPROVED' ? 'Approved' : 'Pending Review'}
-          </div>
+
+          {currentApplication.status === 'APPROVED' && !activeAllocation && (
+            <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-8 relative flex flex-col items-center justify-center text-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+               <div className="w-16 h-16 rounded-full bg-hosteloom-accent/10 border border-hosteloom-accent/20 flex items-center justify-center mb-2">
+                 <MdCheckCircle className="w-8 h-8 text-hosteloom-accent" />
+               </div>
+               <h3 className="font-heading font-bold text-2xl text-white">Your Room is Waiting!</h3>
+               <p className="text-hosteloom-muted text-sm font-body max-w-md mx-auto">
+                 Your hostel application has been approved successfully. The next step is to choose the exact room you'd like to stay in from the available options.
+               </p>
+               <Link href="/dashboard/select-room">
+                 <button className="mt-4 px-8 py-3 bg-hosteloom-accent text-white font-heading font-bold rounded-xl hover:bg-hosteloom-accent/90 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                   Select Your Room <FiArrowRight />
+                 </button>
+               </Link>
+            </div>
+          )}
         </div>
       ) : null}
 
@@ -360,6 +388,97 @@ export default function StudentDashboard() {
           </div>
         </Link>
       </div>
+
+      <AnimatePresence>
+        {selectedHostel && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedHostel(null)}
+          >
+            <motion.div
+              className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6 w-full max-w-lg space-y-6"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-hosteloom-accent/15 flex items-center justify-center">
+                    <FiHome className="w-5 h-5 text-hosteloom-accent" />
+                  </div>
+                  <div>
+                    <h2 className="font-heading font-bold text-lg text-white">{selectedHostel.name}</h2>
+                    <p className="text-xs text-hosteloom-muted flex items-center gap-1">
+                      <MdLocationOn /> {selectedHostel.address}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedHostel(null)}
+                  className="text-hosteloom-muted hover:text-white transition-colors"
+                >
+                  <MdClose className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-wider mb-2">Description</h3>
+                  <p className="text-sm text-white font-body leading-relaxed">
+                    {selectedHostel.description || 'No description provided.'}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-hosteloom-surface-light p-4 rounded-xl border border-hosteloom-border">
+                    <h3 className="text-[10px] font-heading font-bold text-hosteloom-muted uppercase tracking-wider mb-1">Price Range</h3>
+                    <p className="text-hosteloom-accent font-heading font-bold">
+                      {selectedHostel.priceRange ? `₦${selectedHostel.priceRange.replace('-', ' - ₦')}` : 'Not Specified'}
+                    </p>
+                  </div>
+                </div>
+
+                {selectedHostel.facilities && selectedHostel.facilities.length > 0 && (
+                  <div>
+                    <h3 className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-wider mb-2">Facilities</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedHostel.facilities.map((facility: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-hosteloom-bg border border-hosteloom-border text-white text-xs rounded-full"
+                        >
+                          {facility}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="pt-4 flex justify-end">
+                <button
+                  onClick={async () => {
+                    const ok = await applyToHostel({ hostelId: selectedHostel.id });
+                    if (ok) {
+                      toast.success(`Application sent to ${selectedHostel.name}`);
+                      setSelectedHostel(null);
+                    }
+                  }}
+                  disabled={appsLoading}
+                  className="px-6 py-2.5 bg-white text-black text-sm font-heading font-bold rounded-xl hover:bg-hosteloom-accent hover:text-white transition-all disabled:opacity-50 flex items-center gap-2"
+                >
+                  {appsLoading ? 'Applying...' : 'Apply Now'}
+                  <FiArrowRight />
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

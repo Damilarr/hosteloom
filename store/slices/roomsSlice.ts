@@ -23,6 +23,9 @@ export interface RoomsSlice {
   availableRooms: AvailableRoom[];
   availableRoomsLoading: boolean;
 
+  availableRoomsForStudent: AvailableRoom[];
+  availableRoomsForStudentLoading: boolean;
+
   occupants: OccupantAllocation[];
   occupantsLoading: boolean;
 
@@ -31,6 +34,8 @@ export interface RoomsSlice {
 
   fetchRooms: (page?: number, limit?: number) => Promise<void>;
   fetchAvailableRooms: () => Promise<void>;
+  fetchAvailableRoomsForStudent: () => Promise<void>;
+  pickRoom: (payload: { roomId: string }) => Promise<AllocateRoomResponse | false>;
   createRoom: (payload: CreateRoomPayload) => Promise<boolean>;
   bulkCreateRooms: (payload: BulkCreateRoomsPayload) => Promise<number | false>;
   updateRoom: (roomId: string, payload: UpdateRoomPayload) => Promise<boolean>;
@@ -50,6 +55,9 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
 
   availableRooms: [],
   availableRoomsLoading: false,
+
+  availableRoomsForStudent: [],
+  availableRoomsForStudentLoading: false,
 
   occupants: [],
   occupantsLoading: false,
@@ -83,6 +91,27 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
     }
   },
 
+  fetchAvailableRoomsForStudent: async () => {
+    set({ availableRoomsForStudentLoading: true });
+    try {
+      const token = get().token ?? undefined;
+      const data = await api.get<AvailableRoom[]>('/allocations/available-rooms-for-student', token);
+      set({ availableRoomsForStudent: Array.isArray(data) ? data : [], availableRoomsForStudentLoading: false });
+    } catch {
+      set({ availableRoomsForStudentLoading: false });
+    }
+  },
+
+  pickRoom: async (payload) => {
+    try {
+      const token = get().token ?? undefined;
+      const data = await api.post<AllocateRoomResponse>('/allocations/pick-room', payload, token);
+      return data;
+    } catch {
+      return false;
+    }
+  },
+
   createRoom: async (payload) => {
     try {
       const token = get().token ?? undefined;
@@ -99,10 +128,10 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
   bulkCreateRooms: async (payload) => {
     try {
       const token = get().token ?? undefined;
-      const data = await api.post<BulkCreateRoomsResponse>('/rooms/bulk-create-rooms', payload, token);
+      const data = await api.post<any>('/rooms/bulk-create-rooms', payload, token);
       const meta = get().roomsMeta;
       get().fetchRooms(meta?.page ?? 1, meta?.limit ?? 10);
-      return data.count;
+      return Array.isArray(data) ? data.length : (data?.count || 0);
     } catch {
       return false;
     }

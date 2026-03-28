@@ -7,7 +7,7 @@ import Link from 'next/link';
 import {
   MdDashboard, MdBedroomParent, MdPeople, MdPayment,
   MdBuild, MdBarChart, MdLogout, MdMenu, MdClose, MdPersonOutline,
-  MdOutlinedFlag, MdDateRange, MdHelpOutline
+  MdOutlinedFlag, MdDateRange, MdHelpOutline, MdAdminPanelSettings
 } from 'react-icons/md';
 import { useAuthStore, useProfileStore, useStore } from '@/store';
 import NotificationsDropdown from '@/components/layout/NotificationsDropdown';
@@ -27,7 +27,8 @@ const studentNav = [
 const ownerNav = [
   { href: '/owner/dashboard', icon: MdDashboard, label: 'Overview', tourId: 'nav-overview' },
   { href: '/owner/profile', icon: MdPersonOutline, label: 'My Profile', tourId: 'nav-my-profile' },
-  { href: '/owner/dashboard/hostels', icon: MdBedroomParent, label: 'Hostels', tourId: 'nav-hostels' }
+  { href: '/owner/dashboard/hostels', icon: MdBedroomParent, label: 'Hostels', tourId: 'nav-hostels' },
+  { href: '/owner/dashboard/admins', icon: MdAdminPanelSettings, label: 'Admins', tourId: 'nav-admins' }
 ];
 
 const adminNav = [

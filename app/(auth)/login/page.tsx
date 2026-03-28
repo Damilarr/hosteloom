@@ -87,12 +87,6 @@ export default function LoginPage() {
           </Link>
         </p>
 
-        <div className="mt-6 pt-6 border-t border-hosteloom-border/50 text-center">
-          <p className="text-xs font-body text-hosteloom-muted italic">
-            Are you a hostel manager?{" "}
-            <Link href="/admin/login" className="text-hosteloom-accent hover:text-white transition-colors font-semibold">Admin Portal</Link>
-          </p>
-        </div>
       </form>
     </div>
   );

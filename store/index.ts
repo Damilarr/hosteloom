@@ -189,9 +189,12 @@ export const useSessionsStore = () => useStore(useShallow((s) => ({
 })));
 
 export const useAdminsStore = () => useStore(useShallow((s) => ({
+  ownerAdmins: s.ownerAdmins,
   adminsLoading: s.adminsLoading,
   adminsError: s.adminsError,
   createAdmin: s.createAdmin,
+  fetchOwnerAdmins: s.fetchOwnerAdmins,
+  deleteOwnerAdmin: s.deleteOwnerAdmin,
 })));
 
 export const useInvoicesStore = () => useStore(useShallow((s) => ({

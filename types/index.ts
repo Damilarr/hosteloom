@@ -110,6 +110,23 @@ export interface CreateAdminResponse {
   profile: AdminProfile;
 }
 
+export interface OwnerAdminData {
+  id: string;
+  email: string;
+  role: string;
+  createdAt: string;
+  adminProfile: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    position: string;
+    hostel: {
+      id: string;
+      name: string;
+    };
+  };
+}
+
 // ─── Owner Profile ────────────────────────────────────────────────────────────
 
 export interface OwnerProfile {
@@ -209,6 +226,8 @@ export interface Hostel {
   name: string;
   description: string;
   address: string;
+  facilities?: string[];
+  priceRange?: string;
   ownerId: string;
   createdAt: string;
   updatedAt: string;
@@ -220,12 +239,16 @@ export interface CreateHostelPayload {
   name: string;
   description: string;
   address: string;
+  facilities?: string[];
+  priceRange?: string;
 }
 
 export interface UpdateHostelPayload {
   name?: string;
   description?: string;
   address?: string;
+  facilities?: string[];
+  priceRange?: string;
 }
 
 export interface HostelApplication {

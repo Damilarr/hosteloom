@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiX, FiFolder, FiBox, FiLayers, FiGrid, FiTag, FiInfo, FiActivity, FiDollarSign } from "react-icons/fi";
+import { FiX, FiFolder, FiBox, FiLayers, FiGrid, FiTag, FiInfo, FiActivity, FiPlus, FiList } from "react-icons/fi";
+import { TbCurrencyNaira } from "react-icons/tb";
 import { inputClass, labelClass, submitButtonClass } from "@/components/profile/styles";
 import { Loader } from "@/components/ui/Loader";
 
@@ -22,6 +24,27 @@ export default function StructureModal({
   setFormData,
   isSubmitting,
 }: StructureModalProps) {
+  const [facilityInput, setFacilityInput] = useState("");
+
+  const handleAddFacility = () => {
+    if (facilityInput.trim()) {
+      const newItems = facilityInput.split(',').map(f => f.trim()).filter(Boolean);
+      if (newItems.length > 0) {
+        setFormData({
+          ...formData,
+          facilities: [...(formData.facilities || []), ...newItems]
+        });
+        setFacilityInput("");
+      }
+    }
+  };
+
+  const handleRemoveFacility = (index: number) => {
+    const newFacilities = [...(formData.facilities || [])];
+    newFacilities.splice(index, 1);
+    setFormData({ ...formData, facilities: newFacilities });
+  };
+
   return (
     <AnimatePresence>
       {creatingType && (
@@ -86,6 +109,73 @@ export default function StructureModal({
                         <input required type="text" placeholder="Location details..." className={inputClass} value={formData.address || ''} onChange={e => setFormData({...formData, address: e.target.value})} />
                       </div>
                     </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className={labelClass}>Min Room Price (₦)</label>
+                        <div className="relative group">
+                          <TbCurrencyNaira className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors text-lg" />
+                          <input type="number" placeholder="50000" className={`${inputClass} !pl-10`} value={formData.priceRangeMin || ''} onChange={e => setFormData({...formData, priceRangeMin: e.target.value})} />
+                        </div>
+                      </div>
+                      <div>
+                        <label className={labelClass}>Max Room Price (₦)</label>
+                        <div className="relative group">
+                          <TbCurrencyNaira className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors text-lg" />
+                          <input type="number" placeholder="120000" className={`${inputClass} !pl-10`} value={formData.priceRangeMax || ''} onChange={e => setFormData({...formData, priceRangeMax: e.target.value})} />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <label className={`${labelClass} !mb-0`}>Facilities</label>
+                        <div className="group/tooltip relative flex items-center">
+                          <FiInfo className="w-4 h-4 text-hosteloom-muted hover:text-white transition-colors cursor-help" />
+                          <div className="absolute left-1/2 -top-2 -translate-y-full -translate-x-1/2 w-48 p-2 bg-hosteloom-surface-light border border-hosteloom-border rounded-lg text-xs font-body leading-tight text-hosteloom-text opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all text-center shadow-xl z-50 pointer-events-none">
+                            Add as many facilities as possible. Type a comma (,) or press Enter to add each facility.
+                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-hosteloom-surface-light border-b border-r border-hosteloom-border rotate-45"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 mb-3">
+                        <div className="relative group flex-1">
+                          <FiList className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
+                          <input 
+                            type="text" 
+                            placeholder="e.g. WiFi, 24/7 Power..." 
+                            className={inputClass} 
+                            value={facilityInput} 
+                            onChange={e => setFacilityInput(e.target.value)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter' || e.key === ',') {
+                                e.preventDefault();
+                                handleAddFacility();
+                              }
+                            }}
+                          />
+                        </div>
+                        <button 
+                          type="button" 
+                          onClick={handleAddFacility}
+                          className="w-12 rounded-xl bg-hosteloom-surface-light border border-hosteloom-border flex items-center justify-center text-white hover:bg-hosteloom-accent transition-colors"
+                        >
+                          <FiPlus />
+                        </button>
+                      </div>
+                      {formData.facilities && formData.facilities.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {formData.facilities.map((fac: string, idx: number) => (
+                            <div key={idx} className="flex items-center gap-2 bg-hosteloom-surface-light border border-hosteloom-border rounded-full px-3 py-1 text-xs text-hosteloom-text">
+                              <span>{fac}</span>
+                              <button type="button" onClick={() => handleRemoveFacility(idx)} className="text-hosteloom-muted hover:text-hosteloom-secondary">
+                                <FiX className="w-3 h-3" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
 
@@ -129,8 +219,8 @@ export default function StructureModal({
                       <div>
                         <label className={labelClass}>Price (₦)</label>
                         <div className="relative group">
-                          <FiDollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
-                          <input required type="number" placeholder="250000" className={inputClass} value={formData.price || ''} onChange={e => setFormData({...formData, price: e.target.value})} />
+                          <TbCurrencyNaira className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors text-lg" />
+                          <input required type="number" placeholder="250000" className={`${inputClass} !pl-10`} value={formData.price || ''} onChange={e => setFormData({...formData, price: e.target.value})} />
                         </div>
                       </div>
                     </div>
@@ -160,7 +250,10 @@ export default function StructureModal({
                       </div>
                       <div>
                         <label className={labelClass}>Price (₦)</label>
-                        <input required type="number" placeholder="150000" className={`${inputClass} !pl-4`} value={formData.price || ''} onChange={e => setFormData({...formData, price: e.target.value})} />
+                        <div className="relative group">
+                          <TbCurrencyNaira className="absolute left-3 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors text-lg" />
+                          <input required type="number" placeholder="150000" className={`${inputClass} !pl-10`} value={formData.price || ''} onChange={e => setFormData({...formData, price: e.target.value})} />
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -62,7 +62,21 @@ export default function HostelsManagerPage() {
 
     try {
       if (creatingType === 'hostel') {
-        const res = await createHostel({ name: formData.name, description: formData.description, address: formData.address });
+        const payload: any = { 
+          name: formData.name, 
+          description: formData.description, 
+          address: formData.address 
+        };
+        
+        if (formData.facilities && formData.facilities.length > 0) {
+          payload.facilities = formData.facilities;
+        }
+
+        if (formData.priceRangeMin && formData.priceRangeMax) {
+          payload.priceRange = `₦${formData.priceRangeMin} - ₦${formData.priceRangeMax}`;
+        }
+
+        const res = await createHostel(payload);
         if (res) success = true;
       } else if (creatingType === 'block' && selectedHostel) {
         const res = await createBlock({ name: formData.name, hostelId: selectedHostel.id });

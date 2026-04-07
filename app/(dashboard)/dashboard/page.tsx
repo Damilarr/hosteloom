@@ -58,6 +58,23 @@ export default function StudentDashboard() {
     return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(amount);
   };
 
+  const formatHostelPriceRange = (rangeStr: string | undefined | null) => {
+    if (!rangeStr) return 'Not Specified';
+    
+    const cleanStr = String(rangeStr).replace(/[₦,]/g, '').trim();
+    const parts = cleanStr.split('-').map(p => p.trim());
+    
+    if (parts.length === 2 && !isNaN(Number(parts[0])) && !isNaN(Number(parts[1])) && parts[0] !== '' && parts[1] !== '') {
+      return `${formatCurrency(Number(parts[0]))} - ${formatCurrency(Number(parts[1]))}`;
+    }
+    
+    if (parts.length === 1 && !isNaN(Number(parts[0])) && parts[0] !== '') {
+      return formatCurrency(Number(parts[0]));
+    }
+    
+    return String(rangeStr);
+  };
+
   // Build recent activity from real data
   const recentActivity: Array<{ icon: React.ElementType; color: string; label: string; sub: string; time: string }> = [];
 
@@ -433,28 +450,26 @@ export default function StudentDashboard() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-hosteloom-surface-light p-4 rounded-xl border border-hosteloom-border">
+                <div>
+                  <div className="bg-hosteloom-surface border border-hosteloom-border p-4 rounded-xl inline-block">
                     <h3 className="text-[10px] font-heading font-bold text-hosteloom-muted uppercase tracking-wider mb-1">Price Range</h3>
-                    <p className="text-hosteloom-accent font-heading font-bold">
-                      {selectedHostel.priceRange ? `₦${selectedHostel.priceRange.replace('-', ' - ₦')}` : 'Not Specified'}
+                    <p className="text-hosteloom-accent font-heading font-bold text-xl whitespace-nowrap">
+                      {formatHostelPriceRange(selectedHostel.priceRange)}
                     </p>
                   </div>
                 </div>
 
                 {selectedHostel.facilities && selectedHostel.facilities.length > 0 && (
                   <div>
-                    <h3 className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-wider mb-2">Facilities</h3>
-                    <div className="flex flex-wrap gap-2">
+                    <h3 className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-wider mb-3">Facilities</h3>
+                    <ul className="space-y-4">
                       {selectedHostel.facilities.map((facility: string, idx: number) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 bg-hosteloom-bg border border-hosteloom-border text-white text-xs rounded-full"
-                        >
+                        <li key={idx} className="flex items-center gap-3 text-sm text-white font-body">
+                          <MdCheckCircle className="w-5 h-5 text-green-400 shrink-0" />
                           {facility}
-                        </span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
                 )}
               </div>

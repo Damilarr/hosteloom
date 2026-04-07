@@ -20,21 +20,35 @@ export default function SelectRoomPage() {
     studentHistory,
     fetchStudentHistory
   } = useRoomsStore();
-  const { myApplications } = useApplicationsStore();
-  const { fetchMyInvoices } = useInvoicesStore();
+  const { myApplications, fetchMyApplications } = useApplicationsStore();
+  const { myInvoices, fetchMyInvoices } = useInvoicesStore();
+
+  const [guardReady, setGuardReady] = useState(false);
 
   const currentApplication = myApplications.find((a) => a.status === 'APPROVED');
-  const activeAllocation = studentHistory.find((h) => h.status === 'ACTIVE');
+  const hasExistingAllocation = studentHistory.some((h) => h.status === 'ACTIVE' || (h.status as string) === 'PENDING_PAYMENT');
+  const hasUnpaidInvoice = myInvoices.some((i) => i.status !== 'PAID');
+  const shouldBlock = hasExistingAllocation || hasUnpaidInvoice;
 
   useEffect(() => {
-    if (activeAllocation) {
-      router.push('/dashboard/room');
+    const init = async () => {
+      if (user?.id) await fetchStudentHistory(user.id);
+      await Promise.all([fetchMyApplications(), fetchMyInvoices()]);
+      setGuardReady(true);
+    };
+    init();
+  }, [user?.id, fetchStudentHistory, fetchMyApplications, fetchMyInvoices]);
+
+  useEffect(() => {
+    if (!guardReady) return;
+    if (shouldBlock) {
+      router.replace('/dashboard/payments');
     } else if (!currentApplication) {
-       router.push('/dashboard');
+      router.replace('/dashboard');
     } else {
       fetchAvailableRoomsForStudent();
     }
-  }, [activeAllocation, currentApplication, fetchAvailableRoomsForStudent, router]);
+  }, [guardReady, shouldBlock, currentApplication, fetchAvailableRoomsForStudent, router]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(amount);
@@ -62,7 +76,16 @@ export default function SelectRoomPage() {
     });
   }, [availableRoomsForStudent, searchQuery, selectedBlock, selectedFloor, selectedPrice]);
 
-  if (activeAllocation || !currentApplication) return null;
+  if (!guardReady) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 gap-4">
+        <Loader size={40} />
+        <p className="text-hosteloom-muted text-sm font-heading tracking-widest uppercase">Loading...</p>
+      </div>
+    );
+  }
+
+  if (shouldBlock || !currentApplication) return null;
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">

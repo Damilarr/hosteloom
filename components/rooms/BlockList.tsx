@@ -74,10 +74,10 @@ export default function BlockList({
             >
               <div className="flex justify-between items-center">
                 <span className="font-heading font-bold text-sm">{b.name}</span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
                   <button
                     onClick={(e) => onDelete(b.id, e)}
-                    className="opacity-0 group-hover:opacity-100 p-2 text-hosteloom-secondary hover:bg-hosteloom-secondary/10 rounded-lg transition-all"
+                    className="p-2 text-hosteloom-muted hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
                   >
                     <FiTrash2 size={14} />
                   </button>

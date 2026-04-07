@@ -45,6 +45,9 @@ export interface RoomsSlice {
   fetchOccupants: (roomId: string) => Promise<void>;
   fetchStudentHistory: (studentId: string) => Promise<void>;
   fetchRoomById: (id: string) => Promise<RoomWithDetails | null>;
+  deleteRoom: (id: string) => Promise<boolean>;
+  deleteRoomsByBlock: (blockId: string) => Promise<boolean>;
+  deleteRoomsByHostel: (hostelId: string) => Promise<boolean>;
 }
 
 export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], RoomsSlice> = (set, get) => ({
@@ -218,12 +221,48 @@ export const createRoomsSlice: StateCreator<RoomsSlice & WithToken, [], [], Room
     try {
       const token = get().token ?? undefined;
       const data = await api.get<RoomWithDetails>(`/rooms/get-room-by-id/${id}`, token);
-      // Optional: add to state if necessary, but returning it is useful
       set({ roomsLoading: false });
       return data;
     } catch (err) {
       set({ roomsLoading: false, roomsError: (err as ApiError).message });
       return null;
+    }
+  },
+
+  deleteRoom: async (id) => {
+    try {
+      const token = get().token ?? undefined;
+      await api.delete<{ message: string }>(`/rooms/delete-room/${id}`, token);
+      set((state) => ({
+        rooms: state.rooms.filter(room => room.id !== id),
+      }));
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  deleteRoomsByBlock: async (blockId) => {
+    try {
+      const token = get().token ?? undefined;
+      await api.delete<{ message: string }>(`/rooms/delete-by-block/${blockId}`, token);
+      const meta = get().roomsMeta;
+      get().fetchRooms(meta?.page ?? 1, meta?.limit ?? 10);
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  deleteRoomsByHostel: async (hostelId) => {
+    try {
+      const token = get().token ?? undefined;
+      await api.delete<{ message: string }>(`/rooms/delete-by-hostel/${hostelId}`, token);
+      const meta = get().roomsMeta;
+      get().fetchRooms(meta?.page ?? 1, meta?.limit ?? 10);
+      return true;
+    } catch {
+      return false;
     }
   },
 });

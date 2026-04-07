@@ -118,6 +118,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     ? adminProfile ? `${adminProfile.firstName} ${adminProfile.lastName}`.trim() : user?.email ?? ''
     : isOwner ? user?.email ?? 'Hostel Owner' : profile ? `${profile.firstName} ${profile.lastName}`.trim() : user?.email ?? '';
 
+  const studentHistory = useStore((s) => s.studentHistory);
+  const myInvoices = useStore((s) => s.myInvoices);
+  const hasRoomOrPendingPayment = studentHistory.some((h) => h.status === 'ACTIVE' || (h.status as string) === 'PENDING_PAYMENT')
+    || myInvoices.some((i) => i.status !== 'PAID');
+
   if (!hasHydrated || isCheckingProfile) {
     return (
       <div className="h-screen flex items-center justify-center bg-hosteloom-bg">
@@ -126,7 +131,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
-  const navItems = isAdmin ? adminNav : isOwner ? ownerNav : studentNav;
+
+  const navItems = isAdmin 
+    ? adminNav 
+    : isOwner 
+    ? ownerNav 
+    : studentNav.filter(item => {
+        // Hide "Select Room" if student already has a room or pending payment
+        if (item.href === '/dashboard/select-room' && hasRoomOrPendingPayment) return false;
+        return true;
+      });
 
   const handleLogout = async () => {
     await logout();

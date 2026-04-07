@@ -39,6 +39,8 @@ export default function AdminDashboard() {
 
   const actualPendingStudents = students.filter((s) => s.registrationStatus === 'PENDING');
 
+  const hostelName = activeRooms[0]?.floor?.block?.hostel?.name || '';
+
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return 'Good morning';
@@ -63,8 +65,8 @@ export default function AdminDashboard() {
     },
     { 
       label: 'Revenue This Session', 
-      value: `₦${((summaryData?.financials.totalRevenue ?? 0) / 1000000).toFixed(1)}M`, 
-      sub: `${summaryData?.financials.pendingPayments ? `₦${summaryData.financials.pendingPayments.toLocaleString()} pending` : 'No pending payments'}`, 
+      value: `₦${(summaryData?.financials.totalRevenue ?? 0).toLocaleString('en-NG')}`, 
+      sub: `${summaryData?.financials.pendingPayments ? `₦${summaryData.financials.pendingPayments.toLocaleString('en-NG')} pending` : 'No pending payments'}`, 
       icon: MdPayment, color: 'text-yellow-400', bg: 'bg-yellow-400/10' 
     },
     { 
@@ -80,7 +82,9 @@ export default function AdminDashboard() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">Admin Portal</p>
+          <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">
+            Admin Portal {hostelName ? ` • ${hostelName}` : ''}
+          </p>
           <h1 className="font-heading text-3xl font-bold">{greeting} 👋</h1>
           <p className="text-hosteloom-muted font-body text-sm mt-1">{user?.email}</p>
         </div>

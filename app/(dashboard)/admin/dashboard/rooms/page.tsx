@@ -10,6 +10,7 @@ import RoomCard from '@/components/rooms/RoomCard';
 import CreateRoomModal from '@/components/rooms/CreateRoomModal';
 import BulkCreateRoomsModal from '@/components/rooms/BulkCreateRoomsModal';
 import RoomDetailModal from '@/components/rooms/RoomDetailModal';
+import DeleteRoomsWarningModal from '@/components/rooms/DeleteRoomsWarningModal';
 import Tooltip from '@/components/ui/Tooltip';
 
 const STATUS_FILTERS: Array<RoomStatus | 'ALL' | 'INACTIVE'> = ['ALL', 'VACANT', 'OCCUPIED', 'FULL', 'INACTIVE'];
@@ -40,6 +41,9 @@ export default function RoomsPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [showBulkCreate, setShowBulkCreate] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<import('@/types').RoomWithDetails | null>(null);
+
+  const [deleteWarningOpen, setDeleteWarningOpen] = useState(false);
+  const [deleteWarningType, setDeleteWarningType] = useState<'BLOCK' | 'HOSTEL'>('BLOCK');
 
   const checkHostelStructure = () => {
     if (hostelsLoading) return true; 
@@ -88,16 +92,19 @@ export default function RoomsPage() {
   const visible = rooms.filter((r) => {
     if (filter === 'INACTIVE') return !r.isActive;
     if (!r.isActive) return false;
-    if (filter !== 'ALL' && r.status !== filter) return false;
+    if (filter !== 'ALL') {
+      const effectiveStatus = (r.status as string) === 'PARTIALLY_OCCUPIED' ? 'OCCUPIED' : r.status;
+      if (effectiveStatus !== filter) return false;
+    }
     const q = search.toLowerCase();
     if (q && !r.roomNumber.toLowerCase().includes(q)) return false;
     return true;
   });
 
   const counts = {
-    ALL: rooms.filter((r) => r.isActive).length,
+    ALL: roomsMeta?.total ?? rooms.filter((r) => r.isActive).length,
     VACANT: rooms.filter((r) => r.isActive && r.status === 'VACANT').length,
-    OCCUPIED: rooms.filter((r) => r.isActive && r.status === 'OCCUPIED').length,
+    OCCUPIED: rooms.filter((r) => r.isActive && (r.status === 'OCCUPIED' || (r.status as string) === 'PARTIALLY_OCCUPIED')).length,
     FULL: rooms.filter((r) => r.isActive && r.status === 'FULL').length,
     INACTIVE: rooms.filter((r) => !r.isActive).length,
   };
@@ -157,6 +164,25 @@ export default function RoomsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
+          <Tooltip content="Permanently delete rooms by block" position="bottom">
+            <button
+               onClick={() => { setDeleteWarningType('BLOCK'); setDeleteWarningOpen(true); }}
+               className="px-4 py-2.5 rounded-xl border border-red-500/20 text-red-400 font-heading text-sm hover:bg-red-500/10 transition-all font-bold"
+            >
+              Delete Block Rooms
+            </button>
+          </Tooltip>
+          <Tooltip content="Permanently delete all hostel rooms" position="bottom">
+            <button
+               onClick={() => { setDeleteWarningType('HOSTEL'); setDeleteWarningOpen(true); }}
+               className="px-4 py-2.5 rounded-xl bg-red-500 text-white font-heading text-sm hover:bg-red-600 transition-all font-bold ml-2"
+            >
+               Clear Hostel
+            </button>
+          </Tooltip>
+
+          <div className="w-px h-6 bg-hosteloom-border mx-2 hidden sm:block"></div>
+
           <Tooltip content="Create multiple rooms at once for a floor" position="bottom">
             <button
               onClick={handleOpenBulkCreateRoom}
@@ -302,6 +328,13 @@ export default function RoomsPage() {
       <CreateRoomModal open={showCreate} onClose={() => setShowCreate(false)} onSubmit={handleCreateRoom} />
       <BulkCreateRoomsModal open={showBulkCreate} onClose={() => setShowBulkCreate(false)} onSubmit={handleBulkCreate} />
       <RoomDetailModal room={selectedRoom} onClose={() => setSelectedRoom(null)} />
+      
+      <DeleteRoomsWarningModal 
+         open={deleteWarningOpen} 
+         onClose={() => setDeleteWarningOpen(false)} 
+         targetType={deleteWarningType} 
+         hostelId={currentHostel?.id || null} 
+      />
     </div>
   );
 }

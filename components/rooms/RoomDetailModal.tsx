@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import {
-  MdClose, MdPeople, MdBedroomParent, MdLogout, MdSwapHoriz,
+  MdClose, MdPeople, MdBedroomParent, MdLogout, MdSwapHoriz, MdDelete, MdWarning
 } from 'react-icons/md';
 import { useRoomsStore } from '@/store';
 import type { RoomWithDetails, AvailableRoom } from '@/types';
@@ -26,11 +26,15 @@ export default function RoomDetailModal({ room, onClose }: Props) {
     availableRooms,
     fetchOccupants, fetchAvailableRooms,
     checkoutRoom, reassignRoom,
+    deleteRoom,
   } = useRoomsStore();
 
   const [processingIds, setProcessingIds] = useState<Set<string>>(new Set());
   const [reassignTarget, setReassignTarget] = useState<string | null>(null);
   const [newRoomId, setNewRoomId] = useState('');
+  
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (room) {
@@ -106,11 +110,62 @@ export default function RoomDetailModal({ room, onClose }: Props) {
                 <span className={`px-2.5 py-1 rounded-lg text-[10px] font-heading font-bold uppercase tracking-widest ${statusBadge[room.status] ?? ''}`}>
                   {room.status}
                 </span>
+                <button 
+                  onClick={() => setShowConfirmDelete(true)} 
+                  className="px-2 py-1 flex items-center justify-center text-red-400 hover:bg-red-400/10 rounded-lg transition-colors border border-transparent hover:border-red-400/20"
+                  title="Delete Room"
+                >
+                  <MdDelete className="w-4 h-4" />
+                </button>
+                <div className="w-px h-4 bg-hosteloom-border mx-1" />
                 <button onClick={onClose} className="text-hosteloom-muted hover:text-white transition-colors">
                   <MdClose className="w-5 h-5" />
                 </button>
               </div>
             </div>
+
+            {/* Confirm Delete Section */}
+            {showConfirmDelete && (
+              <div className="bg-red-500/5 border-b border-red-500/20 p-5 animate-in fade-in slide-in-from-top-2">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
+                    <MdWarning className="w-4 h-4 text-red-400" />
+                  </div>
+                  <div>
+                    <h4 className="font-heading font-bold text-sm text-red-100">Delete Room?</h4>
+                    <p className="text-xs text-red-200/70 mt-1 mb-3">
+                      This will permanently delete Room {room.roomNumber} and unassign any occupants. This cannot be undone.
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={async () => {
+                          setIsDeleting(true);
+                          const ok = await deleteRoom(room.id);
+                          setIsDeleting(false);
+                          if (ok) {
+                            toast.success('Room deleted successfully');
+                            onClose();
+                          } else {
+                            toast.error('Failed to delete room');
+                          }
+                        }}
+                        disabled={isDeleting}
+                        className="px-4 py-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-heading font-bold rounded-lg transition-all disabled:opacity-50"
+                      >
+                        {isDeleting ? 'Deleting...' : 'Yes, Delete Room'}
+                      </button>
+                      <button
+                        onClick={() => setShowConfirmDelete(false)}
+                        disabled={isDeleting}
+                        className="px-4 py-1.5 bg-hosteloom-surface hover:bg-hosteloom-surface-light border border-hosteloom-border text-white text-xs font-heading font-bold rounded-lg transition-all"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Body */}
             <div className="p-5 space-y-4">

@@ -88,10 +88,10 @@ export default function FloorRoomsList({
                       {f.rooms?.length || 0} Rooms
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-4">
                     <button
                       onClick={(e) => onDeleteFloor(f.id, e)}
-                      className="opacity-0 group-hover:opacity-100 p-2 text-hosteloom-secondary hover:bg-hosteloom-secondary/10 rounded-lg transition-all"
+                      className="p-2 text-hosteloom-muted hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
                     >
                       <FiTrash2 size={14} />
                     </button>

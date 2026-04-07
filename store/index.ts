@@ -182,6 +182,10 @@ export const useRoomsStore = () => useStore(useShallow((s) => ({
   reassignRoom: s.reassignRoom,
   fetchOccupants: s.fetchOccupants,
   fetchStudentHistory: s.fetchStudentHistory,
+  fetchRoomById: s.fetchRoomById,
+  deleteRoom: s.deleteRoom,
+  deleteRoomsByBlock: s.deleteRoomsByBlock,
+  deleteRoomsByHostel: s.deleteRoomsByHostel,
 })));
 
 export const useSessionsStore = () => useStore(useShallow((s) => ({

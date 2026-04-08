@@ -8,6 +8,7 @@ import {
 import { useDashboardStore } from '@/store';
 import { Loader } from '@/components/ui/Loader';
 import type { ReportType } from '@/types';
+import { generateAndDownloadCSV } from '@/lib/exportUtils';
 
 const reportTypes: Array<{ type: ReportType; label: string; icon: any; color: string }> = [
   { type: 'occupancy', label: 'Occupancy Status', icon: MdPeople, color: 'text-green-400' },
@@ -25,6 +26,10 @@ export default function ReportsPage() {
   }, [activeType, fetchReport]);
 
   const handleRefresh = () => fetchReport(activeType);
+
+  const handleExportCSV = () => {
+    generateAndDownloadCSV(reportData, activeType);
+  };
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
@@ -47,7 +52,13 @@ export default function ReportsPage() {
             Refresh
           </button>
           <button
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent hover:bg-hosteloom-accent-hover text-white text-sm font-heading font-bold transition-all"
+            onClick={handleExportCSV}
+            disabled={reportLoading || !reportData || reportData.length === 0}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-heading font-bold transition-all ${
+              reportLoading || !reportData || reportData.length === 0 
+                ? 'bg-hosteloom-surface/50 text-hosteloom-muted cursor-not-allowed border border-hosteloom-border' 
+                : 'bg-hosteloom-accent hover:bg-hosteloom-accent-hover'
+            }`}
           >
             <MdDownload className="w-4 h-4" />
             Export CSV

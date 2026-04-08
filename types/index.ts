@@ -615,6 +615,12 @@ export interface VerifyPaymentResponse {
 }
 // ─── Dashboard & Reports ─────────────────────────────────────────────────────
 
+export interface LiveActivityEvent {
+  type: 'PAYMENT' | 'APPLICATION' | 'COMPLAINT' | string;
+  data: any;
+  date: string;
+}
+
 export interface DashboardSummary {
   totalHostels: number;
   totalRooms: number;
@@ -624,6 +630,8 @@ export interface DashboardSummary {
     occupiedBeds: number;
     vacantBeds: number;
     occupiedRooms: number;
+    fullyOccupiedRooms: number;
+    partiallyOccupiedRooms: number;
     vacantRooms: number;
     occupancyRatePercentage: number;
   };
@@ -631,6 +639,8 @@ export interface DashboardSummary {
     totalRevenue: number;
     pendingPayments: number;
   };
+  pendingApprovalsCount: number;
+  liveActivity: LiveActivityEvent[];
 }
 
 export type ReportType = 'allocations' | 'payments' | 'maintenance' | 'occupancy';

@@ -9,7 +9,6 @@ import {
 import BroadcastAnnouncementModal from '@/components/notifications/BroadcastAnnouncementModal';
 import { useAuthStore, useRoomsStore, useComplaintsStore, useStudentsStore, useDashboardStore } from '@/store';
 
-const recentActivity: any[] = [];
 
 export default function AdminDashboard() {
   const { user } = useAuthStore();
@@ -49,6 +48,41 @@ export default function AdminDashboard() {
   };
 
   const greeting = getGreeting();
+
+  const recentActivity = (summaryData?.liveActivity || []).map((activity) => {
+    let icon = MdCheckCircle;
+    let color = 'text-gray-400';
+    let label = '';
+    let sub = '';
+
+    if (activity.type === 'PAYMENT') {
+      icon = MdPayment;
+      color = activity.data?.status === 'SUCCESS' ? 'text-green-400' : 'text-yellow-400';
+      label = `Payment • ₦${(activity.data?.amount ?? 0).toLocaleString('en-NG')}`;
+      sub = `From: ${activity.data?.student?.profile?.firstName || ''} ${activity.data?.student?.profile?.lastName || ''}`;
+    } else if (activity.type === 'APPLICATION') {
+      icon = MdPersonAdd;
+      color = 'text-blue-400';
+      label = `Hostel Application`;
+      sub = `By: ${activity.data?.student?.profile?.firstName || ''} ${activity.data?.student?.profile?.lastName || ''} — ${activity.data?.status || 'PENDING'}`;
+    } else if (activity.type === 'COMPLAINT') {
+      icon = MdBuild;
+      color = 'text-orange-400';
+      label = `Maintenance Request`;
+      sub = activity.data?.title || 'New issue reported';
+    } else {
+      label = activity.type;
+      sub = 'System event';
+    }
+
+    return {
+      icon,
+      color,
+      label,
+      sub,
+      time: new Date(activity.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+    };
+  });
 
   const metrics = [
     { 
@@ -147,7 +181,7 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-heading font-bold text-lg">Pending Approvals</h2>
             <span className="text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full text-yellow-400 bg-yellow-400/10">
-              {actualPendingStudents.length}
+              {summaryData?.pendingApprovalsCount ?? actualPendingStudents.length}
             </span>
           </div>
           <div className="space-y-3">

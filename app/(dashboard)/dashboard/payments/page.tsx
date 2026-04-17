@@ -48,6 +48,7 @@ export default function MyPaymentsPage() {
     try {
       const response = await initializePayment({
         invoiceId,
+        callbackUrl: `${window.location.origin}/payment/verify`,
       });
 
       if (response && response.callbackUrl) {

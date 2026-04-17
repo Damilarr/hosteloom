@@ -589,6 +589,7 @@ export interface Payment {
 
 export interface InitializePaymentPayload {
   invoiceId: string;
+  callbackUrl: string;
 }
 
 export interface InitializePaymentResponse {

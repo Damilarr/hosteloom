@@ -59,7 +59,16 @@ async function tryRefreshToken(): Promise<string | null> {
 // ─── Core request ─────────────────────────────────────────────────────────────
 
 async function request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-  const { method = 'GET', body, token, skipRefresh = false } = options;
+  let { method = 'GET', body, token, skipRefresh = false } = options;
+
+  if (!token) {
+    try {
+      const state = getStoreState();
+      if (state.token) {
+        token = state.token;
+      }
+    } catch {}
+  }
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',

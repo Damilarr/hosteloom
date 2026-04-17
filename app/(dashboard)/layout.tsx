@@ -44,6 +44,13 @@ const adminNav = [
   { href: '/admin/dashboard/reports', icon: MdBarChart, label: 'Reports', tourId: 'nav-reports' },
 ];
 
+const superAdminNav = [
+  { href: '/super-admin/dashboard', icon: MdDashboard, label: 'Overview', tourId: 'nav-sa-overview' },
+  { href: '/super-admin/dashboard/owners', icon: MdAdminPanelSettings, label: 'Hostel Owners', tourId: 'nav-sa-owners' },
+  { href: '/super-admin/dashboard/students', icon: MdPeople, label: 'Students', tourId: 'nav-sa-students' },
+  { href: '/super-admin/dashboard/announcements', icon: MdOutlinedFlag, label: 'Announcements', tourId: 'nav-sa-announcements' }
+];
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   useNotificationsSocket();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -60,11 +67,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isCheckingProfile, setIsCheckingProfile] = React.useState(false);
   const [hasCheckedProfile, setHasCheckedProfile] = React.useState(false);
 
+  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
   const isAdmin = user?.role === 'HOSTEL_ADMIN';
   const isOwner = user?.role === 'HOSTEL_OWNER';
   
-  const PROFILE_ROUTE = isAdmin ? '/admin/dashboard' : isOwner ? '/owner/profile' : '/dashboard/profile';
-  const needsProfile = isAdmin ? !adminProfile : (isOwner ? !ownerProfile : !profile);
+  const PROFILE_ROUTE = isSuperAdmin ? '/super-admin/dashboard/owners' : isAdmin ? '/admin/dashboard' : isOwner ? '/owner/profile' : '/dashboard/profile';
+  const needsProfile = isSuperAdmin ? false : isAdmin ? !adminProfile : (isOwner ? !ownerProfile : !profile);
 
   useEffect(() => {
     if (!hasHydrated || !isAuthenticated || hasCheckedProfile) return;
@@ -92,7 +100,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       setIsCheckingProfile(false);
       setHasCheckedProfile(true);
       
-      if (profileStillMissing && !isAdmin) {
+      if (profileStillMissing && !isAdmin && !isSuperAdmin) {
         router.replace(PROFILE_ROUTE);
       }
     };
@@ -101,10 +109,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, [hasHydrated, isAuthenticated, needsProfile, hasCheckedProfile, isAdmin, isOwner, fetchAdminProfile, fetchOwnerProfile, fetchProfile, router, PROFILE_ROUTE]);
 
   useEffect(() => {
-    if (hasHydrated && isAuthenticated && hasCheckedProfile && needsProfile && !isAdmin && pathname !== PROFILE_ROUTE) {
+    if (hasHydrated && isAuthenticated && hasCheckedProfile && needsProfile && (!isAdmin && !isSuperAdmin) && pathname !== PROFILE_ROUTE) {
       router.replace(PROFILE_ROUTE);
     }
-  }, [hasHydrated, isAuthenticated, hasCheckedProfile, needsProfile, isAdmin, pathname, router, PROFILE_ROUTE]);
+  }, [hasHydrated, isAuthenticated, hasCheckedProfile, needsProfile, isAdmin, isSuperAdmin, pathname, router, PROFILE_ROUTE]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -114,7 +122,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const displayName = isAdmin
+  const displayName = isSuperAdmin
+    ? 'Super Admin'
+    : isAdmin
     ? adminProfile ? `${adminProfile.firstName} ${adminProfile.lastName}`.trim() : user?.email ?? ''
     : isOwner ? user?.email ?? 'Hostel Owner' : profile ? `${profile.firstName} ${profile.lastName}`.trim() : user?.email ?? '';
 
@@ -132,7 +142,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
 
-  const navItems = isAdmin 
+  const navItems = isSuperAdmin
+    ? superAdminNav
+    : isAdmin 
     ? adminNav 
     : isOwner 
     ? ownerNav 
@@ -194,12 +206,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         <div className="px-6 py-4">
           <span className={`inline-flex items-center gap-1.5 text-[10px] font-heading font-bold uppercase tracking-widest px-3 py-1.5 rounded-full ${
-            isAdmin
+            isAdmin || isSuperAdmin
               ? 'bg-hosteloom-accent/15 text-hosteloom-accent'
               : 'bg-hosteloom-secondary/15 text-hosteloom-secondary'
           }`}>
             <span className="w-1.5 h-1.5 rounded-full bg-current" />
-            {isAdmin ? 'Hostel Admin' : isOwner ? 'Hostel Owner' : 'Student'}
+            {isSuperAdmin ? 'Super Admin' : isAdmin ? 'Hostel Admin' : isOwner ? 'Hostel Owner' : 'Student'}
           </span>
         </div>
 

@@ -1,6 +1,6 @@
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
-export type UserRole = 'STUDENT' | 'HOSTEL_ADMIN' | 'HOSTEL_OWNER';
+export type UserRole = 'STUDENT' | 'HOSTEL_ADMIN' | 'HOSTEL_OWNER' | 'SUPER_ADMIN';
 
 export interface User {
   id: string;
@@ -138,11 +138,15 @@ export interface OwnerProfile {
   phone: string;
   address: string;
   companyName?: string;
+  bankCode?: string;
+  bankAccountNo?: string;
+  bankAccountName?: string;
+  status?: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export type OwnerProfilePayload = Pick<OwnerProfile, 'firstName' | 'lastName' | 'email' | 'phone' | 'address' | 'companyName'>;
+export type OwnerProfilePayload = Pick<OwnerProfile, 'firstName' | 'lastName' | 'email' | 'phone' | 'address' | 'companyName' | 'bankCode' | 'bankAccountNo' | 'bankAccountName'>;
 
 export interface OwnerProfileApiResponse {
   message: string;
@@ -165,6 +169,7 @@ export interface StudentRecord {
   createdAt: string;
   updatedAt: string;
   user: { email: string };
+  hostel?: { name: string } | null;
 }
 
 export interface StudentsListResponse {
@@ -584,28 +589,11 @@ export interface Payment {
 
 export interface InitializePaymentPayload {
   invoiceId: string;
-  amount: number;
-  email: string;
-  callback_url: string;
 }
 
 export interface InitializePaymentResponse {
-  message: string;
-  payment: {
-    id: string;
-    amount: string;
-    reference: string;
-    paystackId: string | null;
-    status: PaymentStatus;
-    receiptData: PaymentReceiptData | null;
-    studentId: string;
-    invoiceId: string;
-    createdAt: string;
-    updatedAt: string;
-  };
-  authorization_url: string;
-  access_code: string;
-  reference: string;
+  invoiceId: string;
+  callbackUrl: string;
 }
 
 export interface VerifyPaymentResponse {

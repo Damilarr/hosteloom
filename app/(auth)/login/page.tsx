@@ -29,6 +29,8 @@ export default function LoginPage() {
         router.push('/owner/dashboard');
       } else if (user.role === 'HOSTEL_ADMIN') {
         router.push('/admin/dashboard');
+      } else if (user.role === 'SUPER_ADMIN') {
+        router.push('/super-admin/dashboard');
       } else {
         router.push('/dashboard');
       }

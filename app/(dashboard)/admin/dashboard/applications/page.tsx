@@ -7,16 +7,21 @@ import { Loader } from '@/components/ui/Loader';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'sonner';
 import Tooltip from '@/components/ui/Tooltip';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function AdminApplicationsPage() {
   const { adminProfile } = useProfileStore();
   const { 
     myApplications, appsLoading, appsError, 
-    fetchAllApplications, approveApplication, rejectApplication 
+    fetchAllApplications, approveApplication, rejectApplication, approveAllApplications 
   } = useApplicationsStore();
 
   const [processingId, setProcessingId] = React.useState<string | null>(null);
-  const [processingAction, setProcessingAction] = React.useState<'approve' | 'reject' | null>(null);
+  const [processingAction, setProcessingAction] = React.useState<'approve' | 'reject' | 'approve-all' | null>(null);
+
+  const [approveAllModalOpen, setApproveAllModalOpen] = React.useState(false);
+  const [rejectModalOpen, setRejectModalOpen] = React.useState<string | null>(null);
+  const [rejectReason, setRejectReason] = React.useState('');
 
   const hostelId = adminProfile?.hostelId;
 
@@ -39,13 +44,34 @@ export default function AdminApplicationsPage() {
     }
   };
 
-  const handleReject = async (id: string) => {
-    const reason = window.prompt('Please enter a reason for rejection:');
-    if (reason === null) return;
+  const confirmApproveAll = async () => {
+    if (!hostelId) return;
+    setApproveAllModalOpen(false);
+
+    setProcessingAction('approve-all');
+    const success = await approveAllApplications(hostelId);
+    setProcessingAction(null);
+    
+    if (success) {
+      toast.success('All pending applications approved successfully');
+    } else {
+      toast.error('Failed to approve all applications, or no pending applications exist');
+    }
+  };
+
+  const openRejectModal = (id: string) => {
+    setRejectModalOpen(id);
+    setRejectReason('');
+  };
+
+  const confirmReject = async () => {
+    if (!rejectModalOpen || !rejectReason.trim()) return;
+    const id = rejectModalOpen;
+    setRejectModalOpen(null);
     
     setProcessingId(id);
     setProcessingAction('reject');
-    const success = await rejectApplication(id, reason);
+    const success = await rejectApplication(id, rejectReason.trim());
     setProcessingId(null);
     setProcessingAction(null);
     if (success) {
@@ -55,12 +81,38 @@ export default function AdminApplicationsPage() {
     }
   };
 
+  const pendingCount = myApplications.filter(app => app.status === 'PENDING').length;
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <div>
-        <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">Administration</p>
-        <h1 className="font-heading text-3xl font-bold text-white">Hostel Applications</h1>
-        <p className="text-hosteloom-muted font-body text-sm mt-1">Review and manage guest applications for your hostel.</p>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">Administration</p>
+          <h1 className="font-heading text-3xl font-bold text-white">Hostel Applications</h1>
+          <p className="text-hosteloom-muted font-body text-sm mt-1">Review and manage guest applications for your hostel.</p>
+        </div>
+        
+        {pendingCount > 0 && (
+          <Tooltip content="Approve all pending applications instantly" position="bottom">
+            <button
+              onClick={() => setApproveAllModalOpen(true)}
+              disabled={!!processingAction || appsLoading}
+              className="px-6 py-3 bg-hosteloom-accent text-white hover:bg-hosteloom-accent/80 rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+            >
+              {processingAction === 'approve-all' ? (
+                <>
+                  <Loader size={16} className="text-white" />
+                  Approving All...
+                </>
+              ) : (
+                <>
+                  <MdCheckCircle className="w-4 h-4" />
+                  Approve All ({pendingCount})
+                </>
+              )}
+            </button>
+          </Tooltip>
+        )}
       </div>
 
       {appsLoading ? (
@@ -144,7 +196,7 @@ export default function AdminApplicationsPage() {
                   <div className="flex items-center gap-3 lg:pl-10 lg:border-l lg:border-hosteloom-border">
                     <Tooltip content="You'll be asked to provide a rejection reason" position="top">
                       <button
-                        onClick={() => handleReject(app.id)}
+                        onClick={() => openRejectModal(app.id)}
                         disabled={!!processingId || appsLoading}
                         className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex disabled:opacity-50 disabled:cursor-not-allowed"
                       >
@@ -194,6 +246,76 @@ export default function AdminApplicationsPage() {
           ))}
         </div>
       )}
+
+      {/* Modals */}
+      <AnimatePresence>
+        {approveAllModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6 w-full max-w-md shadow-2xl"
+            >
+              <h3 className="font-heading font-bold text-xl text-white mb-2">Approve All Pending?</h3>
+              <p className="text-hosteloom-muted text-sm font-body mb-6">
+                Are you sure you want to approve all {pendingCount} pending applications at once? This action cannot be easily undone.
+              </p>
+              <div className="flex items-center gap-3 justify-end">
+                <button
+                  onClick={() => setApproveAllModalOpen(false)}
+                  className="px-4 py-2 border border-hosteloom-border text-white hover:bg-hosteloom-surface-light rounded-xl text-sm font-heading font-bold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmApproveAll}
+                  className="px-4 py-2 bg-hosteloom-accent text-white hover:bg-hosteloom-accent/80 rounded-xl text-sm font-heading font-bold transition-colors shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+                >
+                  Yes, Approve All
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {rejectModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6 w-full max-w-md shadow-2xl"
+            >
+              <h3 className="font-heading font-bold text-xl text-white mb-2">Reject Application</h3>
+              <p className="text-hosteloom-muted text-sm font-body mb-4">
+                Please provide a reason for rejecting this application. This reason will be recorded and shared with the applicant.
+              </p>
+              <textarea
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                placeholder="E.g., No available spaces for your academic level."
+                className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all font-body mb-6 min-h-[100px] resize-none"
+              />
+              <div className="flex items-center gap-3 justify-end">
+                <button
+                  onClick={() => setRejectModalOpen(null)}
+                  className="px-4 py-2 border border-hosteloom-border text-white hover:bg-hosteloom-surface-light rounded-xl text-sm font-heading font-bold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmReject}
+                  disabled={!rejectReason.trim()}
+                  className="px-4 py-2 bg-red-500/20 text-red-100 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-heading font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Confirm Rejection
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

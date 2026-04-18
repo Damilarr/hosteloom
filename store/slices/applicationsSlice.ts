@@ -13,6 +13,7 @@ export interface ApplicationsSlice {
   fetchAllApplications: (hostelId: string) => Promise<void>;
   applyToHostel: (payload: ApplyToHostelPayload) => Promise<boolean>;
   approveApplication: (id: string) => Promise<boolean>;
+  approveAllApplications: (hostelId: string) => Promise<boolean>;
   rejectApplication: (id: string, reason: string) => Promise<boolean>;
 }
 
@@ -64,6 +65,17 @@ export const createApplicationsSlice: StateCreator<ApplicationsSlice & WithToken
       const applications = get().myApplications;
       const app = applications.find(a => a.id === id);
       if (app) get().fetchAllApplications(app.hostelId);
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  approveAllApplications: async (hostelId) => {
+    try {
+      const token = get().token ?? undefined;
+      await api.patch(`/hostel-applications/${hostelId}/approve-all`, {}, token);
+      get().fetchAllApplications(hostelId);
       return true;
     } catch {
       return false;

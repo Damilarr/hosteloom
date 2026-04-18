@@ -285,6 +285,7 @@ export const useApplicationsStore = () => useStore(useShallow((s) => ({
   fetchAllApplications: s.fetchAllApplications,
   applyToHostel: s.applyToHostel,
   approveApplication: s.approveApplication,
+  approveAllApplications: s.approveAllApplications,
   rejectApplication: s.rejectApplication,
 })));
 

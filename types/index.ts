@@ -590,11 +590,15 @@ export interface Payment {
 export interface InitializePaymentPayload {
   invoiceId: string;
   callbackUrl: string;
+  email: string;
 }
 
 export interface InitializePaymentResponse {
-  invoiceId: string;
-  callbackUrl: string;
+  message: string;
+  payment: Payment;
+  authorization_url: string;
+  access_code?: string;
+  reference?: string;
 }
 
 export interface VerifyPaymentResponse {

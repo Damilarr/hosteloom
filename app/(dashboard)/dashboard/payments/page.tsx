@@ -49,10 +49,11 @@ export default function MyPaymentsPage() {
       const response = await initializePayment({
         invoiceId,
         callbackUrl: `${window.location.origin}/payment/verify`,
+        email: user?.email || '',
       });
 
-      if (response && response.callbackUrl) {
-        window.location.href = response.callbackUrl;
+      if (response && response.authorization_url) {
+        window.location.href = response.authorization_url;
       } else {
         toast.error('Failed to parse authorization URL from payment provider');
       }

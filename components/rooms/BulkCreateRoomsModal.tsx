@@ -98,14 +98,14 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-green-400/15 flex items-center justify-center">
-                  <MdPlaylistAdd className="w-5 h-5 text-green-400" />
+                  <MdPlaylistAdd className="w-5 h-5 text-emerald-600" />
                 </div>
                 <div>
-                  <p className="font-heading font-semibold text-white text-sm">Bulk Create Rooms</p>
+                  <p className="font-heading font-semibold text-hosteloom-heading text-sm">Bulk Create Rooms</p>
                   <p className="text-xs text-hosteloom-muted">Provision a batch of rooms</p>
                 </div>
               </div>
-              <button onClick={onClose} className="text-hosteloom-muted hover:text-white transition-colors">
+              <button onClick={onClose} className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors">
                 <MdClose className="w-5 h-5" />
               </button>
             </div>
@@ -118,7 +118,7 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
                   value={prefix}
                   onChange={(e) => setPrefix(e.target.value)}
                   placeholder='e.g. "B"'
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                   required
                 />
               </div>
@@ -130,7 +130,7 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
                     min={1}
                     value={start}
                     onChange={(e) => setStart(Number(e.target.value))}
-                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                     required
                   />
                 </div>
@@ -141,7 +141,7 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
                     min={1}
                     value={end}
                     onChange={(e) => setEnd(Number(e.target.value))}
-                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                     required
                   />
                 </div>
@@ -155,7 +155,7 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
                     max={20}
                     value={capacity}
                     onChange={(e) => setCapacity(Number(e.target.value))}
-                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                     required
                   />
                 </div>
@@ -167,7 +167,7 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
                     step={100}
                     value={price}
                     onChange={(e) => setPrice(Number(e.target.value))}
-                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                     required
                   />
                 </div>
@@ -178,7 +178,7 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
                 <select
                   value={selectedHostel}
                   onChange={(e) => { setSelectedHostel(e.target.value); setSelectedBlock(''); setFloorId(''); }}
-                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none"
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-hosteloom-heading focus:border-hosteloom-accent outline-none"
                   required
                   disabled={user?.role === 'HOSTEL_ADMIN'}
                 >
@@ -190,7 +190,7 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
                   value={selectedBlock}
                   onChange={(e) => { setSelectedBlock(e.target.value); setFloorId(''); }}
                   disabled={!selectedHostel}
-                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none disabled:opacity-50"
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-hosteloom-heading focus:border-hosteloom-accent outline-none disabled:opacity-50"
                   required
                 >
                   <option value="" disabled>Select Block</option>
@@ -201,7 +201,7 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
                   value={floorId}
                   onChange={(e) => setFloorId(e.target.value)}
                   disabled={!selectedBlock}
-                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none disabled:opacity-50"
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-hosteloom-heading focus:border-hosteloom-accent outline-none disabled:opacity-50"
                   required
                 >
                   <option value="" disabled>Select Floor</option>
@@ -211,13 +211,13 @@ export default function BulkCreateRoomsModal({ open, onClose, onSubmit }: Props)
 
               {prefix.trim() && (
                 <div className="text-xs text-hosteloom-muted bg-hosteloom-bg rounded-xl px-3 py-2 border border-hosteloom-border">
-                  Preview: <span className="text-white font-medium">{previewLabel}</span>
+                  Preview: <span className="text-hosteloom-heading font-medium">{previewLabel}</span>
                 </div>
               )}
 
               <div className="flex gap-3 justify-end pt-1">
                 <button type="button" onClick={onClose}
-                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-white border border-hosteloom-border rounded-xl transition-all">
+                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-hosteloom-heading border border-hosteloom-border rounded-xl transition-all">
                   Cancel
                 </button>
                 <button type="submit" disabled={loading}

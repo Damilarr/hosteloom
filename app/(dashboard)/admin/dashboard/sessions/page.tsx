@@ -56,7 +56,7 @@ export default function SessionsPage() {
           <Tooltip content="Create a new academic session for allocations" position="bottom">
             <button
               onClick={() => setShowCreate(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent hover:bg-hosteloom-accent/80 transition-all text-sm font-heading font-bold text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-hosteloom-accent hover:bg-hosteloom-accent/80 transition-all text-sm font-heading font-bold text-hosteloom-heading shadow-[0_0_12px_rgba(168,85,247,0.4)]"
             >
               <MdAdd className="w-4 h-4" /> Create Session
             </button>
@@ -64,7 +64,7 @@ export default function SessionsPage() {
           <button
             onClick={() => fetchSessions()}
             disabled={sessionsLoading}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent transition-all text-sm font-heading"
           >
             <MdRefresh className={`w-4 h-4 ${sessionsLoading ? 'animate-spin' : ''}`} /> Refresh
           </button>
@@ -88,7 +88,7 @@ export default function SessionsPage() {
             <MdDateRange className="w-6 h-6 text-hosteloom-muted" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-white">No sessions found</p>
+            <p className="font-heading font-semibold text-hosteloom-heading">No sessions found</p>
             <p className="text-hosteloom-muted text-sm mt-1">Create an academic session to get started.</p>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function SessionsPage() {
                       <MdDateRange className={`w-6 h-6 ${session.isActive ? 'text-hosteloom-accent' : 'text-hosteloom-muted'}`} />
                     </div>
                     <div>
-                      <p className="font-heading font-bold text-lg text-white">{session.name}</p>
+                      <p className="font-heading font-bold text-lg text-hosteloom-heading">{session.name}</p>
                       <p className="text-xs text-hosteloom-muted">
                         Created {new Date(session.createdAt).toLocaleDateString()}
                       </p>
@@ -140,7 +140,7 @@ export default function SessionsPage() {
                       <button
                         onClick={() => handleActivate(session.id, session.name)}
                         disabled={activatingId === session.id}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading font-medium text-hosteloom-muted hover:text-white hover:border-hosteloom-accent/50 hover:bg-hosteloom-accent/10 transition-all disabled:opacity-50"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading font-medium text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent/50 hover:bg-hosteloom-accent/10 transition-all disabled:opacity-50"
                       >
                         <MdCheckCircle className="w-4 h-4" />
                         {activatingId === session.id ? 'Activating…' : 'Activate'}

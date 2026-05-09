@@ -125,12 +125,12 @@ export default function SuperAdminOwnersPage() {
           placeholder="Search owners by name, email, phone, or company..." 
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="flex-1 w-full bg-hosteloom-surface border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent/50 focus:ring-1 focus:ring-hosteloom-accent/50 transition-all font-body"
+          className="flex-1 w-full bg-hosteloom-surface border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent/50 focus:ring-1 focus:ring-hosteloom-accent/50 transition-all font-body"
         />
         <select 
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as any)}
-          className="w-full sm:w-48 bg-hosteloom-surface border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-hosteloom-accent/50 focus:ring-1 focus:ring-hosteloom-accent/50 transition-all font-body appearance-none cursor-pointer"
+          className="w-full sm:w-48 bg-hosteloom-surface border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-hosteloom-heading focus:outline-none focus:border-hosteloom-accent/50 focus:ring-1 focus:ring-hosteloom-accent/50 transition-all font-body appearance-none cursor-pointer"
         >
           <option value="ALL">All Owners</option>
           <option value="VERIFIED">Verified</option>
@@ -153,7 +153,7 @@ export default function SuperAdminOwnersPage() {
             <FiMonitor className="w-6 h-6 text-hosteloom-muted" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-white">No owners found</p>
+            <p className="font-heading font-semibold text-hosteloom-heading">No owners found</p>
             <p className="text-hosteloom-muted text-sm mt-1">
               There are no registered hostel owners yet.
             </p>
@@ -165,7 +165,7 @@ export default function SuperAdminOwnersPage() {
             <FiMonitor className="w-6 h-6 text-hosteloom-muted" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-white">No matches found</p>
+            <p className="font-heading font-semibold text-hosteloom-heading">No matches found</p>
             <p className="text-hosteloom-muted text-sm mt-1">
               Try adjusting your search query or filters.
             </p>
@@ -188,7 +188,7 @@ export default function SuperAdminOwnersPage() {
                 >
                   <div className="flex justify-between items-start gap-4">
                     <div>
-                      <h3 className="font-heading font-bold text-white text-lg">
+                      <h3 className="font-heading font-bold text-hosteloom-heading text-lg">
                         {owner.name || `${owner.firstName || ''} ${owner.lastName || ''}`.trim() || 'Unnamed Owner'}
                       </h3>
                       <p className="text-sm text-hosteloom-muted font-body mt-0.5 truncate">
@@ -204,8 +204,8 @@ export default function SuperAdminOwnersPage() {
                     <span
                       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-heading font-bold uppercase tracking-widest shrink-0 ${
                         isVerified
-                          ? 'bg-green-400/10 text-green-400 border-green-400/20'
-                          : 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20'
+                          ? 'bg-green-400/10 text-emerald-600 border-emerald-500/20'
+                          : 'bg-yellow-400/10 text-amber-600 border-amber-500/20'
                       }`}
                     >
                       {isVerified ? (
@@ -228,7 +228,7 @@ export default function SuperAdminOwnersPage() {
                       disabled={isToggling}
                       className={`w-full py-2.5 px-4 rounded-xl font-heading font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all ${
                         isVerified
-                          ? 'bg-transparent text-hosteloom-muted border border-hosteloom-border hover:text-white hover:bg-hosteloom-surface-light'
+                          ? 'bg-transparent text-hosteloom-muted border border-hosteloom-border hover:text-hosteloom-heading hover:bg-hosteloom-surface-light'
                           : 'bg-hosteloom-accent text-white hover:bg-hosteloom-accent/80'
                       } disabled:opacity-50 disabled:cursor-not-allowed`}
                     >

@@ -58,7 +58,7 @@ export default function Tooltip({ children, content, position = 'top', delay = 3
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.15, ease: 'easeOut' }}
           >
-            <div className="relative px-3 py-1.5 rounded-lg bg-[#2A2832] border border-white/10 text-white text-xs font-body whitespace-nowrap shadow-xl shadow-black/40">
+            <div className="relative px-3 py-1.5 rounded-lg bg-hosteloom-surface-light border border-hosteloom-border text-hosteloom-heading text-xs font-body whitespace-nowrap shadow-xl shadow-black/40">
               {content}
               <div className={`absolute w-0 h-0 border-[5px] ${arrowStyles[position]}`} />
             </div>

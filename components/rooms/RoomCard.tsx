@@ -11,9 +11,9 @@ interface Props {
 }
 
 const statusBadge: Record<string, string> = {
-  VACANT:              'bg-green-400/15 text-green-400 border-green-400/30',
-  OCCUPIED:            'bg-yellow-400/15 text-yellow-400 border-yellow-400/30',
-  PARTIALLY_OCCUPIED:  'bg-yellow-400/15 text-yellow-400 border-yellow-400/30',
+  VACANT:              'bg-green-400/15 text-emerald-600 border-emerald-500/30',
+  OCCUPIED:            'bg-yellow-400/15 text-amber-600 border-amber-500/30',
+  PARTIALLY_OCCUPIED:  'bg-yellow-400/15 text-amber-600 border-amber-500/30',
   FULL:                'bg-red-400/15 text-red-400 border-red-400/30',
 };
 
@@ -54,7 +54,7 @@ export default function RoomCard({ room, onUpdate, onClick }: Props) {
             <MdBedroomParent className="w-5 h-5 text-hosteloom-accent" />
           </div>
           <div>
-            <p className="font-heading font-bold text-white">{room.roomNumber}</p>
+            <p className="font-heading font-bold text-hosteloom-heading">{room.roomNumber}</p>
             <p className="text-[11px] text-hosteloom-muted">
               {room.isActive ? 'Active' : 'Inactive'}
             </p>
@@ -79,7 +79,7 @@ export default function RoomCard({ room, onUpdate, onClick }: Props) {
         <button
           onClick={handleToggleActive}
           disabled={toggling}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading text-hosteloom-muted hover:text-white hover:border-hosteloom-accent/50 transition-all disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent/50 transition-all disabled:opacity-50"
         >
           {room.isActive
             ? <><MdToggleOff className="w-4 h-4" /> Deactivate</>
@@ -90,7 +90,7 @@ export default function RoomCard({ room, onUpdate, onClick }: Props) {
         {!editing ? (
           <button
             onClick={() => setEditing(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading text-hosteloom-muted hover:text-white hover:border-hosteloom-accent/50 transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent/50 transition-all"
           >
             <MdEdit className="w-3.5 h-3.5" /> Edit Capacity
           </button>
@@ -102,7 +102,7 @@ export default function RoomCard({ room, onUpdate, onClick }: Props) {
               max={20}
               value={capacity}
               onChange={(e) => setCapacity(Number(e.target.value))}
-              className="w-16 bg-hosteloom-bg border border-hosteloom-border rounded-lg py-1.5 px-2 text-white text-xs focus:outline-none focus:border-hosteloom-accent transition-all"
+              className="w-16 bg-hosteloom-bg border border-hosteloom-border rounded-lg py-1.5 px-2 text-hosteloom-heading text-xs focus:outline-none focus:border-hosteloom-accent transition-all"
             />
             <button
               onClick={handleSaveCapacity}
@@ -113,7 +113,7 @@ export default function RoomCard({ room, onUpdate, onClick }: Props) {
             </button>
             <button
               onClick={() => { setEditing(false); setCapacity(room.capacity); }}
-              className="px-2 py-1.5 rounded-lg border border-hosteloom-border text-xs text-hosteloom-muted hover:text-white transition-all"
+              className="px-2 py-1.5 rounded-lg border border-hosteloom-border text-xs text-hosteloom-muted hover:text-hosteloom-heading transition-all"
             >
               <MdClose className="w-4 h-4" />
             </button>

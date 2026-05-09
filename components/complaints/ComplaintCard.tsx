@@ -2,15 +2,15 @@ import type { Complaint } from '@/types';
 import { MdAccessTime } from 'react-icons/md';
 
 const statusClass: Record<string, string> = {
-  PENDING:     'bg-yellow-400/15 text-yellow-400',
-  IN_PROGRESS: 'bg-blue-400/15 text-blue-400',
-  RESOLVED:    'bg-green-400/15 text-green-400',
+  PENDING:     'bg-yellow-400/15 text-amber-600',
+  IN_PROGRESS: 'bg-blue-400/15 text-blue-600',
+  RESOLVED:    'bg-green-400/15 text-emerald-600',
 };
 
 const categoryClass: Record<string, string> = {
-  SECURITY:    'bg-red-400/10 text-red-300',
-  PLUMBING:    'bg-blue-400/10 text-blue-300',
-  ELECTRICAL:  'bg-yellow-400/10 text-yellow-300',
+  SECURITY:    'bg-red-400/10 text-red-500',
+  PLUMBING:    'bg-blue-400/10 text-blue-600',
+  ELECTRICAL:  'bg-yellow-400/10 text-amber-600',
   OTHER:       'bg-hosteloom-muted/10 text-hosteloom-muted',
 };
 
@@ -26,7 +26,7 @@ export default function ComplaintCard({ complaint }: Props) {
   return (
     <div className="bg-hosteloom-surface border border-hosteloom-border hover:border-hosteloom-accent/40 rounded-2xl px-5 py-4 space-y-3 transition-all">
       <div className="flex items-start justify-between gap-3 flex-wrap">
-        <p className="font-heading font-semibold text-white text-sm">{complaint.title}</p>
+        <p className="font-heading font-semibold text-hosteloom-heading text-sm">{complaint.title}</p>
         <div className="flex items-center gap-2 shrink-0">
           <span className={`text-[10px] px-2 py-0.5 rounded-full font-heading font-bold uppercase tracking-widest ${categoryClass[complaint.category] ?? categoryClass.OTHER}`}>
             {complaint.category}

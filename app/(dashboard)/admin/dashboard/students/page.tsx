@@ -13,8 +13,8 @@ import { ConfirmModal } from '@/components/ui/ConfirmModal';
 const STATUS_FILTERS: Array<RegistrationStatus | 'ALL'> = ['ALL', 'PENDING', 'APPROVED', 'REJECTED'];
 
 const statusColor: Record<RegistrationStatus, string> = {
-  PENDING:  'bg-yellow-400/15 text-yellow-400',
-  APPROVED: 'bg-green-400/15 text-green-400',
+  PENDING:  'bg-yellow-400/15 text-amber-600',
+  APPROVED: 'bg-green-400/15 text-emerald-600',
   REJECTED: 'bg-red-400/15 text-red-400',
 };
 
@@ -85,7 +85,7 @@ export default function StudentsPage() {
         <button
           onClick={() => fetchStudents()}
           disabled={studentsLoading}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent transition-all text-sm font-heading"
         >
           <MdRefresh className={`w-4 h-4 ${studentsLoading ? 'animate-spin' : ''}`} />
           Refresh
@@ -101,7 +101,7 @@ export default function StudentsPage() {
             className={`px-4 py-2 rounded-xl text-xs font-heading font-bold uppercase tracking-widest transition-all ${
               filter === s
                 ? 'bg-hosteloom-accent text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]'
-                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-white'
+                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading'
             }`}
           >
             {s} <span className="ml-1 opacity-60">{counts[s]}</span>
@@ -119,7 +119,7 @@ export default function StudentsPage() {
           placeholder="Search by name, email or matric no…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-sm bg-hosteloom-surface border border-hosteloom-border rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+          className="w-full max-w-sm bg-hosteloom-surface border border-hosteloom-border rounded-xl py-3 pl-11 pr-4 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
         />
       </div>
 
@@ -141,7 +141,7 @@ export default function StudentsPage() {
             <FiUser className="w-6 h-6 text-hosteloom-muted" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-white">No students found</p>
+            <p className="font-heading font-semibold text-hosteloom-heading">No students found</p>
             <p className="text-hosteloom-muted text-sm mt-1">Try adjusting your search or filter.</p>
           </div>
         </div>

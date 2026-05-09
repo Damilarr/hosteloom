@@ -2,8 +2,8 @@ import type { StudentRecord } from '@/types';
 import { MdCheckCircle, MdCancel, MdDelete, MdSchool } from 'react-icons/md';
 
 const statusClass: Record<string, string> = {
-  PENDING:  'bg-yellow-400/15 text-yellow-400',
-  APPROVED: 'bg-green-400/15 text-green-400',
+  PENDING:  'bg-yellow-400/15 text-amber-600',
+  APPROVED: 'bg-green-400/15 text-emerald-600',
   REJECTED: 'bg-red-400/15 text-red-400',
 };
 
@@ -29,10 +29,10 @@ export default function StudentRow({ student, isProcessing, onDelete }: Props) {
       {/* Info */}
       <div className="flex-1 min-w-0 space-y-0.5">
         <div className="flex items-center gap-2 flex-wrap">
-          <p className="font-heading font-semibold text-white text-sm truncate">
+          <p className="font-heading font-semibold text-hosteloom-heading text-sm truncate">
             {student.firstName} {student.lastName}
           </p>
-          <span className="text-[10px] px-2 py-0.5 rounded-full font-heading font-bold uppercase tracking-widest bg-green-400/10 text-green-400">
+          <span className="text-[10px] px-2 py-0.5 rounded-full font-heading font-bold uppercase tracking-widest bg-green-400/10 text-emerald-600">
             {student.registrationStatus}
           </span>
         </div>

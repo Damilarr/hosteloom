@@ -39,7 +39,7 @@ export default function FloorRoomsList({
           disabledFloors ? "opacity-40 grayscale pointer-events-none" : "opacity-100"
         }`}
       >
-        <div className="p-5 border-b border-hosteloom-border flex items-center justify-between bg-white/[0.02]">
+        <div className="p-5 border-b border-hosteloom-border flex items-center justify-between bg-hosteloom-hover-bg">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-hosteloom-accent/10 flex items-center justify-center text-hosteloom-accent">
               <FiLayers className="w-4 h-4" />
@@ -49,7 +49,7 @@ export default function FloorRoomsList({
           {!disabledFloors && (
             <button
               onClick={onAddFloor}
-              className="w-8 h-8 rounded-full bg-hosteloom-surface-light border border-hosteloom-border flex items-center justify-center text-white hover:bg-hosteloom-accent hover:border-hosteloom-accent transition-all group"
+              className="w-8 h-8 rounded-full bg-hosteloom-surface-light border border-hosteloom-border flex items-center justify-center text-hosteloom-heading hover:bg-hosteloom-accent hover:border-hosteloom-accent transition-all group"
             >
               <FiPlus className="w-4 h-4 group-hover:scale-110 transition-transform" />
             </button>
@@ -77,8 +77,8 @@ export default function FloorRoomsList({
                 onClick={() => onSelectFloor(f)}
                 className={`group p-4 rounded-xl border transition-all cursor-pointer ${
                   selectedFloor?.id === f.id
-                    ? "bg-hosteloom-accent/10 border-hosteloom-accent/30 text-white"
-                    : "bg-hosteloom-surface-light border-hosteloom-border hover:border-white/20 hover:bg-hosteloom-surface-light/80"
+                    ? "bg-hosteloom-accent/10 border-hosteloom-accent/30 text-hosteloom-heading"
+                    : "bg-hosteloom-surface-light border-hosteloom-border hover:border-hosteloom-accent/20 hover:bg-hosteloom-surface-light/80"
                 }`}
               >
                 <div className="flex justify-between items-center">
@@ -116,7 +116,7 @@ export default function FloorRoomsList({
           disabledRooms ? "opacity-40 grayscale pointer-events-none" : "opacity-100"
         }`}
       >
-        <div className="p-5 border-b border-hosteloom-border flex items-center justify-between bg-white/[0.02]">
+        <div className="p-5 border-b border-hosteloom-border flex items-center justify-between bg-hosteloom-hover-bg">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-hosteloom-accent/10 flex items-center justify-center text-hosteloom-accent">
               <FiGrid className="w-4 h-4" />
@@ -133,7 +133,7 @@ export default function FloorRoomsList({
               </button>
               <button
                 onClick={onAddRoom}
-                className="px-3 py-1.5 bg-hosteloom-accent rounded-lg text-[10px] font-heading font-bold uppercase tracking-widest text-white hover:bg-hosteloom-accent-hover transition-colors flex items-center gap-1"
+                className="px-3 py-1.5 bg-hosteloom-accent rounded-lg text-[10px] font-heading font-bold uppercase tracking-widest text-hosteloom-heading hover:bg-hosteloom-accent-hover transition-colors flex items-center gap-1"
               >
                 <FiPlus /> Add
               </button>
@@ -161,13 +161,13 @@ export default function FloorRoomsList({
                 >
                   <div className="absolute inset-0 bg-hosteloom-accent/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="relative">
-                    <div className="font-mono text-xs font-black text-white">{r.roomNumber}</div>
+                    <div className="font-mono text-xs font-black text-hosteloom-heading">{r.roomNumber}</div>
                     <div className="flex items-center justify-center gap-2 mt-1.5">
                       <div className="flex items-center gap-1 text-[8px] text-hosteloom-muted font-heading font-bold uppercase">
                         <FiUser size={8} className="text-hosteloom-accent" /> {r.capacity}
                       </div>
                       <div className="w-1 h-1 rounded-full bg-hosteloom-border" />
-                      <div className="text-[8px] text-white/50 font-heading font-bold uppercase tracking-tighter">
+                      <div className="text-[8px] text-hosteloom-heading/50 font-heading font-bold uppercase tracking-tighter">
                         ₦{(parseInt(r.price || "0") / 1000).toFixed(0)}k
                       </div>
                     </div>

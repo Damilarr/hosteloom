@@ -15,8 +15,8 @@ interface Props {
 }
 
 const statusBadge: Record<string, string> = {
-  VACANT:   'bg-green-400/15 text-green-400',
-  OCCUPIED: 'bg-yellow-400/15 text-yellow-400',
+  VACANT:   'bg-green-400/15 text-emerald-600',
+  OCCUPIED: 'bg-yellow-400/15 text-amber-600',
   FULL:     'bg-red-400/15 text-red-400',
 };
 
@@ -100,7 +100,7 @@ export default function RoomDetailModal({ room, onClose }: Props) {
                   <MdBedroomParent className="w-5 h-5 text-hosteloom-accent" />
                 </div>
                 <div>
-                  <p className="font-heading font-bold text-white">Room {room.roomNumber}</p>
+                  <p className="font-heading font-bold text-hosteloom-heading">Room {room.roomNumber}</p>
                   <p className="text-xs text-hosteloom-muted">
                     {room.occupancyCount} / {room.capacity} occupants
                   </p>
@@ -118,7 +118,7 @@ export default function RoomDetailModal({ room, onClose }: Props) {
                   <MdDelete className="w-4 h-4" />
                 </button>
                 <div className="w-px h-4 bg-hosteloom-border mx-1" />
-                <button onClick={onClose} className="text-hosteloom-muted hover:text-white transition-colors">
+                <button onClick={onClose} className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors">
                   <MdClose className="w-5 h-5" />
                 </button>
               </div>
@@ -157,7 +157,7 @@ export default function RoomDetailModal({ room, onClose }: Props) {
                       <button
                         onClick={() => setShowConfirmDelete(false)}
                         disabled={isDeleting}
-                        className="px-4 py-1.5 bg-hosteloom-surface hover:bg-hosteloom-surface-light border border-hosteloom-border text-white text-xs font-heading font-bold rounded-lg transition-all"
+                        className="px-4 py-1.5 bg-hosteloom-surface hover:bg-hosteloom-surface-light border border-hosteloom-border text-hosteloom-heading text-xs font-heading font-bold rounded-lg transition-all"
                       >
                         Cancel
                       </button>
@@ -199,12 +199,12 @@ export default function RoomDetailModal({ room, onClose }: Props) {
                               {p.firstName[0]}
                             </div>
                             <div>
-                              <p className="text-sm font-heading font-semibold text-white">{p.firstName} {p.lastName}</p>
+                              <p className="text-sm font-heading font-semibold text-hosteloom-heading">{p.firstName} {p.lastName}</p>
                               <p className="text-[11px] text-hosteloom-muted">{p.matricNo} · Level {p.academicLevel}</p>
                             </div>
                           </div>
                           <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2 py-0.5 rounded-md ${
-                            occ.status === 'ACTIVE' ? 'bg-green-400/15 text-green-400' : 'bg-hosteloom-muted/15 text-hosteloom-muted'
+                            occ.status === 'ACTIVE' ? 'bg-green-400/15 text-emerald-600' : 'bg-hosteloom-muted/15 text-hosteloom-muted'
                           }`}>
                             {occ.status}
                           </span>
@@ -227,7 +227,7 @@ export default function RoomDetailModal({ room, onClose }: Props) {
                                 else setReassignTarget(occ.studentId);
                               }}
                               disabled={isProcessing}
-                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading text-hosteloom-muted hover:text-white hover:border-hosteloom-accent/50 transition-all disabled:opacity-50"
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hosteloom-border text-xs font-heading text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent/50 transition-all disabled:opacity-50"
                             >
                               <MdSwapHoriz className="w-3.5 h-3.5" /> Reassign
                             </button>
@@ -239,7 +239,7 @@ export default function RoomDetailModal({ room, onClose }: Props) {
                             <select
                               value={newRoomId}
                               onChange={(e) => setNewRoomId(e.target.value)}
-                              className="flex-1 bg-hosteloom-surface border border-hosteloom-border rounded-lg py-1.5 px-2 text-white text-xs focus:outline-none focus:border-hosteloom-accent transition-all appearance-none cursor-pointer"
+                              className="flex-1 bg-hosteloom-surface border border-hosteloom-border rounded-lg py-1.5 px-2 text-hosteloom-heading text-xs focus:outline-none focus:border-hosteloom-accent transition-all appearance-none cursor-pointer"
                             >
                               <option value="">Select room…</option>
                               {otherRooms.map((r) => (

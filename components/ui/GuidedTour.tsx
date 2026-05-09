@@ -128,7 +128,7 @@ export default function GuidedTour() {
   const spotH = targetRect ? targetRect.height + PADDING * 2 : 0;
 
   const cardContent = (
-    <div className="bg-[#1C1A22] border border-hosteloom-accent/30 rounded-2xl overflow-hidden shadow-2xl shadow-black/60">
+    <div className="bg-hosteloom-surface border border-hosteloom-accent/30 rounded-2xl overflow-hidden shadow-2xl shadow-black/60">
       <div className="p-5">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2">
@@ -139,12 +139,12 @@ export default function GuidedTour() {
               Step {currentStep + 1} of {totalSteps}
             </span>
           </div>
-          <button onClick={skip} className="text-hosteloom-muted hover:text-white transition-colors p-0.5" aria-label="Close tour">
+          <button onClick={skip} className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors p-0.5" aria-label="Close tour">
             <MdClose className="w-4 h-4" />
           </button>
         </div>
 
-        <h3 className="font-heading font-bold text-base text-white mb-1.5">{step.title}</h3>
+        <h3 className="font-heading font-bold text-base text-hosteloom-heading mb-1.5">{step.title}</h3>
         <p className="text-sm text-hosteloom-muted font-body leading-relaxed">{step.description}</p>
 
         <div className="flex items-center gap-1.5 mt-4 mb-4">
@@ -152,21 +152,21 @@ export default function GuidedTour() {
             <div
               key={i}
               className={`h-1 rounded-full transition-all duration-300 ${
-                i === currentStep ? 'w-6 bg-hosteloom-accent' : i < currentStep ? 'w-2 bg-hosteloom-accent/50' : 'w-2 bg-white/10'
+                i === currentStep ? 'w-6 bg-hosteloom-accent' : i < currentStep ? 'w-2 bg-hosteloom-accent/50' : 'w-2 bg-hosteloom-border'
               }`}
             />
           ))}
         </div>
 
         <div className="flex items-center justify-between">
-          <button onClick={skip} className="text-xs text-hosteloom-muted hover:text-white font-heading font-medium transition-colors">
+          <button onClick={skip} className="text-xs text-hosteloom-muted hover:text-hosteloom-heading font-heading font-medium transition-colors">
             Skip tour
           </button>
           <div className="flex items-center gap-2">
             {currentStep > 0 && (
               <button
                 onClick={prev}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-heading font-medium text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-heading font-medium text-hosteloom-heading bg-hosteloom-hover-bg border border-hosteloom-border hover:bg-hosteloom-hover-bg transition-all"
               >
                 <MdArrowBack className="w-3.5 h-3.5" />
                 Back
@@ -174,7 +174,7 @@ export default function GuidedTour() {
             )}
             <button
               onClick={next}
-              className="flex items-center gap-1 px-4 py-1.5 rounded-lg text-xs font-heading font-bold text-white bg-hosteloom-accent hover:bg-hosteloom-accent-hover transition-all"
+              className="flex items-center gap-1 px-4 py-1.5 rounded-lg text-xs font-heading font-bold text-hosteloom-heading bg-hosteloom-accent hover:bg-hosteloom-accent-hover transition-all"
             >
               {currentStep === totalSteps - 1 ? 'Finish' : 'Next'}
               {currentStep < totalSteps - 1 && <MdArrowForward className="w-3.5 h-3.5" />}

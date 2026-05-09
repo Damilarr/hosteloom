@@ -70,7 +70,7 @@ export default function StudentProfileForm() {
         <div>
           <label className={labelClass}>First name</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiUser className="w-4 h-4" />
             </div>
             <input type="text" name="firstName" value={form.firstName} onChange={handleChange}
@@ -81,7 +81,7 @@ export default function StudentProfileForm() {
         <div>
           <label className={labelClass}>Last name</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiUser className="w-4 h-4" />
             </div>
             <input type="text" name="lastName" value={form.lastName} onChange={handleChange}
@@ -94,7 +94,7 @@ export default function StudentProfileForm() {
       <div>
         <label className={labelClass}>Phone number</label>
         <div className="relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
             <FiPhone className="w-4 h-4" />
           </div>
           <input type="tel" name="phone" value={form.phone} onChange={handleChange}
@@ -106,7 +106,7 @@ export default function StudentProfileForm() {
       <div>
         <label className={labelClass}>Institution / School</label>
         <div className="relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
             <FiBook className="w-4 h-4" />
           </div>
           <input type="text" name="school" value={form.school} onChange={handleChange}
@@ -119,7 +119,7 @@ export default function StudentProfileForm() {
         <div>
           <label className={labelClass}>Matric number</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiHash className="w-4 h-4" />
             </div>
             <input type="text" name="matricNo" value={form.matricNo} onChange={handleChange}
@@ -130,13 +130,13 @@ export default function StudentProfileForm() {
         <div>
           <label className={labelClass}>Academic level</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiLayers className="w-4 h-4" />
             </div>
             <select name="academicLevel" value={form.academicLevel} onChange={handleChange}
               className={`${inputClass} appearance-none`} required>
               {ACADEMIC_LEVELS.map((l) => (
-                <option key={l} value={l} className="bg-hosteloom-surface text-white">
+                <option key={l} value={l} className="bg-hosteloom-surface text-hosteloom-heading">
                   {l === 'Postgraduate' ? 'Postgraduate' : `${l} Level`}
                 </option>
               ))}

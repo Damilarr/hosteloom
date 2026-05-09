@@ -1,3 +1,5 @@
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+
 export default function Home() {
   return (
     <>
@@ -13,8 +15,9 @@ export default function Home() {
           <a href="#solutions" className="text-hosteloom-text font-medium text-[0.95rem] hover:text-hosteloom-accent transition-colors">Solutions</a>
         </div>
         <div className="flex gap-3 items-center">
-          <a href="/login" className="hidden sm:inline text-hosteloom-text font-medium text-[0.95rem] hover:text-hosteloom-accent transition-colors">Sign In</a>
-          <a href="/register" className="inline-flex items-center justify-center px-5 py-2.5 rounded-full font-semibold text-[0.9rem] bg-hosteloom-accent text-hosteloom-bg hover:bg-hosteloom-accent-hover hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(168,85,247,0.2)] transition-all duration-300">Register</a>
+          <ThemeToggle />
+          <a href="/login" className="hidden sm:inline text-hosteloom-text font-medium text-[0.95rem] hover:text-hosteloom-accent transition-colors ml-2">Sign In</a>
+          <a href="/register" className="inline-flex items-center justify-center px-5 py-2.5 rounded-full font-semibold text-[0.9rem] bg-hosteloom-accent text-white hover:bg-hosteloom-accent-hover hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(168,85,247,0.2)] transition-all duration-300">Register</a>
         </div>
       </nav>
 
@@ -35,92 +38,20 @@ export default function Home() {
             Make hostel management completely stress-free. Prevent overbooking, track payments instantly, manage complaints, and keep all student records in one place.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start w-full">
-            <a href="/register" className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold text-[1.05rem] bg-hosteloom-accent text-hosteloom-bg hover:bg-hosteloom-accent-hover hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(168,85,247,0.2)] transition-all duration-300">Create Account</a>
-            <a href="/login" className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold text-[1.05rem] bg-transparent text-hosteloom-text border border-hosteloom-border hover:border-hosteloom-text hover:bg-white/5 transition-all duration-300">Sign In</a>
+            <a href="/register" className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold text-[1.05rem] bg-hosteloom-accent text-white hover:bg-hosteloom-accent-hover hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(168,85,247,0.2)] transition-all duration-300">Create Account</a>
+            <a href="/login" className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold text-[1.05rem] bg-transparent text-hosteloom-text border border-hosteloom-border hover:border-hosteloom-text hover:bg-hosteloom-hover-bg transition-all duration-300">Sign In</a>
           </div>
         </div>
         
-        <div className="relative w-full h-[600px] hidden md:block">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] z-10">
-            {/* Main glass panel */}
-            <div className="bg-hosteloom-surface/80 backdrop-blur-2xl border border-hosteloom-border rounded-[2rem] p-6 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-hosteloom-text font-heading font-bold text-lg">Live Activity</h3>
-                <span className="flex items-center gap-2 text-[0.75rem] font-semibold text-hosteloom-accent bg-hosteloom-accent/10 px-3 py-1.5 rounded-full uppercase tracking-wider">
-                  <span className="w-1.5 h-1.5 bg-hosteloom-accent rounded-full animate-pulse shadow-[0_0_8px_var(--color-hosteloom-accent)]"></span>
-                  Real-time
-                </span>
-              </div>
-              
-              <div className="space-y-3">
-                {/* Activity Item 1 */}
-                <div className="flex items-start gap-4 p-3 rounded-2xl hover:bg-white/5 transition-colors group cursor-default">
-                  <div className="w-10 h-10 rounded-full bg-hosteloom-accent/20 flex items-center justify-center text-hosteloom-accent group-hover:bg-hosteloom-accent group-hover:text-hosteloom-bg transition-colors shrink-0">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <p className="text-hosteloom-text font-medium text-[0.95rem]">Room 402 Selected</p>
-                      <span className="text-[0.7rem] text-hosteloom-muted mt-1">Just now</span>
-                    </div>
-                    <p className="text-[0.8rem] text-hosteloom-muted mt-0.5">Block A • John Doe</p>
-                  </div>
-                </div>
-                
-                {/* Activity Item 2 */}
-                <div className="flex items-start gap-4 p-3 rounded-2xl hover:bg-white/5 transition-colors group cursor-default">
-                  <div className="w-10 h-10 rounded-full bg-hosteloom-secondary/20 flex items-center justify-center text-hosteloom-secondary group-hover:bg-hosteloom-secondary group-hover:text-hosteloom-bg transition-colors shrink-0">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <p className="text-hosteloom-text font-medium text-[0.95rem]">Payment Received</p>
-                      <span className="text-[0.7rem] text-hosteloom-muted mt-1">2m ago</span>
-                    </div>
-                    <p className="text-[0.8rem] text-hosteloom-muted mt-0.5">₦150,000 • Session 2026</p>
-                  </div>
-                </div>
-
-                {/* Activity Item 3 */}
-                <div className="flex items-start gap-4 p-3 rounded-2xl hover:bg-white/5 transition-colors group opacity-60 cursor-default">
-                  <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors shrink-0">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <p className="text-hosteloom-text font-medium text-[0.95rem]">Application Approved</p>
-                      <span className="text-[0.7rem] text-hosteloom-muted mt-1">15m ago</span>
-                    </div>
-                    <p className="text-[0.8rem] text-hosteloom-muted mt-0.5">Sarah Smith • Block B</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            
-            {/* Floating decorative metric */}
-            <div className="absolute -top-6 -left-10 bg-hosteloom-surface/90 backdrop-blur-xl border border-hosteloom-border px-5 py-4 rounded-[1.25rem] shadow-2xl flex items-center gap-3 animate-float-simple">
-               <span className="text-hosteloom-accent font-heading font-extrabold text-2xl">98%</span>
-               <span className="text-[0.75rem] text-hosteloom-muted leading-tight font-medium uppercase tracking-wider">Collection<br/>Rate</span>
-            </div>
+        <div className="relative w-full h-[600px] hidden lg:flex items-center justify-center group perspective-1000">
+          <div className="relative w-[90%] max-w-[550px] z-10 rounded-[2rem] overflow-hidden border border-hosteloom-border/50 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)] transform transition-transform duration-700 group-hover:rotate-y-[-2deg] group-hover:rotate-x-[2deg] group-hover:scale-[1.02]">
+            <img src="/hero-dashboard.png" alt="Hosteloom Dashboard Preview" className="w-full h-auto object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-hosteloom-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
           </div>
         </div>
       </main>
 
-      {/* Marquee Ticker */}
-      <section className="py-8 bg-hosteloom-accent text-hosteloom-bg overflow-hidden -rotate-[1.5deg] scale-105 my-10 relative z-10">
-        <div className="flex whitespace-nowrap">
-          <div className="font-heading font-extrabold text-3xl uppercase animate-ticker flex gap-10">
-            <span>NO OVERBOOKING</span> • <span>INSTANT UPDATES</span> • <span>SELF-SERVICE ROOM SELECTION</span> • <span>COMPLAINT TRACKING</span> • <span>ONE-CLICK APPROVALS</span> • <span>CSV REPORTS</span> • <span>SIMPLE MANAGEMENT</span> • <span>NO OVERBOOKING</span> • <span>INSTANT UPDATES</span> • <span>SELF-SERVICE ROOM SELECTION</span> • <span>COMPLAINT TRACKING</span> • <span>ONE-CLICK APPROVALS</span> • <span>CSV REPORTS</span> • <span>SIMPLE MANAGEMENT</span> •
-          </div>
-        </div>
-      </section>
+
 
       {/* Features Section */}
       <section id="features" className="py-[120px] px-[5%] relative">
@@ -137,7 +68,7 @@ export default function Home() {
             { num: '04', title: 'Admin Command Center', desc: 'Approve applications, resolve complaints, manage sessions, send broadcasts, and generate detailed reports.' },
           ].map((feature) => (
             <div key={feature.num} className="feature-card bg-hosteloom-surface border border-hosteloom-border p-10 rounded-3xl transition-all duration-400 relative overflow-hidden group hover:-translate-y-2 hover:border-hosteloom-accent/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
-              <div className="font-heading font-extrabold text-6xl text-transparent mb-6 inline-block transition-all duration-400 group-hover:text-hosteloom-accent/5 group-hover:[webkit-text-stroke:1px_var(--color-hosteloom-accent)]" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.1)' }}>
+              <div className="font-heading font-extrabold text-6xl text-transparent mb-6 inline-block transition-all duration-400 group-hover:text-hosteloom-accent/5 group-hover:[webkit-text-stroke:1px_var(--color-hosteloom-accent)]" style={{ WebkitTextStroke: '1px var(--color-hosteloom-border)' }}>
                 {feature.num}
               </div>
               <h3 className="font-heading font-bold text-2xl mb-4">{feature.title}</h3>
@@ -204,7 +135,7 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
               </svg>
             </div>
-            <h3 className="font-heading font-bold text-xl mb-2 text-white">Students</h3>
+            <h3 className="font-heading font-bold text-xl mb-2 text-hosteloom-text">Students</h3>
             <p className="text-hosteloom-muted text-sm font-light mb-6">Your hostel life, simplified.</p>
             <ul className="space-y-3">
               {['Apply to any hostel', 'Choose your own room', 'View room & payment status', 'File & track complaints', 'Receive broadcast updates'].map((item) => (
@@ -227,7 +158,7 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
-            <h3 className="font-heading font-bold text-xl mb-2 text-white">Hostel Admins</h3>
+            <h3 className="font-heading font-bold text-xl mb-2 text-hosteloom-text">Hostel Admins</h3>
             <p className="text-hosteloom-muted text-sm font-light mb-6">Full control, zero chaos.</p>
             <ul className="space-y-3">
               {['Manage hostel structure (blocks, floors, rooms)', 'Approve or reject applications', 'Track room occupancy & payments', 'Handle complaints & generate reports', 'Broadcast announcements', 'Manage academic sessions'].map((item) => (
@@ -247,7 +178,7 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
-            <h3 className="font-heading font-bold text-xl mb-2 text-white">Property Owners</h3>
+            <h3 className="font-heading font-bold text-xl mb-2 text-hosteloom-text">Property Owners</h3>
             <p className="text-hosteloom-muted text-sm font-light mb-6">See everything, manage anywhere.</p>
             <ul className="space-y-3">
               {['Create & manage multiple hostels', 'Build structure (blocks, floors, rooms)', 'Assign hostel admins', 'Monitor all properties from one view'].map((item) => (
@@ -311,11 +242,19 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-[120px] px-[5%] max-w-[1400px] mx-auto relative">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.1)_0%,transparent_70%)] pointer-events-none"></div>
-        <div className="text-center relative z-10 py-20 px-10 rounded-[40px] border border-hosteloom-border bg-hosteloom-surface overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-1 before:bg-gradient-to-r before:from-hosteloom-accent before:to-hosteloom-secondary">
-          <h2 className="font-heading font-bold text-[clamp(2.5rem,5vw,4rem)] mb-6 leading-tight">Ready to upgrade your property?</h2>
-          <p className="text-[1.2rem] text-hosteloom-muted mb-10 max-w-[600px] mx-auto font-light">Join thousands of administrators completely upgrading the way they run their hostels.</p>
-          <div className="flex justify-center gap-4">
-            <a href="/register" className="inline-flex items-center justify-center px-10 py-4 rounded-full font-semibold text-[1.15rem] bg-hosteloom-accent text-hosteloom-bg hover:bg-hosteloom-accent-hover hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(168,85,247,0.2)] transition-all duration-300">Register Now</a>
+        <div className="text-center relative z-10 py-[120px] px-10 rounded-[40px] border border-hosteloom-border overflow-hidden shadow-2xl">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img src="/hostel-room-bg.png" alt="Modern Hostel Room" className="w-full h-full object-cover opacity-40" />
+            <div className="absolute inset-0 bg-gradient-to-b from-hosteloom-bg/50 via-hosteloom-bg/30 to-hosteloom-bg/50"></div>
+          </div>
+          
+          <div className="relative z-10">
+            <h2 className="font-heading font-bold text-[clamp(2.5rem,5vw,4rem)] mb-6 leading-tight">Ready to upgrade your property?</h2>
+            <p className="text-[1.2rem] text-hosteloom-muted mb-10 max-w-[600px] mx-auto font-light">Join thousands of administrators completely upgrading the way they run their hostels.</p>
+            <div className="flex justify-center gap-4">
+              <a href="/register" className="inline-flex items-center justify-center px-10 py-4 rounded-full font-semibold text-[1.15rem] bg-hosteloom-accent text-white hover:bg-hosteloom-accent-hover hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(168,85,247,0.4)] transition-all duration-300">Register Now</a>
+            </div>
           </div>
         </div>
       </section>

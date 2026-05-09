@@ -47,13 +47,13 @@ export default function NotificationsDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-xl text-hosteloom-muted hover:text-white hover:bg-hosteloom-surface-light transition-all duration-200"
+        className="relative p-2 rounded-xl text-hosteloom-muted hover:text-hosteloom-heading hover:bg-hosteloom-surface-light transition-all duration-200"
       >
         <MdNotifications className="w-6 h-6" />
         {unreadCount > 0 && (
           <span className="absolute top-1 right-1 flex h-4 w-4">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-hosteloom-accent opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-4 w-4 bg-hosteloom-accent text-[10px] items-center justify-center text-white font-bold">
+            <span className="relative inline-flex rounded-full h-4 w-4 bg-hosteloom-accent text-[10px] items-center justify-center text-hosteloom-heading font-bold">
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           </span>
@@ -67,7 +67,7 @@ export default function NotificationsDropdown() {
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-[10px] uppercase tracking-wider font-bold text-hosteloom-accent hover:text-white transition-colors flex items-center gap-1"
+                className="text-[10px] uppercase tracking-wider font-bold text-hosteloom-accent hover:text-hosteloom-heading transition-colors flex items-center gap-1"
               >
                 <MdDoneAll className="w-3 h-3" />
                 Mark all read
@@ -87,14 +87,14 @@ export default function NotificationsDropdown() {
                   <div
                     key={n.id}
                     onClick={() => handleNotificationClick(n.id, n.isRead)}
-                    className={`px-5 py-4 hover:bg-white/5 transition-colors cursor-pointer relative group ${!n.isRead ? 'bg-hosteloom-accent/5' : ''}`}
+                    className={`px-5 py-4 hover:bg-hosteloom-hover-bg transition-colors cursor-pointer relative group ${!n.isRead ? 'bg-hosteloom-accent/5' : ''}`}
                   >
                     {!n.isRead && (
                       <MdCircle className="absolute left-2.5 top-5 w-2 h-2 text-hosteloom-accent" />
                     )}
                     <div className={`flex flex-col gap-1 ${!n.isRead ? 'pl-2' : ''}`}>
                       <div className="flex items-start justify-between gap-2">
-                        <span className="font-heading font-bold text-xs text-white leading-tight">{n.title}</span>
+                        <span className="font-heading font-bold text-xs text-hosteloom-heading leading-tight">{n.title}</span>
                         <span className="text-[10px] text-hosteloom-muted shrink-0">
                           {formatDistanceToNow(new Date(n.createdAt), { addSuffix: true })}
                         </span>

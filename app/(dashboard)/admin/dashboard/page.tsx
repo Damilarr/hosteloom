@@ -57,17 +57,17 @@ export default function AdminDashboard() {
 
     if (activity.type === 'PAYMENT') {
       icon = MdPayment;
-      color = activity.data?.status === 'SUCCESS' ? 'text-green-400' : 'text-yellow-400';
+      color = activity.data?.status === 'SUCCESS' ? 'text-emerald-600' : 'text-amber-600';
       label = `Payment • ₦${(activity.data?.amount ?? 0).toLocaleString('en-NG')}`;
       sub = `From: ${activity.data?.student?.profile?.firstName || ''} ${activity.data?.student?.profile?.lastName || ''}`;
     } else if (activity.type === 'APPLICATION') {
       icon = MdPersonAdd;
-      color = 'text-blue-400';
+      color = 'text-blue-600';
       label = `Hostel Application`;
       sub = `By: ${activity.data?.student?.profile?.firstName || ''} ${activity.data?.student?.profile?.lastName || ''} — ${activity.data?.status || 'PENDING'}`;
     } else if (activity.type === 'COMPLAINT') {
       icon = MdBuild;
-      color = 'text-orange-400';
+      color = 'text-orange-600';
       label = `Maintenance Request`;
       sub = activity.data?.title || 'New issue reported';
     } else {
@@ -95,13 +95,13 @@ export default function AdminDashboard() {
       label: 'Occupancy Rate', 
       value: `${summaryData?.capacity.occupancyRatePercentage ?? occupancyRate}%`, 
       sub: `${summaryData?.capacity.occupiedBeds ?? totalOccupancy} of ${summaryData?.capacity.totalBeds ?? totalCapacity} filled`, 
-      icon: MdPeople, color: 'text-green-400', bg: 'bg-green-400/10' 
+      icon: MdPeople, color: 'text-emerald-600', bg: 'bg-green-400/10' 
     },
     { 
       label: 'Revenue This Session', 
       value: `₦${(summaryData?.financials.totalRevenue ?? 0).toLocaleString('en-NG')}`, 
       sub: `${summaryData?.financials.pendingPayments ? `₦${summaryData.financials.pendingPayments.toLocaleString('en-NG')} pending` : 'No pending payments'}`, 
-      icon: MdPayment, color: 'text-yellow-400', bg: 'bg-yellow-400/10' 
+      icon: MdPayment, color: 'text-amber-600', bg: 'bg-yellow-400/10' 
     },
     { 
       label: 'Open Complaints', 
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
         <button
           onClick={() => setBroadcastModal(true)}
           data-tour-id="admin-broadcast"
-          className="px-5 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-white font-heading font-bold text-[10px] uppercase tracking-widest hover:bg-hosteloom-accent hover:border-hosteloom-accent transition-all duration-300 flex items-center gap-2 group"
+          className="px-5 py-2.5 rounded-2xl bg-hosteloom-hover-bg border border-hosteloom-border text-hosteloom-heading font-heading font-bold text-[10px] uppercase tracking-widest hover:bg-hosteloom-accent hover:border-hosteloom-accent hover:text-white transition-all duration-300 flex items-center gap-2 group"
         >
           <MdCampaign className="w-5 h-5 text-hosteloom-accent group-hover:text-white transition-colors" />
           Broadcast Announcement
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
             <div className={`w-10 h-10 rounded-xl ${m.bg} flex items-center justify-center mb-4`}>
               <m.icon className={`w-5 h-5 ${m.color}`} />
             </div>
-            <p className="font-heading font-bold text-2xl text-white">{m.value}</p>
+            <p className="font-heading font-bold text-2xl text-hosteloom-heading">{m.value}</p>
             <p className="text-xs text-hosteloom-muted font-body mt-0.5">{m.label}</p>
             <p className="text-[10px] text-hosteloom-muted/70 mt-1">{m.sub}</p>
           </div>
@@ -158,7 +158,7 @@ export default function AdminDashboard() {
                     <item.icon className={`w-4 h-4 ${item.color}`} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white truncate">{item.label}</p>
+                    <p className="text-sm font-medium text-hosteloom-heading truncate">{item.label}</p>
                     <p className="text-xs text-hosteloom-muted truncate">{item.sub}</p>
                   </div>
                   <span className="text-[10px] text-hosteloom-muted whitespace-nowrap">{item.time}</span>
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
                 <div className="w-12 h-12 rounded-full border border-dashed border-hosteloom-border bg-hosteloom-surface-light flex items-center justify-center mb-3">
                   <MdHourglassTop className="w-5 h-5 text-hosteloom-muted opacity-50" />
                 </div>
-                <p className="text-sm font-heading font-medium text-white">No recent activity</p>
+                <p className="text-sm font-heading font-medium text-hosteloom-heading">No recent activity</p>
                 <p className="text-xs text-hosteloom-muted mt-1 max-w-[220px]">New registrations, allocations, and payments will appear here.</p>
               </div>
             )}
@@ -180,7 +180,7 @@ export default function AdminDashboard() {
         <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6 w-full lg:w-72">
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-heading font-bold text-lg">Pending Approvals</h2>
-            <span className="text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full text-yellow-400 bg-yellow-400/10">
+            <span className="text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full text-amber-600 bg-yellow-400/10">
               {summaryData?.pendingApprovalsCount ?? actualPendingStudents.length}
             </span>
           </div>
@@ -194,7 +194,7 @@ export default function AdminDashboard() {
                     {name && name !== 'Unknown' ? name[0].toUpperCase() : '?'}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-white truncate">{name}</p>
+                    <p className="text-xs font-semibold text-hosteloom-heading truncate">{name}</p>
                     <p className="text-[10px] text-hosteloom-muted truncate">{email}</p>
                     <p className="text-[10px] text-hosteloom-muted/60 mt-0.5">
                       {new Date(s.createdAt).toLocaleDateString()}

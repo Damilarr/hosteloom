@@ -96,7 +96,7 @@ export default function OwnerAdminsPage() {
             <div className="w-12 h-12 bg-hosteloom-surface-light rounded-full flex items-center justify-center mx-auto mb-4 text-hosteloom-muted">
               <MdAdminPanelSettings className="w-6 h-6" />
             </div>
-            <h3 className="text-white font-heading font-bold mb-2">No Admins Yet</h3>
+            <h3 className="text-hosteloom-heading font-heading font-bold mb-2">No Admins Yet</h3>
             <p className="text-hosteloom-muted font-body text-sm mb-4">You haven't added any administrators to manage your properties.</p>
             <button
               onClick={() => {
@@ -106,7 +106,7 @@ export default function OwnerAdminsPage() {
                 }
                 setModalOpen(true);
               }}
-              className="text-hosteloom-accent font-heading text-xs font-bold uppercase tracking-widest hover:text-white transition-colors"
+              className="text-hosteloom-accent font-heading text-xs font-bold uppercase tracking-widest hover:text-hosteloom-heading transition-colors"
             >
               + Create First Admin
             </button>
@@ -125,7 +125,7 @@ export default function OwnerAdminsPage() {
               <tbody className="divide-y divide-hosteloom-border/50">
                 {ownerAdmins.map((admin) => (
                   <tr key={admin.id} className="hover:bg-hosteloom-surface-light transition-colors group">
-                    <td className="py-4 text-white font-medium">
+                    <td className="py-4 text-hosteloom-heading font-medium">
                       {admin.adminProfile?.firstName} {admin.adminProfile?.lastName}
                     </td>
                     <td className="py-4 text-hosteloom-muted">{admin.email}</td>
@@ -154,7 +154,7 @@ export default function OwnerAdminsPage() {
           <div className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6 w-full max-w-md relative">
             <button
               onClick={() => setModalOpen(false)}
-              className="absolute top-4 right-4 text-hosteloom-muted hover:text-white"
+              className="absolute top-4 right-4 text-hosteloom-muted hover:text-hosteloom-heading"
             >
               <MdClose className="w-6 h-6" />
             </button>
@@ -169,7 +169,7 @@ export default function OwnerAdminsPage() {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-white placeholder:text-hosteloom-muted/50 focus:outline-none focus:border-hosteloom-accent transition-colors text-sm"
+                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-hosteloom-heading placeholder:text-hosteloom-muted/50 focus:outline-none focus:border-hosteloom-accent transition-colors text-sm"
                   required
                 />
               </div>
@@ -181,7 +181,7 @@ export default function OwnerAdminsPage() {
                    name="lastName"
                    value={formData.lastName}
                    onChange={handleChange}
-                   className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-white placeholder:text-hosteloom-muted/50 focus:outline-none focus:border-hosteloom-accent transition-colors text-sm"
+                   className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-hosteloom-heading placeholder:text-hosteloom-muted/50 focus:outline-none focus:border-hosteloom-accent transition-colors text-sm"
                    required
                 />
               </div>
@@ -193,7 +193,7 @@ export default function OwnerAdminsPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-white placeholder:text-hosteloom-muted/50 focus:outline-none focus:border-hosteloom-accent transition-colors text-sm"
+                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-hosteloom-heading placeholder:text-hosteloom-muted/50 focus:outline-none focus:border-hosteloom-accent transition-colors text-sm"
                   required
                 />
               </div>
@@ -214,7 +214,7 @@ export default function OwnerAdminsPage() {
                    name="hostelId"
                    value={formData.hostelId}
                    onChange={handleChange}
-                   className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-white focus:outline-none focus:border-hosteloom-accent transition-colors text-sm appearance-none"
+                   className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-hosteloom-heading focus:outline-none focus:border-hosteloom-accent transition-colors text-sm appearance-none"
                    required
                  >
                    <option value="" disabled className="bg-hosteloom-surface">Choose a hostel</option>

@@ -46,11 +46,11 @@ export default function CreateSessionModal({ open, onClose, onSubmit }: Props) {
                   <MdDateRange className="w-5 h-5 text-hosteloom-accent" />
                 </div>
                 <div>
-                  <p className="font-heading font-semibold text-white text-sm">Create Session</p>
+                  <p className="font-heading font-semibold text-hosteloom-heading text-sm">Create Session</p>
                   <p className="text-xs text-hosteloom-muted">Add a new academic session</p>
                 </div>
               </div>
-              <button onClick={onClose} className="text-hosteloom-muted hover:text-white transition-colors">
+              <button onClick={onClose} className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors">
                 <MdClose className="w-5 h-5" />
               </button>
             </div>
@@ -63,14 +63,14 @@ export default function CreateSessionModal({ open, onClose, onSubmit }: Props) {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. 2025/2026"
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                   required
                 />
                 <p className="text-[10px] text-hosteloom-muted mt-1.5">Usually in the format YYYY/YYYY representing the academic year.</p>
               </div>
               <div className="flex gap-3 justify-end pt-1">
                 <button type="button" onClick={onClose}
-                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-white border border-hosteloom-border rounded-xl transition-all">
+                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-hosteloom-heading border border-hosteloom-border rounded-xl transition-all">
                   Cancel
                 </button>
                 <button type="submit" disabled={loading}

@@ -13,6 +13,8 @@ const outfit = Outfit({
   subsets: ["latin"],
 });
 
+import { ThemeProvider } from "@/components/ui/ThemeProvider";
+
 export const metadata: Metadata = {
   title: "Hosteloom | Intelligent Hostel Operations",
   description: "Digitize hostel administration and allocation for Nigerian institutions and private hostel owners.",
@@ -53,21 +55,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${syne.variable} ${outfit.variable} antialiased bg-hosteloom-bg text-hosteloom-text font-body overflow-x-hidden selection:bg-hosteloom-accent selection:text-hosteloom-bg`}>
-        {children}
-        <Toaster
-          position="top-right"
-          theme="dark"
-          toastOptions={{
-            style: {
-              background: 'var(--color-hosteloom-surface)',
-              border: '1px solid var(--color-hosteloom-border)',
-              color: 'var(--color-hosteloom-text)',
-              fontFamily: 'var(--font-body)',
-            },
-          }}
-        />
+        <ThemeProvider>
+          {children}
+          <Toaster
+            position="top-right"
+            theme="system"
+            toastOptions={{
+              style: {
+                background: 'var(--color-hosteloom-surface)',
+                border: '1px solid var(--color-hosteloom-border)',
+                color: 'var(--color-hosteloom-text)',
+                fontFamily: 'var(--font-body)',
+              },
+            }}
+          />
+        </ThemeProvider>
       </body>
     </html>
   );

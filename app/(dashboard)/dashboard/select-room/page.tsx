@@ -90,7 +90,7 @@ export default function SelectRoomPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-center gap-4">
-        <Link href="/dashboard" className="w-10 h-10 rounded-xl bg-hosteloom-surface border border-hosteloom-border flex items-center justify-center text-hosteloom-muted hover:text-white hover:border-hosteloom-muted transition-colors">
+        <Link href="/dashboard" className="w-10 h-10 rounded-xl bg-hosteloom-surface border border-hosteloom-border flex items-center justify-center text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-muted transition-colors">
           <FiArrowLeft className="w-5 h-5" />
         </Link>
         <div>
@@ -120,7 +120,7 @@ export default function SelectRoomPage() {
               placeholder="Search rooms, blocks, floors..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#100D15] border border-white/5 rounded-xl py-3.5 pl-11 pr-4 text-white placeholder:text-hosteloom-muted/50 focus:outline-none focus:border-hosteloom-accent/30 focus:ring-1 focus:ring-hosteloom-accent/30 transition-all font-body text-sm"
+              className="w-full bg-hosteloom-card-bg border border-hosteloom-border rounded-xl py-3.5 pl-11 pr-4 text-hosteloom-heading placeholder:text-hosteloom-muted/50 focus:outline-none focus:border-hosteloom-accent/30 focus:ring-1 focus:ring-hosteloom-accent/30 transition-all font-body text-sm"
             />
           </div>
           <div className="flex flex-wrap items-center gap-3">
@@ -129,7 +129,7 @@ export default function SelectRoomPage() {
                 <select
                   value={selectedBlock}
                   onChange={(e) => setSelectedBlock(e.target.value)}
-                  className="bg-[#100D15] border border-white/5 rounded-xl py-3.5 pl-5 pr-10 text-white text-sm font-heading focus:outline-none focus:border-hosteloom-accent/30 cursor-pointer shadow-sm hover:border-white/10 transition-colors appearance-none"
+                  className="bg-hosteloom-card-bg border border-hosteloom-border rounded-xl py-3.5 pl-5 pr-10 text-hosteloom-heading text-sm font-heading focus:outline-none focus:border-hosteloom-accent/30 cursor-pointer shadow-sm hover:border-hosteloom-border transition-colors appearance-none"
                 >
                   <option value="ALL">All Blocks</option>
                   {blocks.map(b => (typeof b === 'string' ? <option key={b} value={b}>{b}</option> : null))}
@@ -144,7 +144,7 @@ export default function SelectRoomPage() {
                 <select
                   value={selectedFloor}
                   onChange={(e) => setSelectedFloor(e.target.value)}
-                  className="bg-[#100D15] border border-white/5 rounded-xl py-3.5 pl-5 pr-10 text-white text-sm font-heading focus:outline-none focus:border-hosteloom-accent/30 cursor-pointer shadow-sm hover:border-white/10 transition-colors appearance-none"
+                  className="bg-hosteloom-card-bg border border-hosteloom-border rounded-xl py-3.5 pl-5 pr-10 text-hosteloom-heading text-sm font-heading focus:outline-none focus:border-hosteloom-accent/30 cursor-pointer shadow-sm hover:border-hosteloom-border transition-colors appearance-none"
                 >
                   <option value="ALL">All Floors</option>
                   {floors.map(f => (typeof f === 'string' ? <option key={f} value={f}>{f}</option> : null))}
@@ -159,7 +159,7 @@ export default function SelectRoomPage() {
                 <select
                   value={selectedPrice}
                   onChange={(e) => setSelectedPrice(e.target.value)}
-                  className="bg-[#100D15] border border-white/5 rounded-xl py-3.5 pl-5 pr-10 text-white text-sm font-heading focus:outline-none focus:border-hosteloom-accent/30 cursor-pointer shadow-sm hover:border-white/10 transition-colors appearance-none"
+                  className="bg-hosteloom-card-bg border border-hosteloom-border rounded-xl py-3.5 pl-5 pr-10 text-hosteloom-heading text-sm font-heading focus:outline-none focus:border-hosteloom-accent/30 cursor-pointer shadow-sm hover:border-hosteloom-border transition-colors appearance-none"
                 >
                   <option value="ALL">All Prices</option>
                   {prices.map(p => <option key={p} value={p}>{formatCurrency(p)}</option>)}
@@ -184,17 +184,17 @@ export default function SelectRoomPage() {
             {filteredRooms.map(room => (
               <div 
                 key={room.id} 
-                className="group relative bg-[#100D15] border border-white/5 rounded-[20px] p-6 hover:border-hosteloom-accent/30 transition-all duration-500 overflow-hidden hover:shadow-[0_8px_30px_rgb(168,85,247,0.05)]"
+                className="group relative bg-hosteloom-card-bg border border-hosteloom-border rounded-[20px] p-6 hover:border-hosteloom-accent/30 transition-all duration-500 overflow-hidden hover:shadow-[0_8px_30px_rgb(168,85,247,0.05)]"
               >
                 {/* Minimalist ambient glow */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-hosteloom-accent/10 rounded-full blur-[40px] group-hover:bg-hosteloom-accent/20 transition-all duration-700 pointer-events-none" />
                 
                 <div className="flex justify-between items-start mb-6 relative z-10 gap-3">
-                  <h3 className="text-4xl font-heading font-light tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-hosteloom-accent transition-all duration-500">
+                  <h3 className="text-4xl font-heading font-light tracking-tight text-hosteloom-heading group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-hosteloom-accent transition-all duration-500">
                     {room.roomNumber}
                   </h3>
                   
-                  <div className="px-3 py-1.5 rounded-lg border border-white/5 bg-white/[0.02] backdrop-blur-md shrink-0">
+                  <div className="px-3 py-1.5 rounded-lg border border-hosteloom-border bg-hosteloom-hover-bg backdrop-blur-md shrink-0">
                     <p className="text-hosteloom-accent font-medium text-sm tracking-wide">
                       {formatCurrency(room.price)}
                     </p>
@@ -205,25 +205,25 @@ export default function SelectRoomPage() {
                   {room.block && (
                     <div className="flex text-xs">
                       <span className="w-14 text-hosteloom-muted/50 uppercase tracking-widest text-[9px] font-semibold mt-0.5 shrink-0">Block</span>
-                      <span className="text-white/80 font-medium break-words leading-tight">{room.block}</span>
+                      <span className="text-hosteloom-heading/80 font-medium break-words leading-tight">{room.block}</span>
                     </div>
                   )}
                   {room.floor && (
                     <div className="flex text-xs">
                       <span className="w-14 text-hosteloom-muted/50 uppercase tracking-widest text-[9px] font-semibold mt-0.5 shrink-0">Floor</span>
-                      <span className="text-white/80 font-medium break-words leading-tight">{room.floor}</span>
+                      <span className="text-hosteloom-heading/80 font-medium break-words leading-tight">{room.floor}</span>
                     </div>
                   )}
                 </div>
                 
                 <div className="mb-8 space-y-3 relative z-10">
-                  <div className="flex justify-between items-center pb-3 border-b border-white/[0.03]">
+                  <div className="flex justify-between items-center pb-3 border-b border-hosteloom-border">
                     <span className="text-[11px] text-hosteloom-muted tracking-[0.1em] uppercase">Capacity</span>
-                    <span className="text-sm text-white font-medium">{room.capacity} Persons</span>
+                    <span className="text-sm text-hosteloom-heading font-medium">{room.capacity} Persons</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-[11px] text-hosteloom-muted tracking-[0.1em] uppercase">Available</span>
-                    <span className="text-sm font-medium text-green-400 bg-green-400/10 px-2 py-0.5 rounded-md border border-green-400/20">{room.remainingCapacity} Slots</span>
+                    <span className="text-sm font-medium text-emerald-600 bg-green-400/10 px-2 py-0.5 rounded-md border border-emerald-500/20">{room.remainingCapacity} Slots</span>
                   </div>
                 </div>
                 
@@ -239,7 +239,7 @@ export default function SelectRoomPage() {
                       toast.error('Failed to select room. Please try again.');
                     }
                   }}
-                  className="w-full py-2.5 bg-[#06040A] text-white border border-white/10 rounded-xl font-medium text-sm tracking-wide relative z-10 overflow-hidden group/btn hover:border-hosteloom-accent/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)] transition-all duration-300"
+                  className="w-full py-2.5 bg-hosteloom-overlay-bg text-hosteloom-heading border border-hosteloom-border rounded-xl font-medium text-sm tracking-wide relative z-10 overflow-hidden group/btn hover:border-hosteloom-accent/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)] transition-all duration-300"
                 >
                   <span className="relative z-10 group-hover/btn:text-hosteloom-accent transition-colors duration-300 delay-75">Select Room</span>
                   {/* Subtle purple sweep on hover */}
@@ -249,18 +249,18 @@ export default function SelectRoomPage() {
             ))}
           </div>
         ) : availableRoomsForStudent.length > 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-center border border-white/5 bg-[#100D15] rounded-3xl">
-            <MdSearch className="w-10 h-10 text-white/10 mb-2" />
-            <h3 className="font-heading font-light text-2xl text-white mb-2 tracking-tight">No Matches Found</h3>
+          <div className="flex flex-col items-center justify-center h-64 text-center border border-hosteloom-border bg-hosteloom-card-bg rounded-3xl">
+            <MdSearch className="w-10 h-10 text-hosteloom-heading/10 mb-2" />
+            <h3 className="font-heading font-light text-2xl text-hosteloom-heading mb-2 tracking-tight">No Matches Found</h3>
             <p className="text-hosteloom-muted font-body max-w-sm text-sm">We couldn't find any rooms matching your current filters. Try resetting them or searching for something else.</p>
-            <button onClick={() => { setSearchQuery(''); setSelectedBlock('ALL'); setSelectedFloor('ALL'); setSelectedPrice('ALL'); }} className="mt-6 px-6 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 text-sm font-heading tracking-wide transition-all shadow-sm">Clear Filters</button>
+            <button onClick={() => { setSearchQuery(''); setSelectedBlock('ALL'); setSelectedFloor('ALL'); setSelectedPrice('ALL'); }} className="mt-6 px-6 py-2.5 bg-hosteloom-hover-bg border border-hosteloom-border text-hosteloom-heading rounded-xl hover:bg-hosteloom-hover-bg text-sm font-heading tracking-wide transition-all shadow-sm">Clear Filters</button>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-64 text-center">
             <div className="w-16 h-16 rounded-full bg-hosteloom-bg border border-hosteloom-border flex items-center justify-center mb-4">
               <MdBedroomParent className="w-8 h-8 text-hosteloom-muted opacity-50" />
             </div>
-            <h3 className="font-heading font-bold text-lg text-white mb-2">No Rooms Available</h3>
+            <h3 className="font-heading font-bold text-lg text-hosteloom-heading mb-2">No Rooms Available</h3>
             <p className="text-hosteloom-muted font-body max-w-sm">There are currently no rooms available in this hostel. Please contact the administrator.</p>
           </div>
         )}

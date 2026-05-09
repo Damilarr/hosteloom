@@ -51,12 +51,12 @@ export default function SuperAdminDashboardPage() {
           {/* Mocked/Loosely bound cards to gracefully handle unknown summary structure */}
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
                 <FiHome className="w-6 h-6" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[10px] md:text-xs uppercase tracking-widest font-heading text-hosteloom-muted font-bold truncate">Total Hostels</p>
-                <p className="text-xl md:text-2xl font-bold font-heading text-white mt-1 truncate">
+                <p className="text-xl md:text-2xl font-bold font-heading text-hosteloom-heading mt-1 truncate">
                   {summary?.totalHostels ?? '--'}
                 </p>
               </div>
@@ -70,7 +70,7 @@ export default function SuperAdminDashboardPage() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[10px] md:text-xs uppercase tracking-widest font-heading text-hosteloom-muted font-bold truncate">Total Students</p>
-                <p className="text-xl md:text-2xl font-bold font-heading text-white mt-1 truncate">
+                <p className="text-xl md:text-2xl font-bold font-heading text-hosteloom-heading mt-1 truncate">
                   {summary?.totalStudents ?? '--'}
                 </p>
               </div>
@@ -79,12 +79,12 @@ export default function SuperAdminDashboardPage() {
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-green-500/10 text-emerald-600 flex items-center justify-center">
                 <FiActivity className="w-6 h-6" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[10px] md:text-xs uppercase tracking-widest font-heading text-hosteloom-muted font-bold truncate">Registered Owners</p>
-                <p className="text-xl md:text-2xl font-bold font-heading text-white mt-1 truncate">
+                <p className="text-xl md:text-2xl font-bold font-heading text-hosteloom-heading mt-1 truncate">
                   {summary?.totalOwners ?? '--'}
                 </p>
               </div>
@@ -98,7 +98,7 @@ export default function SuperAdminDashboardPage() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[10px] md:text-xs uppercase tracking-widest font-heading text-hosteloom-muted font-bold truncate" title="Total Platform Revenue">Total Platform Revenue</p>
-                <p className="text-lg md:text-xl font-bold font-heading text-white mt-1 truncate" title={summary?.financials?.totalPlatformRevenue ? new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(summary.financials.totalPlatformRevenue) : '--'}>
+                <p className="text-lg md:text-xl font-bold font-heading text-hosteloom-heading mt-1 truncate" title={summary?.financials?.totalPlatformRevenue ? new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(summary.financials.totalPlatformRevenue) : '--'}>
                   {summary?.financials?.totalPlatformRevenue !== undefined 
                     ? new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(summary.financials.totalPlatformRevenue) 
                     : '--'}
@@ -114,7 +114,7 @@ export default function SuperAdminDashboardPage() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[10px] md:text-xs uppercase tracking-widest font-heading text-hosteloom-muted font-bold truncate" title="Total Invoiced (Platform)">Total Invoiced (Platform)</p>
-                <p className="text-lg md:text-xl font-bold font-heading text-white mt-1 truncate" title={summary?.financials?.totalPlatformInvoiced ? new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(summary.financials.totalPlatformInvoiced) : '--'}>
+                <p className="text-lg md:text-xl font-bold font-heading text-hosteloom-heading mt-1 truncate" title={summary?.financials?.totalPlatformInvoiced ? new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(summary.financials.totalPlatformInvoiced) : '--'}>
                   {summary?.financials?.totalPlatformInvoiced !== undefined 
                     ? new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(summary.financials.totalPlatformInvoiced) 
                     : '--'}

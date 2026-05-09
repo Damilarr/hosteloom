@@ -10,18 +10,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Loader } from '@/components/ui/Loader';
 
 const statusColor: Record<string, string> = {
-  PAID:    'bg-green-400/15 text-green-400 border-green-400/20',
-  UNPAID:  'bg-yellow-400/15 text-yellow-400 border-yellow-400/20',
+  PAID:    'bg-green-400/15 text-emerald-600 border-emerald-500/20',
+  UNPAID:  'bg-yellow-400/15 text-amber-600 border-amber-500/20',
   OVERDUE: 'bg-red-400/15 text-red-400 border-red-400/20',
-  SUCCESS: 'bg-green-400/15 text-green-400 border-green-400/20',
-  PENDING: 'bg-yellow-400/15 text-yellow-400 border-yellow-400/20',
+  SUCCESS: 'bg-green-400/15 text-emerald-600 border-emerald-500/20',
+  PENDING: 'bg-yellow-400/15 text-amber-600 border-amber-500/20',
   FAILED:  'bg-red-400/15 text-red-400 border-red-400/20',
 };
 
 const statusIcon: Record<string, React.ReactNode> = {
-  PAID:    <FiCheckCircle className="w-5 h-5 text-green-400" />,
-  UNPAID:  <FiClock className="w-5 h-5 text-yellow-400" />,
-  PENDING: <FiClock className="w-5 h-5 text-yellow-400" />,
+  PAID:    <FiCheckCircle className="w-5 h-5 text-emerald-600" />,
+  UNPAID:  <FiClock className="w-5 h-5 text-amber-600" />,
+  PENDING: <FiClock className="w-5 h-5 text-amber-600" />,
   OVERDUE: <FiXCircle className="w-5 h-5 text-red-400" />,
 };
 
@@ -91,7 +91,7 @@ export default function MyPaymentsPage() {
         <button
           onClick={() => { fetchMyInvoices(); fetchPaymentHistory(); }}
           disabled={invoicesLoading || paymentsLoading}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent transition-all text-sm font-heading"
         >
           <MdRefresh className={`w-4 h-4 ${invoicesLoading || paymentsLoading ? 'animate-spin' : ''}`} />
           Refresh
@@ -107,7 +107,7 @@ export default function MyPaymentsPage() {
             className={`px-4 py-2 rounded-xl text-xs font-heading font-bold uppercase tracking-widest transition-all ${
               activeTab === tab.key
                 ? 'bg-hosteloom-accent text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]'
-                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-white'
+                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading'
             }`}
           >
             {tab.label} <span className="ml-1 opacity-60">{tab.count}</span>
@@ -135,7 +135,7 @@ export default function MyPaymentsPage() {
                 <MdPayment className="w-6 h-6 text-hosteloom-muted" />
               </div>
               <div>
-                <p className="font-heading font-semibold text-white">No invoices yet</p>
+                <p className="font-heading font-semibold text-hosteloom-heading">No invoices yet</p>
                 <p className="text-hosteloom-muted text-sm mt-1">Invoices will appear here once you&apos;re allocated a room.</p>
               </div>
             </div>
@@ -153,7 +153,7 @@ export default function MyPaymentsPage() {
                     exit={{ opacity: 0, y: -6 }}
                     className={`bg-hosteloom-surface border rounded-2xl p-5 flex flex-col gap-4 transition-all ${
                       invoice.status === 'PAID'
-                        ? 'border-green-400/20'
+                        ? 'border-emerald-500/20'
                         : invoice.status === 'OVERDUE'
                         ? 'border-red-400/20'
                         : 'border-hosteloom-border hover:border-hosteloom-accent/40'
@@ -166,19 +166,19 @@ export default function MyPaymentsPage() {
                           invoice.status === 'PAID' ? 'bg-green-400/10' :
                           invoice.status === 'OVERDUE' ? 'bg-red-400/10' : 'bg-yellow-400/10'
                         }`}>
-                          {statusIcon[invoice.status] || <FiClock className="w-5 h-5 text-yellow-400" />}
+                          {statusIcon[invoice.status] || <FiClock className="w-5 h-5 text-amber-600" />}
                         </div>
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-lg border text-[9px] font-heading font-bold uppercase tracking-widest ${statusColor[invoice.status] || ''}`}>
                           {invoice.status}
                         </span>
                       </div>
-                      <p className="font-heading font-bold text-2xl text-white">{formatCurrency(invoice.amount)}</p>
+                      <p className="font-heading font-bold text-2xl text-hosteloom-heading">{formatCurrency(invoice.amount)}</p>
                     </div>
 
                     {/* Details */}
                     <div className="space-y-2 flex-1">
                       {invoice.description && (
-                        <p className="text-sm font-body text-white">{invoice.description}</p>
+                        <p className="text-sm font-body text-hosteloom-heading">{invoice.description}</p>
                       )}
                       <div className="flex items-center gap-4 text-xs text-hosteloom-muted">
                         <span>Due: {format(new Date(invoice.dueDate), 'dd MMM yyyy')}</span>
@@ -233,7 +233,7 @@ export default function MyPaymentsPage() {
                 <FiCreditCard className="w-6 h-6 text-hosteloom-muted" />
               </div>
               <div>
-                <p className="font-heading font-semibold text-white">No payment records</p>
+                <p className="font-heading font-semibold text-hosteloom-heading">No payment records</p>
                 <p className="text-hosteloom-muted text-sm mt-1">Your payment history will appear here after an invoice is paid.</p>
               </div>
             </div>
@@ -258,12 +258,12 @@ export default function MyPaymentsPage() {
                           payment.status === 'SUCCESS' ? 'bg-green-400/10' :
                           payment.status === 'PENDING' ? 'bg-yellow-400/10' : 'bg-red-400/10'
                         }`}>
-                          {payment.status === 'SUCCESS' ? <FiCheckCircle className="w-5 h-5 text-green-400" /> :
-                           payment.status === 'PENDING' ? <FiClock className="w-5 h-5 text-yellow-400" /> :
+                          {payment.status === 'SUCCESS' ? <FiCheckCircle className="w-5 h-5 text-emerald-600" /> :
+                           payment.status === 'PENDING' ? <FiClock className="w-5 h-5 text-amber-600" /> :
                            <FiXCircle className="w-5 h-5 text-red-400" />}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-mono text-xs text-white truncate">{payment.reference}</p>
+                          <p className="font-mono text-xs text-hosteloom-heading truncate">{payment.reference}</p>
                           <p className="text-xs text-hosteloom-muted mt-0.5">
                             {format(new Date(payment.createdAt), 'dd MMM yyyy, hh:mm a')}
                           </p>
@@ -273,7 +273,7 @@ export default function MyPaymentsPage() {
                       <div className="flex items-center gap-6 flex-wrap">
                         <div className="text-center min-w-[80px]">
                           <p className="text-[9px] font-heading uppercase tracking-widest text-hosteloom-muted mb-0.5">Amount</p>
-                          <p className="font-heading font-bold text-white text-xs">{formatCurrency(payment.amount)}</p>
+                          <p className="font-heading font-bold text-hosteloom-heading text-xs">{formatCurrency(payment.amount)}</p>
                         </div>
 
                         <div className="text-center min-w-[60px]">

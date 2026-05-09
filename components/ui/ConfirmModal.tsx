@@ -55,13 +55,13 @@ export const ConfirmModal = ({
                     <FiAlertTriangle className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-heading font-bold tracking-tight text-white">{title}</h2>
+                    <h2 className="text-xl font-heading font-bold tracking-tight text-hosteloom-heading">{title}</h2>
                     <p className="text-[10px] text-hosteloom-muted font-heading font-bold uppercase tracking-widest leading-tight">Confirmation Required</p>
                   </div>
                 </div>
                 <button
                   onClick={onClose}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-hosteloom-muted hover:text-white hover:bg-hosteloom-surface-light transition-all"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-hosteloom-muted hover:text-hosteloom-heading hover:bg-hosteloom-surface-light transition-all"
                 >
                   <FiX />
                 </button>
@@ -74,7 +74,7 @@ export const ConfirmModal = ({
               <div className="flex gap-4">
                 <button
                   onClick={onClose}
-                  className="flex-1 py-3 bg-hosteloom-surface-light text-white font-heading font-bold uppercase tracking-widest text-xs rounded-xl hover:bg-white/10 transition-colors border border-hosteloom-border"
+                  className="flex-1 py-3 bg-hosteloom-surface-light text-hosteloom-heading font-heading font-bold uppercase tracking-widest text-xs rounded-xl hover:bg-hosteloom-hover-bg transition-colors border border-hosteloom-border"
                 >
                   {cancelText}
                 </button>

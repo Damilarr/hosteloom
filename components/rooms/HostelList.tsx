@@ -23,7 +23,7 @@ export default function HostelList({
 }: HostelListProps) {
   return (
     <div className="flex flex-col h-full bg-hosteloom-surface border border-hosteloom-border rounded-2xl overflow-hidden">
-      <div className="p-5 border-b border-hosteloom-border flex items-center justify-between bg-white/[0.02]">
+      <div className="p-5 border-b border-hosteloom-border flex items-center justify-between bg-hosteloom-hover-bg">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-hosteloom-accent/10 flex items-center justify-center text-hosteloom-accent">
             <FiFolder className="w-4 h-4" />
@@ -32,7 +32,7 @@ export default function HostelList({
         </div>
         <button
           onClick={onAdd}
-          className="w-8 h-8 rounded-full bg-hosteloom-surface-light border border-hosteloom-border flex items-center justify-center text-white hover:bg-hosteloom-accent hover:border-hosteloom-accent transition-all group"
+          className="w-8 h-8 rounded-full bg-hosteloom-surface-light border border-hosteloom-border flex items-center justify-center text-hosteloom-heading hover:bg-hosteloom-accent hover:border-hosteloom-accent transition-all group"
         >
           <FiPlus className="w-4 h-4 group-hover:scale-110 transition-transform" />
         </button>
@@ -57,8 +57,8 @@ export default function HostelList({
               onClick={() => onSelect(h)}
               className={`group relative p-4 rounded-xl border transition-all cursor-pointer ${
                 selectedHostel?.id === h.id
-                  ? "bg-hosteloom-accent/10 border-hosteloom-accent/30 text-white"
-                  : "bg-hosteloom-surface-light border-hosteloom-border hover:border-white/20 hover:bg-hosteloom-surface-light/80"
+                  ? "bg-hosteloom-accent/10 border-hosteloom-accent/30 text-hosteloom-heading"
+                  : "bg-hosteloom-surface-light border-hosteloom-border hover:border-hosteloom-accent/20 hover:bg-hosteloom-surface-light/80"
               }`}
             >
               <div className="flex justify-between items-start">

@@ -98,7 +98,7 @@ export default function OwnerProfileForm() {
         <div>
           <label className={labelClass}>First name</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiUser className="w-4 h-4" />
             </div>
             <input type="text" name="firstName" value={form.firstName} onChange={handleChange}
@@ -109,7 +109,7 @@ export default function OwnerProfileForm() {
         <div>
           <label className={labelClass}>Last name</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiUser className="w-4 h-4" />
             </div>
             <input type="text" name="lastName" value={form.lastName} onChange={handleChange}
@@ -123,7 +123,7 @@ export default function OwnerProfileForm() {
         <div>
           <label className={labelClass}>Email address</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiMail className="w-4 h-4" />
             </div>
             <input type="email" name="email" value={form.email} onChange={handleChange}
@@ -134,7 +134,7 @@ export default function OwnerProfileForm() {
         <div>
           <label className={labelClass}>Phone number</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiPhone className="w-4 h-4" />
             </div>
             <input type="tel" name="phone" value={form.phone} onChange={handleChange}
@@ -147,7 +147,7 @@ export default function OwnerProfileForm() {
       <div>
         <label className={labelClass}>Home/Contact Address</label>
         <div className="relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
             <FiMapPin className="w-4 h-4" />
           </div>
           <input type="text" name="address" value={form.address} onChange={handleChange}
@@ -159,7 +159,7 @@ export default function OwnerProfileForm() {
       <div>
         <label className={labelClass}>Company Name <span className="text-sm text-hosteloom-muted font-normal">(Optional)</span></label>
         <div className="relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
             <FiBriefcase className="w-4 h-4" />
           </div>
           <input type="text" name="companyName" value={form.companyName} onChange={handleChange}
@@ -169,12 +169,12 @@ export default function OwnerProfileForm() {
 
       {/* Banking Details */}
       <div className="pt-4 border-t border-hosteloom-border space-y-6">
-        <h3 className="font-heading font-semibold text-lg text-white">Banking Details</h3>
+        <h3 className="font-heading font-semibold text-lg text-hosteloom-heading">Banking Details</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label className={labelClass}>Account Number</label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
                 <FiHash className="w-4 h-4" />
               </div>
               <input type="text" name="bankAccountNo" value={form.bankAccountNo} onChange={handleChange}
@@ -184,13 +184,13 @@ export default function OwnerProfileForm() {
           <div>
             <label className={labelClass}>Bank</label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
                 <FiCreditCard className="w-4 h-4" />
               </div>
               <select name="bankCode" value={form.bankCode} onChange={handleChange} className={`${inputClass} appearance-none cursor-pointer w-full bg-hosteloom-surface`}>
                 <option value="" disabled className="bg-hosteloom-surface text-hosteloom-muted">Select Bank</option>
                 {banks.map((bank) => (
-                  <option key={bank.code} value={bank.code} className="bg-hosteloom-surface text-white">
+                  <option key={bank.code} value={bank.code} className="bg-hosteloom-surface text-hosteloom-heading">
                     {bank.name}
                   </option>
                 ))}
@@ -201,7 +201,7 @@ export default function OwnerProfileForm() {
         <div>
           <label className={labelClass}>Account Name</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiUser className="w-4 h-4" />
             </div>
             <input type="text" name="bankAccountName" value={form.bankAccountName} onChange={handleChange}

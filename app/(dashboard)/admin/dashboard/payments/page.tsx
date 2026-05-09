@@ -10,9 +10,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 const STATUS_FILTERS = ['ALL', 'PAID', 'UNPAID', 'OVERDUE'] as const;
 
 const statusColor: Record<string, string> = {
-  PAID:    'bg-green-400/15 text-green-400 border-green-400/20',
-  UNPAID:  'bg-yellow-400/15 text-yellow-400 border-yellow-400/20',
-  PENDING: 'bg-yellow-400/15 text-yellow-400 border-yellow-400/20',
+  PAID:    'bg-green-400/15 text-emerald-600 border-emerald-500/20',
+  UNPAID:  'bg-yellow-400/15 text-amber-600 border-amber-500/20',
+  PENDING: 'bg-yellow-400/15 text-amber-600 border-amber-500/20',
   OVERDUE: 'bg-red-400/15 text-red-400 border-red-400/20',
 };
 
@@ -77,7 +77,7 @@ export default function AdminPaymentsPage() {
         <button
           onClick={() => fetchAllInvoices()}
           disabled={invoicesLoading}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent transition-all text-sm font-heading"
         >
           <MdRefresh className={`w-4 h-4 ${invoicesLoading ? 'animate-spin' : ''}`} />
           Refresh
@@ -94,10 +94,10 @@ export default function AdminPaymentsPage() {
           <div className="flex items-center justify-between">
             <p className="text-[10px] font-heading font-bold uppercase tracking-widest text-hosteloom-muted">Total Collected</p>
             <div className="w-8 h-8 rounded-lg bg-green-400/10 flex items-center justify-center">
-              <FiDollarSign className="w-4 h-4 text-green-400" />
+              <FiDollarSign className="w-4 h-4 text-emerald-600" />
             </div>
           </div>
-          <p className="font-heading text-2xl font-bold text-white">{formatCurrency(totalCollected.toString())}</p>
+          <p className="font-heading text-2xl font-bold text-hosteloom-heading">{formatCurrency(totalCollected.toString())}</p>
         </motion.div>
 
         <motion.div
@@ -109,10 +109,10 @@ export default function AdminPaymentsPage() {
           <div className="flex items-center justify-between">
             <p className="text-[10px] font-heading font-bold uppercase tracking-widest text-hosteloom-muted">Pending Collection</p>
             <div className="w-8 h-8 rounded-lg bg-yellow-400/10 flex items-center justify-center">
-              <FiClock className="w-4 h-4 text-yellow-400" />
+              <FiClock className="w-4 h-4 text-amber-600" />
             </div>
           </div>
-          <p className="font-heading text-2xl font-bold text-white">{formatCurrency(pendingCollection.toString())}</p>
+          <p className="font-heading text-2xl font-bold text-hosteloom-heading">{formatCurrency(pendingCollection.toString())}</p>
         </motion.div>
 
         <motion.div
@@ -127,7 +127,7 @@ export default function AdminPaymentsPage() {
               <FiFileText className="w-4 h-4 text-hosteloom-accent" />
             </div>
           </div>
-          <p className="font-heading text-2xl font-bold text-white">{invoices.length}</p>
+          <p className="font-heading text-2xl font-bold text-hosteloom-heading">{invoices.length}</p>
         </motion.div>
       </div>
 
@@ -140,7 +140,7 @@ export default function AdminPaymentsPage() {
             className={`px-4 py-2 rounded-xl text-xs font-heading font-bold uppercase tracking-widest transition-all ${
               filterStatus === s
                 ? 'bg-hosteloom-accent text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]'
-                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-white'
+                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading'
             }`}
           >
             {s} <span className="ml-1 opacity-60">{counts[s]}</span>
@@ -158,7 +158,7 @@ export default function AdminPaymentsPage() {
           placeholder="Search by name, email, matric no. or room…"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full max-w-sm bg-hosteloom-surface border border-hosteloom-border rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+          className="w-full max-w-sm bg-hosteloom-surface border border-hosteloom-border rounded-xl py-3 pl-11 pr-4 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
         />
       </div>
 
@@ -178,7 +178,7 @@ export default function AdminPaymentsPage() {
             <MdPayment className="w-6 h-6 text-hosteloom-muted" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-white">No invoices found</p>
+            <p className="font-heading font-semibold text-hosteloom-heading">No invoices found</p>
             <p className="text-hosteloom-muted text-sm mt-1">Try adjusting your search or filter.</p>
           </div>
         </div>
@@ -204,7 +204,7 @@ export default function AdminPaymentsPage() {
                       {invoice.student?.profile.firstName?.[0]}{invoice.student?.profile.lastName?.[0]}
                     </div>
                     <div className="min-w-0">
-                      <p className="font-heading font-semibold text-sm text-white truncate">
+                      <p className="font-heading font-semibold text-sm text-hosteloom-heading truncate">
                         {invoice.student?.profile.firstName} {invoice.student?.profile.lastName}
                       </p>
                       <p className="text-xs text-hosteloom-muted truncate">
@@ -217,14 +217,14 @@ export default function AdminPaymentsPage() {
                   <div className="flex items-center gap-6 flex-wrap text-sm">
                     <div className="text-center min-w-[60px]">
                       <p className="text-[9px] font-heading uppercase tracking-widest text-hosteloom-muted mb-0.5">Room</p>
-                      <p className="font-heading font-bold text-white text-xs">
+                      <p className="font-heading font-bold text-hosteloom-heading text-xs">
                         {invoice.allocation?.room.roomNumber || '—'}
                       </p>
                     </div>
 
                     <div className="text-center min-w-[80px]">
                       <p className="text-[9px] font-heading uppercase tracking-widest text-hosteloom-muted mb-0.5">Amount</p>
-                      <p className="font-heading font-bold text-white text-xs">
+                      <p className="font-heading font-bold text-hosteloom-heading text-xs">
                         {formatCurrency(invoice.amount)}
                       </p>
                     </div>

@@ -23,10 +23,10 @@ export default function StatusBanner({ profile }: Props) {
 
   const badgeClass =
     status === 'APPROVED'
-      ? 'bg-green-400/20 text-green-400'
+      ? 'bg-green-400/20 text-emerald-600'
       : status === 'REJECTED'
       ? 'bg-red-400/20 text-red-400'
-      : 'bg-yellow-400/20 text-yellow-400';
+      : 'bg-yellow-400/20 text-amber-600';
 
   const message =
     status === 'APPROVED'
@@ -44,7 +44,7 @@ export default function StatusBanner({ profile }: Props) {
       <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${dotClass}`} />
       <div className="space-y-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <p className="text-sm font-heading font-semibold text-white">Registration status</p>
+          <p className="text-sm font-heading font-semibold text-hosteloom-heading">Registration status</p>
           <span className={`text-[10px] px-2.5 py-1 rounded-full font-heading font-bold uppercase tracking-widest ${badgeClass}`}>
             {status}
           </span>

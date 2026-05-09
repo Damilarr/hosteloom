@@ -197,7 +197,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <img src="/hosteloom-logo.png" alt="Hosteloom Logo" className="h-8 w-auto" />
           </Link>
           <button
-            className="ml-auto lg:hidden text-hosteloom-muted hover:text-white transition-colors"
+            className="ml-auto lg:hidden text-hosteloom-muted hover:text-hosteloom-heading transition-colors"
             onClick={() => setSidebarOpen(false)}
           >
             <MdClose className="w-5 h-5" />
@@ -227,8 +227,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 data-tour-id={tourId}
                 className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-heading font-medium transition-all duration-200 ${
                   active
-                    ? 'bg-hosteloom-accent/15 text-white border border-hosteloom-accent/30'
-                    : 'text-hosteloom-muted hover:bg-hosteloom-surface-light hover:text-white'
+                    ? 'bg-hosteloom-accent/15 text-hosteloom-heading border border-hosteloom-accent/30'
+                    : 'text-hosteloom-muted hover:bg-hosteloom-surface-light hover:text-hosteloom-heading'
                 }`}
               >
                 <Icon className={`w-5 h-5 shrink-0 ${active ? 'text-hosteloom-accent' : ''}`} />
@@ -240,7 +240,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         <div className="px-3 pb-6 pt-4 border-t border-hosteloom-border space-y-2">
           <div className="px-3 py-3 rounded-xl bg-hosteloom-surface-light">
-            <p className="text-xs font-heading font-medium text-white truncate">{displayName}</p>
+            <p className="text-xs font-heading font-medium text-hosteloom-heading truncate">{displayName}</p>
             <p className="text-[10px] text-hosteloom-muted mt-0.5 truncate">{user?.email}</p>
           </div>
           <button
@@ -259,7 +259,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <header className="sticky top-0 z-20 h-16 flex items-center justify-between px-6 border-b border-hosteloom-border bg-hosteloom-bg/80 backdrop-blur-md lg:hidden">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="text-hosteloom-muted hover:text-white transition-colors"
+            className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors"
           >
             <MdMenu className="w-6 h-6" />
           </button>
@@ -291,7 +291,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 function DashboardInner({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-screen overflow-hidden flex bg-[#06040A] bg-gradient-to-br from-[#06040A] via-[#0B0914] to-[#040306] text-hosteloom-text relative selection:bg-hosteloom-accent/30 selection:text-white">
+    <div className="h-screen overflow-hidden flex bg-hosteloom-overlay-bg text-hosteloom-text relative selection:bg-hosteloom-accent/30 selection:text-hosteloom-heading">
       {children}
     </div>
   );
@@ -309,7 +309,7 @@ function RestartTourButton({ role }: { role?: string }) {
           resetTourForRole(role);
           startForRole(role);
         }}
-        className="w-8 h-8 rounded-full flex items-center justify-center text-hosteloom-muted hover:text-white hover:bg-white/5 transition-all"
+        className="w-8 h-8 rounded-full flex items-center justify-center text-hosteloom-muted hover:text-hosteloom-heading hover:bg-hosteloom-hover-bg transition-all"
         aria-label="Start guided tour"
       >
         <MdHelpOutline className="w-5 h-5" />

@@ -4,15 +4,15 @@ import { MdAccessTime } from 'react-icons/md';
 const statusOptions: ComplaintStatus[] = ['PENDING', 'IN_PROGRESS', 'RESOLVED'];
 
 const statusClass: Record<ComplaintStatus, string> = {
-  PENDING:     'bg-yellow-400/15 text-yellow-400 border-yellow-400/30',
-  IN_PROGRESS: 'bg-blue-400/15 text-blue-400 border-blue-400/30',
-  RESOLVED:    'bg-green-400/15 text-green-400 border-green-400/30',
+  PENDING:     'bg-yellow-400/15 text-amber-600 border-amber-500/30',
+  IN_PROGRESS: 'bg-blue-400/15 text-blue-600 border-blue-500/30',
+  RESOLVED:    'bg-green-400/15 text-emerald-600 border-emerald-500/30',
 };
 
 const selectClass: Record<ComplaintStatus, string> = {
-  PENDING:     'text-yellow-400',
-  IN_PROGRESS: 'text-blue-400',
-  RESOLVED:    'text-green-400',
+  PENDING:     'text-amber-600',
+  IN_PROGRESS: 'text-blue-600',
+  RESOLVED:    'text-emerald-600',
 };
 
 interface Props {
@@ -29,7 +29,7 @@ export default function AdminComplaintRow({ complaint, isUpdating, onStatusChang
   return (
     <div className="group bg-hosteloom-surface border border-hosteloom-border hover:border-hosteloom-accent/50 rounded-2xl px-5 py-4 space-y-3 transition-all">
       <div className="flex items-start justify-between gap-3 flex-wrap">
-        <p className="font-heading font-semibold text-white text-sm">{complaint.title}</p>
+        <p className="font-heading font-semibold text-hosteloom-heading text-sm">{complaint.title}</p>
 
         <div className="relative shrink-0">
           {isUpdating ? (
@@ -44,7 +44,7 @@ export default function AdminComplaintRow({ complaint, isUpdating, onStatusChang
               className={`bg-hosteloom-surface-light border border-hosteloom-border rounded-xl px-3 py-1.5 text-xs font-heading font-bold uppercase tracking-widest focus:outline-none focus:border-hosteloom-accent transition-all appearance-none cursor-pointer ${selectClass[complaint.status]}`}
             >
               {statusOptions.map((s) => (
-                <option key={s} value={s} className="text-white normal-case tracking-normal">
+                <option key={s} value={s} className="text-hosteloom-heading normal-case tracking-normal">
                   {s.replace('_', ' ')}
                 </option>
               ))}

@@ -59,7 +59,7 @@ export default function SuperAdminStudentsPage() {
             <FiUsers className="w-6 h-6 text-hosteloom-muted" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-white">No students found</p>
+            <p className="font-heading font-semibold text-hosteloom-heading">No students found</p>
             <p className="text-hosteloom-muted text-sm mt-1">
               There are no registered students to display dynamically.
             </p>
@@ -79,13 +79,13 @@ export default function SuperAdminStudentsPage() {
                 >
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-heading font-bold text-white mb-0.5">
+                      <h3 className="font-heading font-bold text-hosteloom-heading mb-0.5">
                         {student.firstName} {student.lastName}
                       </h3>
                       <p className="text-xs text-hosteloom-muted truncate">{student.user?.email || 'No email associated'}</p>
                     </div>
                     <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest ${
-                      student.hostel ? 'bg-green-400/10 text-green-400' : 'bg-hosteloom-muted/10 text-hosteloom-muted'
+                      student.hostel ? 'bg-green-400/10 text-emerald-600' : 'bg-hosteloom-muted/10 text-hosteloom-muted'
                     }`}>
                       {student.hostel ? 'Assigned' : 'Unassigned'}
                     </span>
@@ -99,7 +99,7 @@ export default function SuperAdminStudentsPage() {
                   <div className="mt-5 pt-4 border-t border-hosteloom-border flex justify-end">
                     <button
                       onClick={() => viewProfile(student)}
-                      className="text-xs font-heading font-semibold text-white bg-hosteloom-bg border border-hosteloom-border px-4 py-2 rounded-lg hover:border-hosteloom-accent hover:text-hosteloom-accent transition-colors flex items-center gap-2 disabled:opacity-50"
+                      className="text-xs font-heading font-semibold text-hosteloom-heading bg-hosteloom-bg border border-hosteloom-border px-4 py-2 rounded-lg hover:border-hosteloom-accent hover:text-hosteloom-accent transition-colors flex items-center gap-2 disabled:opacity-50"
                     >
                       <FiInfo className="w-3.5 h-3.5" />
                       View Details
@@ -135,44 +135,44 @@ export default function SuperAdminStudentsPage() {
                     <FiUser className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="font-heading font-bold text-xl text-white">Student Profile</h2>
+                    <h2 className="font-heading font-bold text-xl text-hosteloom-heading">Student Profile</h2>
                     <p className="text-xs text-hosteloom-muted">Information for ID: {selectedStudent.userId}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedStudent(null)} className="p-2 text-hosteloom-muted hover:text-white rounded-xl hover:bg-hosteloom-border/50 transition-colors">
+                <button onClick={() => setSelectedStudent(null)} className="p-2 text-hosteloom-muted hover:text-hosteloom-heading rounded-xl hover:bg-hosteloom-border/50 transition-colors">
                   <FiX className="w-5 h-5" />
                 </button>
               </div>
               <div className="p-6 grid grid-cols-2 gap-y-6 gap-x-4">
                 <div>
                   <p className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-widest mb-1">Full Name</p>
-                  <p className="text-sm text-white font-medium">{selectedStudent.firstName} {selectedStudent.lastName}</p>
+                  <p className="text-sm text-hosteloom-heading font-medium">{selectedStudent.firstName} {selectedStudent.lastName}</p>
                 </div>
                 <div>
                   <p className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-widest mb-1">Matric Number</p>
-                  <p className="text-sm text-white font-mono">{selectedStudent.matricNo}</p>
+                  <p className="text-sm text-hosteloom-heading font-mono">{selectedStudent.matricNo}</p>
                 </div>
                 <div>
                   <p className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-widest mb-1">Phone</p>
-                  <p className="text-sm text-white">{selectedStudent.phone}</p>
+                  <p className="text-sm text-hosteloom-heading">{selectedStudent.phone}</p>
                 </div>
                 <div>
                   <p className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-widest mb-1">Institution</p>
-                  <p className="text-sm text-white">{selectedStudent.school}</p>
+                  <p className="text-sm text-hosteloom-heading">{selectedStudent.school}</p>
                 </div>
                 <div>
                   <p className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-widest mb-1">Academic Level</p>
-                  <p className="text-sm text-white font-mono">{selectedStudent.academicLevel}L</p>
+                  <p className="text-sm text-hosteloom-heading font-mono">{selectedStudent.academicLevel}L</p>
                 </div>
                 <div>
                   <p className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-widest mb-1">Hostel</p>
-                  <p className="text-sm text-white truncate" title={selectedStudent.hostel ? selectedStudent.hostel.name : 'Not Assigned'}>
+                  <p className="text-sm text-hosteloom-heading truncate" title={selectedStudent.hostel ? selectedStudent.hostel.name : 'Not Assigned'}>
                     {selectedStudent.hostel ? selectedStudent.hostel.name : 'Not Assigned'}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-widest mb-1">Account Creation</p>
-                  <p className="text-sm text-white">{selectedStudent.createdAt ? format(new Date(selectedStudent.createdAt), 'PPpp') : 'Unknown'}</p>
+                  <p className="text-sm text-hosteloom-heading">{selectedStudent.createdAt ? format(new Date(selectedStudent.createdAt), 'PPpp') : 'Unknown'}</p>
                 </div>
               </div>
             </motion.div>

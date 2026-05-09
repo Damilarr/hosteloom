@@ -92,11 +92,11 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                   <MdAdd className="w-5 h-5 text-hosteloom-accent" />
                 </div>
                 <div>
-                  <p className="font-heading font-semibold text-white text-sm">Create Room</p>
+                  <p className="font-heading font-semibold text-hosteloom-heading text-sm">Create Room</p>
                   <p className="text-xs text-hosteloom-muted">Add a single room</p>
                 </div>
               </div>
-              <button onClick={onClose} className="text-hosteloom-muted hover:text-white transition-colors">
+              <button onClick={onClose} className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors">
                 <MdClose className="w-5 h-5" />
               </button>
             </div>
@@ -110,7 +110,7 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                     value={roomNumber}
                     onChange={(e) => setRoomNumber(e.target.value)}
                     placeholder="e.g. A4"
-                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                     required
                   />
                 </div>
@@ -122,7 +122,7 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                     max={20}
                     value={capacity}
                     onChange={(e) => setCapacity(Number(e.target.value))}
-                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                    className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                     required
                   />
                 </div>
@@ -136,7 +136,7 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                   step={100}
                   value={price}
                   onChange={(e) => setPrice(Number(e.target.value))}
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
                   required
                 />
               </div>
@@ -146,7 +146,7 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                 <select
                   value={selectedHostel}
                   onChange={(e) => { setSelectedHostel(e.target.value); setSelectedBlock(''); setFloorId(''); }}
-                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none"
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-hosteloom-heading focus:border-hosteloom-accent outline-none"
                   required
                   disabled={user?.role === 'HOSTEL_ADMIN'}
                 >
@@ -158,7 +158,7 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                   value={selectedBlock}
                   onChange={(e) => { setSelectedBlock(e.target.value); setFloorId(''); }}
                   disabled={!selectedHostel}
-                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none disabled:opacity-50"
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-hosteloom-heading focus:border-hosteloom-accent outline-none disabled:opacity-50"
                   required
                 >
                   <option value="" disabled>Select Block</option>
@@ -169,7 +169,7 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
                   value={floorId}
                   onChange={(e) => setFloorId(e.target.value)}
                   disabled={!selectedBlock}
-                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-white focus:border-hosteloom-accent outline-none disabled:opacity-50"
+                  className="w-full bg-hosteloom-surface border border-hosteloom-border rounded-lg py-2 px-3 text-sm text-hosteloom-heading focus:border-hosteloom-accent outline-none disabled:opacity-50"
                   required
                 >
                   <option value="" disabled>Select Floor</option>
@@ -178,7 +178,7 @@ export default function CreateRoomModal({ open, onClose, onSubmit }: Props) {
               </div>
               <div className="flex gap-3 justify-end pt-1">
                 <button type="button" onClick={onClose}
-                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-white border border-hosteloom-border rounded-xl transition-all">
+                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-hosteloom-heading border border-hosteloom-border rounded-xl transition-all">
                   Cancel
                 </button>
                 <button type="submit" disabled={loading}

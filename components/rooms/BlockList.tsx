@@ -29,7 +29,7 @@ export default function BlockList({
         disabled ? "opacity-40 grayscale pointer-events-none" : "opacity-100"
       }`}
     >
-      <div className="p-5 border-b border-hosteloom-border flex items-center justify-between bg-white/[0.02]">
+      <div className="p-5 border-b border-hosteloom-border flex items-center justify-between bg-hosteloom-hover-bg">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-hosteloom-accent/10 flex items-center justify-center text-hosteloom-accent">
             <FiBox className="w-4 h-4" />
@@ -39,7 +39,7 @@ export default function BlockList({
         {!disabled && (
           <button
             onClick={onAdd}
-            className="w-8 h-8 rounded-full bg-hosteloom-surface-light border border-hosteloom-border flex items-center justify-center text-white hover:bg-hosteloom-accent hover:border-hosteloom-accent transition-all group"
+            className="w-8 h-8 rounded-full bg-hosteloom-surface-light border border-hosteloom-border flex items-center justify-center text-hosteloom-heading hover:bg-hosteloom-accent hover:border-hosteloom-accent transition-all group"
           >
             <FiPlus className="w-4 h-4 group-hover:scale-110 transition-transform" />
           </button>
@@ -68,8 +68,8 @@ export default function BlockList({
               onClick={() => onSelect(b)}
               className={`group p-4 rounded-xl border transition-all cursor-pointer ${
                 selectedBlock?.id === b.id
-                  ? "bg-hosteloom-accent/10 border-hosteloom-accent/30 text-white shadow-[inset_0_0_20px_rgba(168,85,247,0.05)]"
-                  : "bg-hosteloom-surface-light border-hosteloom-border hover:border-white/20 hover:bg-hosteloom-surface-light/80"
+                  ? "bg-hosteloom-accent/10 border-hosteloom-accent/30 text-hosteloom-heading shadow-[inset_0_0_20px_rgba(168,85,247,0.05)]"
+                  : "bg-hosteloom-surface-light border-hosteloom-border hover:border-hosteloom-accent/20 hover:bg-hosteloom-surface-light/80"
               }`}
             >
               <div className="flex justify-between items-center">

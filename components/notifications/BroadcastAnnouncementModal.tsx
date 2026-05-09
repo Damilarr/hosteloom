@@ -47,9 +47,9 @@ export default function BroadcastAnnouncementModal({ isOpen, onClose }: Props) {
         <div className="px-6 py-5 border-b border-hosteloom-border flex items-center justify-between bg-hosteloom-surface-light/50">
           <div className="flex items-center gap-3 text-hosteloom-accent">
             <MdCampaign className="w-6 h-6" />
-            <h2 className="font-heading font-bold text-lg text-white">Broadcast</h2>
+            <h2 className="font-heading font-bold text-lg text-hosteloom-heading">Broadcast</h2>
           </div>
-          <button onClick={onClose} className="text-hosteloom-muted hover:text-white transition-colors">
+          <button onClick={onClose} className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors">
             <MdClose className="w-6 h-6" />
           </button>
         </div>
@@ -64,7 +64,7 @@ export default function BroadcastAnnouncementModal({ isOpen, onClose }: Props) {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. System Maintenance"
-              className="w-full bg-hosteloom-surface-light border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-white focus:border-hosteloom-accent outline-none transition-colors"
+              className="w-full bg-hosteloom-surface-light border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-hosteloom-heading focus:border-hosteloom-accent outline-none transition-colors"
               required
             />
           </div>
@@ -78,7 +78,7 @@ export default function BroadcastAnnouncementModal({ isOpen, onClose }: Props) {
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Detailed message for all users..."
               rows={4}
-              className="w-full bg-hosteloom-surface-light border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-white focus:border-hosteloom-accent outline-none transition-colors resize-none"
+              className="w-full bg-hosteloom-surface-light border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-hosteloom-heading focus:border-hosteloom-accent outline-none transition-colors resize-none"
               required
             />
           </div>
@@ -86,7 +86,7 @@ export default function BroadcastAnnouncementModal({ isOpen, onClose }: Props) {
           <button
             type="submit"
             disabled={loading || !title || !message}
-            className="w-full py-3.5 rounded-2xl bg-white text-hosteloom-bg font-heading font-bold text-sm uppercase tracking-widest hover:bg-hosteloom-accent hover:text-white transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group"
+            className="w-full py-3.5 rounded-2xl bg-hosteloom-accent text-white font-heading font-bold text-sm uppercase tracking-widest hover:bg-hosteloom-accent-hover transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group"
           >
             {loading ? 'Broadcasting...' : (
               <>

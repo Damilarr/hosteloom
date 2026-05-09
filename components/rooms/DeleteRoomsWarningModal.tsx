@@ -88,9 +88,9 @@ export default function DeleteRoomsWarningModal({ open, onClose, targetType, hos
               <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
                 <MdWarning className="w-5 h-5 text-red-400" />
               </div>
-              <h2 className="font-heading font-bold text-lg text-white">{title}</h2>
+              <h2 className="font-heading font-bold text-lg text-hosteloom-heading">{title}</h2>
             </div>
-            <button onClick={onClose} className="text-hosteloom-muted hover:text-white transition-colors">
+            <button onClick={onClose} className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors">
               <MdClose className="w-5 h-5" />
             </button>
           </div>
@@ -108,7 +108,7 @@ export default function DeleteRoomsWarningModal({ open, onClose, targetType, hos
                 <select
                   value={selectedBlockId}
                   onChange={(e) => setSelectedBlockId(e.target.value)}
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-white text-sm focus:outline-none focus:border-red-400 transition-all appearance-none cursor-pointer"
+                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-hosteloom-heading text-sm focus:outline-none focus:border-red-400 transition-all appearance-none cursor-pointer"
                 >
                   <option value="">Choose a block...</option>
                   {currentHostel.blocks.map(b => (
@@ -127,7 +127,7 @@ export default function DeleteRoomsWarningModal({ open, onClose, targetType, hos
                 value={confirmText}
                 onChange={(e) => setConfirmText(e.target.value)}
                 placeholder="DELETE"
-                className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-red-400 transition-all font-body text-sm"
+                className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-3 px-4 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-red-400 transition-all font-body text-sm"
               />
             </div>
 

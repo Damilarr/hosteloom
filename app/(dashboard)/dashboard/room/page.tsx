@@ -66,7 +66,7 @@ export default function MyRoomPage() {
                       <p className="text-sm font-heading font-bold uppercase tracking-widest text-hosteloom-muted mb-1">
                         Academic Session
                       </p>
-                      <p className="text-lg font-bold text-white">
+                      <p className="text-lg font-bold text-hosteloom-heading">
                         {activeAllocation.academicSession.name}
                       </p>
                     </div>
@@ -74,7 +74,7 @@ export default function MyRoomPage() {
 
                   <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-4 py-2 rounded-xl">
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-sm font-heading font-bold text-green-400 uppercase tracking-wider">
+                    <span className="text-sm font-heading font-bold text-emerald-600 uppercase tracking-wider">
                       Active
                     </span>
                   </div>
@@ -83,11 +83,11 @@ export default function MyRoomPage() {
                 <div className="mt-8 pt-6 border-t border-hosteloom-border flex flex-wrap gap-x-12 gap-y-4">
                   <div>
                     <p className="text-xs font-heading text-hosteloom-muted mb-1">Room Capacity</p>
-                    <p className="text-sm font-medium text-white">{activeAllocation.room.capacity} Students</p>
+                    <p className="text-sm font-medium text-hosteloom-heading">{activeAllocation.room.capacity} Students</p>
                   </div>
                   <div>
                     <p className="text-xs font-heading text-hosteloom-muted mb-1">Allocated On</p>
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-sm font-medium text-hosteloom-heading">
                       {new Date(activeAllocation.createdAt).toLocaleDateString(undefined, {
                         year: 'numeric', month: 'long', day: 'numeric'
                       })}
@@ -105,7 +105,7 @@ export default function MyRoomPage() {
                   <MdInfoOutline className="w-8 h-8 text-hosteloom-muted" />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-white">No Active Allocation</h3>
+                  <h3 className="font-heading font-bold text-lg text-hosteloom-heading">No Active Allocation</h3>
                   <p className="text-sm text-hosteloom-muted mt-2 max-w-sm mx-auto">
                     You do not have a room allocated to you for the current academic session. 
                     Please wait for an admin to assign you a room.
@@ -129,7 +129,7 @@ export default function MyRoomPage() {
                   <div key={allocation.id} className="pb-4 border-b border-hosteloom-border/50 last:border-0 last:pb-0">
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="font-heading font-bold text-white">Room {allocation.room.roomNumber}</p>
+                        <p className="font-heading font-bold text-hosteloom-heading">Room {allocation.room.roomNumber}</p>
                         <p className="text-xs text-hosteloom-muted mt-0.5">{allocation.academicSession.name}</p>
                       </div>
                       <span className="text-[10px] font-heading font-bold uppercase tracking-widest px-2 py-0.5 rounded-md bg-hosteloom-muted/10 text-hosteloom-muted">

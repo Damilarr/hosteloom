@@ -17,8 +17,8 @@ const STATUS_FILTERS: Array<RoomStatus | 'ALL' | 'INACTIVE'> = ['ALL', 'VACANT',
 
 const filterColor: Record<string, string> = {
   ALL: '',
-  VACANT: 'text-green-400',
-  OCCUPIED: 'text-yellow-400',
+  VACANT: 'text-emerald-600',
+  OCCUPIED: 'text-amber-600',
   FULL: 'text-red-400',
   INACTIVE: 'text-hosteloom-muted',
 };
@@ -186,7 +186,7 @@ export default function RoomsPage() {
           <Tooltip content="Create multiple rooms at once for a floor" position="bottom">
             <button
               onClick={handleOpenBulkCreateRoom}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-green-400/30 text-green-400 hover:bg-green-400/10 transition-all text-sm font-heading"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-emerald-500/30 text-emerald-600 hover:bg-green-400/10 transition-all text-sm font-heading"
             >
               <MdPlaylistAdd className="w-4 h-4" /> Bulk Create
             </button>
@@ -194,7 +194,7 @@ export default function RoomsPage() {
           <Tooltip content="Add a single room to a floor" position="bottom">
             <button
               onClick={handleOpenCreateRoom}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent transition-all text-sm font-heading"
             >
               <MdAdd className="w-4 h-4" /> Add Room
             </button>
@@ -202,7 +202,7 @@ export default function RoomsPage() {
           <button
             onClick={() => { fetchRooms(page, LIMIT); }}
             disabled={roomsLoading}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent transition-all text-sm font-heading"
           >
             <MdRefresh className={`w-4 h-4 ${roomsLoading ? 'animate-spin' : ''}`} /> Refresh
           </button>
@@ -218,7 +218,7 @@ export default function RoomsPage() {
             className={`px-4 py-2 rounded-xl text-xs font-heading font-bold uppercase tracking-widest transition-all ${
               filter === s
                 ? 'bg-hosteloom-accent text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]'
-                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-white'
+                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading'
             }`}
           >
             <span className={filter !== s ? filterColor[s] : ''}>{s}</span>
@@ -238,7 +238,7 @@ export default function RoomsPage() {
           placeholder="Search by room number…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-sm bg-hosteloom-surface border border-hosteloom-border rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
+          className="w-full max-w-sm bg-hosteloom-surface border border-hosteloom-border rounded-xl py-3 pl-11 pr-4 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm"
         />
       </div>
 
@@ -260,7 +260,7 @@ export default function RoomsPage() {
             <MdBedroomParent className="w-6 h-6 text-hosteloom-muted" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-white">No rooms found</p>
+            <p className="font-heading font-semibold text-hosteloom-heading">No rooms found</p>
             <p className="text-hosteloom-muted text-sm mt-1">Create a room to get started.</p>
           </div>
         </div>
@@ -291,7 +291,7 @@ export default function RoomsPage() {
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-4 py-2 bg-hosteloom-surface border border-hosteloom-border rounded-xl text-sm font-heading text-white hover:border-hosteloom-accent/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="px-4 py-2 bg-hosteloom-surface border border-hosteloom-border rounded-xl text-sm font-heading text-hosteloom-heading hover:border-hosteloom-accent/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             Previous
           </button>
@@ -307,7 +307,7 @@ export default function RoomsPage() {
                     ? 'bg-hosteloom-accent text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]'
                     : p === '...'
                     ? 'text-hosteloom-muted cursor-default'
-                    : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent'
+                    : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent'
                 }`}
               >
                 {p}
@@ -318,7 +318,7 @@ export default function RoomsPage() {
           <button
             onClick={() => setPage(p => Math.min(roomsMeta.totalPages, p + 1))}
             disabled={page === roomsMeta.totalPages}
-            className="px-4 py-2 bg-hosteloom-surface border border-hosteloom-border rounded-xl text-sm font-heading text-white hover:border-hosteloom-accent/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="px-4 py-2 bg-hosteloom-surface border border-hosteloom-border rounded-xl text-sm font-heading text-hosteloom-heading hover:border-hosteloom-accent/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             Next
           </button>

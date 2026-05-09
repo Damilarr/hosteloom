@@ -48,7 +48,7 @@ function ResetPasswordForm() {
   if (!token) {
     return (
       <div className="text-center py-10">
-        <h2 className="text-white font-heading text-xl mb-4">Invalid or missing token</h2>
+        <h2 className="text-hosteloom-heading font-heading text-xl mb-4">Invalid or missing token</h2>
         <Link href="/forgot-password" title="forgot password" className="text-hosteloom-accent hover:underline">Request a new reset link</Link>
       </div>
     );
@@ -81,7 +81,7 @@ function ResetPasswordForm() {
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full py-4 mt-8 bg-white text-black font-heading font-bold uppercase tracking-widest rounded-xl hover:bg-hosteloom-accent hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-hosteloom-accent focus:ring-offset-2 focus:ring-offset-hosteloom-bg border-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-4 mt-8 bg-hosteloom-accent text-white font-heading font-bold uppercase tracking-widest rounded-xl hover:bg-hosteloom-accent-hover transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-hosteloom-accent focus:ring-offset-2 focus:ring-offset-hosteloom-bg border-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isLoading && <Loader className="text-current" />}
             {isLoading ? 'Updating…' : 'Update Password'}
@@ -92,11 +92,11 @@ function ResetPasswordForm() {
           <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <FiCheckCircle className="w-8 h-8 text-success" />
           </div>
-          <h3 className="text-white font-heading font-semibold mb-2">Success!</h3>
+          <h3 className="text-hosteloom-heading font-heading font-semibold mb-2">Success!</h3>
           <p className="text-hosteloom-muted text-sm font-body mb-6">
             Your password has been updated. You will be redirected to the login page shortly.
           </p>
-          <Link href="/login" className="text-hosteloom-accent hover:text-white transition-colors text-xs font-heading font-bold uppercase tracking-tighter">
+          <Link href="/login" className="text-hosteloom-accent hover:text-hosteloom-heading transition-colors text-xs font-heading font-bold uppercase tracking-tighter">
             Go to login
           </Link>
         </div>

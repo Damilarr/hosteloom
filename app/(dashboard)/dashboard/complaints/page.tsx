@@ -60,7 +60,7 @@ export default function StudentComplaintsPage() {
           <button
             onClick={() => fetchMyComplaints()}
             disabled={myComplaintsLoading}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent transition-all text-sm font-heading"
           >
             <MdRefresh className={`w-4 h-4 ${myComplaintsLoading ? 'animate-spin' : ''}`} />
             Refresh
@@ -86,7 +86,7 @@ export default function StudentComplaintsPage() {
             className={`px-4 py-2 rounded-xl text-xs font-heading font-bold uppercase tracking-widest transition-all ${
               filter === s
                 ? 'bg-hosteloom-accent text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]'
-                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-white'
+                : 'bg-hosteloom-surface border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading'
             }`}
           >
             {s.replace('_', ' ')} <span className="ml-1 opacity-60">{counts[s]}</span>
@@ -112,7 +112,7 @@ export default function StudentComplaintsPage() {
             <MdOutlinedFlag className="w-6 h-6 text-hosteloom-muted" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-white">No complaints yet</p>
+            <p className="font-heading font-semibold text-hosteloom-heading">No complaints yet</p>
             <p className="text-hosteloom-muted text-sm mt-1">
               {filter === 'ALL' ? 'Submit a complaint using the button above.' : `No ${filter.replace('_', ' ').toLowerCase()} complaints.`}
             </p>

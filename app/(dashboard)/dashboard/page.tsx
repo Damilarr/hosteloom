@@ -83,7 +83,7 @@ export default function StudentDashboard() {
   if (latestApp) {
     recentActivity.push({
       icon: latestApp.status === 'APPROVED' ? MdCheckCircle : (latestApp.status === 'REJECTED' ? MdCancel : MdHourglassTop),
-      color: latestApp.status === 'APPROVED' ? 'text-green-400' : (latestApp.status === 'REJECTED' ? 'text-red-400' : 'text-yellow-400'),
+      color: latestApp.status === 'APPROVED' ? 'text-emerald-600' : (latestApp.status === 'REJECTED' ? 'text-red-400' : 'text-amber-600'),
       label: latestApp.status === 'APPROVED' ? 'Application Approved' : (latestApp.status === 'REJECTED' ? 'Application Rejected' : 'Application Sent'),
       sub: latestApp.hostel?.name || 'Hostel Application',
       time: formatDistanceToNow(new Date(latestApp.updatedAt), { addSuffix: true }),
@@ -94,7 +94,7 @@ export default function StudentDashboard() {
   if (activeAllocation) {
     recentActivity.push({
       icon: MdCheckCircle,
-      color: 'text-green-400',
+      color: 'text-emerald-600',
       label: 'Room allocated',
       sub: `Room ${activeAllocation.room.roomNumber}`,
       time: formatDistanceToNow(new Date(activeAllocation.createdAt), { addSuffix: true }),
@@ -106,7 +106,7 @@ export default function StudentDashboard() {
   if (latestUnpaid) {
     recentActivity.push({
       icon: MdHourglassTop,
-      color: 'text-yellow-400',
+      color: 'text-amber-600',
       label: 'Payment pending',
       sub: `${formatCurrency(parseInt(latestUnpaid.amount, 10))} due${latestUnpaid.description ? ` — ${latestUnpaid.description}` : ''}`,
       time: formatDistanceToNow(new Date(latestUnpaid.createdAt), { addSuffix: true }),
@@ -118,7 +118,7 @@ export default function StudentDashboard() {
   if (latestPaid) {
     recentActivity.push({
       icon: MdCheckCircle,
-      color: 'text-green-400',
+      color: 'text-emerald-600',
       label: 'Payment confirmed',
       sub: `${formatCurrency(parseInt(latestPaid.amount, 10))}${latestPaid.description ? ` — ${latestPaid.description}` : ''}`,
       time: formatDistanceToNow(new Date(latestPaid.updatedAt), { addSuffix: true }),
@@ -130,7 +130,7 @@ export default function StudentDashboard() {
   if (latestComplaint) {
     recentActivity.push({
       icon: latestComplaint.status === 'RESOLVED' ? MdCheckCircle : MdWarning,
-      color: latestComplaint.status === 'RESOLVED' ? 'text-green-400' : 'text-orange-400',
+      color: latestComplaint.status === 'RESOLVED' ? 'text-emerald-600' : 'text-orange-600',
       label: latestComplaint.status === 'RESOLVED' ? 'Complaint resolved' : 'Complaint filed',
       sub: latestComplaint.title,
       time: formatDistanceToNow(new Date(latestComplaint.createdAt), { addSuffix: true }),
@@ -165,13 +165,13 @@ export default function StudentDashboard() {
             <div className={`w-10 h-10 rounded-xl bg-hosteloom-accent/10 flex items-center justify-center`}>
               <MdBedroomParent className="w-5 h-5 text-hosteloom-accent" />
             </div>
-            <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${activeAllocation ? 'text-green-400 bg-green-400/10' : 'text-hosteloom-muted bg-hosteloom-muted/10'}`}>
+            <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${activeAllocation ? 'text-emerald-600 bg-green-400/10' : 'text-hosteloom-muted bg-hosteloom-muted/10'}`}>
               {activeAllocation ? 'Active' : 'Not Assigned'}
             </span>
           </div>
           <div>
             <p className="text-xs text-hosteloom-muted font-body uppercase tracking-wider mb-1">Room Status</p>
-            <p className="font-heading font-bold text-xl text-white">
+            <p className="font-heading font-bold text-xl text-hosteloom-heading">
               {activeAllocation ? 'Allocated' : 'No Room'}
             </p>
             <p className="text-xs text-hosteloom-muted mt-0.5">
@@ -187,11 +187,11 @@ export default function StudentDashboard() {
               allPaid ? 'bg-green-400/10' : hasUnpaid ? 'bg-yellow-400/10' : 'bg-hosteloom-muted/10'
             }`}>
               <MdPayment className={`w-5 h-5 ${
-                allPaid ? 'text-green-400' : hasUnpaid ? 'text-yellow-400' : 'text-hosteloom-muted'
+                allPaid ? 'text-emerald-600' : hasUnpaid ? 'text-amber-600' : 'text-hosteloom-muted'
               }`} />
             </div>
             <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${
-              allPaid ? 'text-green-400 bg-green-400/10' : hasUnpaid ? 'text-yellow-400 bg-yellow-400/10' : 'text-hosteloom-muted bg-hosteloom-muted/10'
+              allPaid ? 'text-emerald-600 bg-green-400/10' : hasUnpaid ? 'text-amber-600 bg-yellow-400/10' : 'text-hosteloom-muted bg-hosteloom-muted/10'
             }`}>
               {allPaid ? 'Paid' : hasUnpaid ? 'Pending' : 'No Invoices'}
             </span>
@@ -200,19 +200,19 @@ export default function StudentDashboard() {
             <p className="text-xs text-hosteloom-muted font-body uppercase tracking-wider mb-1">Payment Status</p>
             {hasUnpaid ? (
               <>
-                <p className="font-heading font-bold text-xl text-white">{formatCurrency(totalUnpaid)}</p>
+                <p className="font-heading font-bold text-xl text-hosteloom-heading">{formatCurrency(totalUnpaid)}</p>
                 <p className="text-xs text-hosteloom-muted mt-0.5">
                   {unpaidInvoices.length} unpaid invoice{unpaidInvoices.length !== 1 ? 's' : ''}
                 </p>
               </>
             ) : allPaid ? (
               <>
-                <p className="font-heading font-bold text-xl text-white">{formatCurrency(totalPaid)}</p>
+                <p className="font-heading font-bold text-xl text-hosteloom-heading">{formatCurrency(totalPaid)}</p>
                 <p className="text-xs text-hosteloom-muted mt-0.5">All invoices paid</p>
               </>
             ) : (
               <>
-                <p className="font-heading font-bold text-xl text-white">—</p>
+                <p className="font-heading font-bold text-xl text-hosteloom-heading">—</p>
                 <p className="text-xs text-hosteloom-muted mt-0.5">No invoices yet</p>
               </>
             )}
@@ -225,13 +225,13 @@ export default function StudentDashboard() {
             <div className={`w-10 h-10 rounded-xl bg-hosteloom-secondary/10 flex items-center justify-center`}>
               <MdBuild className={`w-5 h-5 text-hosteloom-secondary`} />
             </div>
-            <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${openComplaints.length > 0 ? 'text-orange-400 bg-orange-400/10' : 'text-hosteloom-muted bg-hosteloom-muted/10'}`}>
+            <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${openComplaints.length > 0 ? 'text-orange-600 bg-orange-400/10' : 'text-hosteloom-muted bg-hosteloom-muted/10'}`}>
               {openComplaints.length > 0 ? 'In Progress' : 'All Clear'}
             </span>
           </div>
           <div>
             <p className="text-xs text-hosteloom-muted font-body uppercase tracking-wider mb-1">Complaints</p>
-            <p className="font-heading font-bold text-xl text-white">
+            <p className="font-heading font-bold text-xl text-hosteloom-heading">
               {openComplaints.length} Open
             </p>
             <p className="text-xs text-hosteloom-muted mt-0.5">
@@ -247,11 +247,11 @@ export default function StudentDashboard() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-hosteloom-accent/5 rounded-full -mr-32 -mt-32 blur-3xl pointer-events-none" />
           
           <div className="relative z-10 max-w-2xl">
-            <h2 className="font-heading font-bold text-2xl mb-2 text-white">Find your Hostel at Hosteloom</h2>
+            <h2 className="font-heading font-bold text-2xl mb-2 text-hosteloom-heading">Find your Hostel at Hosteloom</h2>
             <p className="text-hosteloom-muted font-body mb-8">Type the name or location of a hostel to begin your application process.</p>
             
             <div className="relative group mb-8">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
                 <FiSearch className="w-5 h-5" />
               </div>
               <input 
@@ -259,7 +259,7 @@ export default function StudentDashboard() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search hostels by name or address..."
-                className="w-full bg-hosteloom-bg/50 border border-hosteloom-border rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface transition-all font-body"
+                className="w-full bg-hosteloom-bg/50 border border-hosteloom-border rounded-xl py-4 pl-12 pr-4 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface transition-all font-body"
               />
               {searchLoading && (
                 <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
@@ -279,14 +279,14 @@ export default function StudentDashboard() {
                           <FiHome className="text-hosteloom-accent" />
                         </div>
                         <div>
-                          <p className="font-heading font-semibold text-sm text-white">{hostel.name}</p>
+                          <p className="font-heading font-semibold text-sm text-hosteloom-heading">{hostel.name}</p>
                           <p className="text-xs text-hosteloom-muted font-body">{hostel.address}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <button 
                           onClick={() => setSelectedHostel(hostel)}
-                          className="flex items-center gap-2 px-3 py-2 bg-hosteloom-bg text-white text-xs font-heading font-medium rounded-lg hover:text-hosteloom-accent transition-all"
+                          className="flex items-center gap-2 px-3 py-2 bg-hosteloom-bg text-hosteloom-heading text-xs font-heading font-medium rounded-lg hover:text-hosteloom-accent transition-all"
                         >
                           <FiEye /> View
                         </button>
@@ -296,7 +296,7 @@ export default function StudentDashboard() {
                             if (ok) toast.success(`Application sent to ${hostel.name}`);
                           }}
                           disabled={appsLoading}
-                          className="flex items-center gap-2 px-4 py-2 bg-white text-black text-xs font-heading font-bold rounded-lg hover:bg-hosteloom-accent hover:text-white transition-all disabled:opacity-50"
+                          className="flex items-center gap-2 px-4 py-2 bg-hosteloom-accent text-white text-xs font-heading font-bold rounded-lg hover:bg-hosteloom-accent-hover transition-all disabled:opacity-50"
                         >
                           {appsLoading ? 'Applying...' : 'Apply Now'}
                           <FiArrowRight />
@@ -313,17 +313,17 @@ export default function StudentDashboard() {
         </div>
       ) : currentApplication ? (
         <div className="space-y-6">
-          <div className={`bg-hosteloom-surface border ${currentApplication.status === 'APPROVED' ? 'border-green-500/20' : 'border-yellow-400/20'} rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all`}>
+          <div className={`bg-hosteloom-surface border ${currentApplication.status === 'APPROVED' ? 'border-green-500/20' : 'border-amber-500/20'} rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all`}>
             <div className="flex items-center gap-4">
               <div className={`w-12 h-12 rounded-full ${currentApplication.status === 'APPROVED' ? 'bg-green-500/10' : 'bg-yellow-500/10'} flex items-center justify-center shrink-0`}>
                 {currentApplication.status === 'APPROVED' ? (
-                  <MdCheckCircle className="w-6 h-6 text-green-400" />
+                  <MdCheckCircle className="w-6 h-6 text-emerald-600" />
                 ) : (
-                  <MdHourglassTop className="w-6 h-6 text-yellow-400" />
+                  <MdHourglassTop className="w-6 h-6 text-amber-600" />
                 )}
               </div>
               <div>
-                <h3 className="font-heading font-bold text-lg text-white">
+                <h3 className="font-heading font-bold text-lg text-hosteloom-heading">
                   {currentApplication.status === 'APPROVED' ? 'Application Approved' : 'Application Pending'}
                 </h3>
                 <p className="text-hosteloom-muted text-sm font-body max-w-lg">
@@ -334,7 +334,7 @@ export default function StudentDashboard() {
                 </p>
               </div>
             </div>
-            <div className={`shrink-0 px-4 py-2 ${currentApplication.status === 'APPROVED' ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'} rounded-lg text-xs font-heading font-bold uppercase tracking-widest text-center`}>
+            <div className={`shrink-0 px-4 py-2 ${currentApplication.status === 'APPROVED' ? 'bg-green-500/10 text-emerald-600' : 'bg-yellow-500/10 text-amber-600'} rounded-lg text-xs font-heading font-bold uppercase tracking-widest text-center`}>
               {currentApplication.status === 'APPROVED' ? 'Approved' : 'Pending Review'}
             </div>
           </div>
@@ -344,7 +344,7 @@ export default function StudentDashboard() {
                <div className="w-16 h-16 rounded-full bg-hosteloom-accent/10 border border-hosteloom-accent/20 flex items-center justify-center mb-2">
                  <MdCheckCircle className="w-8 h-8 text-hosteloom-accent" />
                </div>
-               <h3 className="font-heading font-bold text-2xl text-white">Your Room is Waiting!</h3>
+               <h3 className="font-heading font-bold text-2xl text-hosteloom-heading">Your Room is Waiting!</h3>
                <p className="text-hosteloom-muted text-sm font-body max-w-md mx-auto">
                  Your hostel application has been approved successfully. The next step is to choose the exact room you'd like to stay in from the available options.
                </p>
@@ -374,7 +374,7 @@ export default function StudentDashboard() {
                   <item.icon className={`w-4 h-4 ${item.color}`} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">{item.label}</p>
+                  <p className="text-sm font-medium text-hosteloom-heading truncate">{item.label}</p>
                   <p className="text-xs text-hosteloom-muted truncate">{item.sub}</p>
                 </div>
                 <span className="text-[10px] text-hosteloom-muted whitespace-nowrap">{item.time}</span>
@@ -391,7 +391,7 @@ export default function StudentDashboard() {
             <FiCreditCard className="w-5 h-5 text-hosteloom-accent" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-sm text-white">View Payments</p>
+            <p className="font-heading font-semibold text-sm text-hosteloom-heading">View Payments</p>
             <p className="text-xs text-hosteloom-muted">Manage invoices and payment history</p>
           </div>
         </Link>
@@ -400,7 +400,7 @@ export default function StudentDashboard() {
             <MdBuild className="w-5 h-5 text-hosteloom-secondary" />
           </div>
           <div>
-            <p className="font-heading font-semibold text-sm text-white">Report an Issue</p>
+            <p className="font-heading font-semibold text-sm text-hosteloom-heading">Report an Issue</p>
             <p className="text-xs text-hosteloom-muted">Submit a maintenance or complaint request</p>
           </div>
         </Link>
@@ -428,7 +428,7 @@ export default function StudentDashboard() {
                     <FiHome className="w-5 h-5 text-hosteloom-accent" />
                   </div>
                   <div>
-                    <h2 className="font-heading font-bold text-lg text-white">{selectedHostel.name}</h2>
+                    <h2 className="font-heading font-bold text-lg text-hosteloom-heading">{selectedHostel.name}</h2>
                     <p className="text-xs text-hosteloom-muted flex items-center gap-1">
                       <MdLocationOn /> {selectedHostel.address}
                     </p>
@@ -436,7 +436,7 @@ export default function StudentDashboard() {
                 </div>
                 <button
                   onClick={() => setSelectedHostel(null)}
-                  className="text-hosteloom-muted hover:text-white transition-colors"
+                  className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors"
                 >
                   <MdClose className="w-6 h-6" />
                 </button>
@@ -445,7 +445,7 @@ export default function StudentDashboard() {
               <div className="space-y-4">
                 <div>
                   <h3 className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-wider mb-2">Description</h3>
-                  <p className="text-sm text-white font-body leading-relaxed">
+                  <p className="text-sm text-hosteloom-heading font-body leading-relaxed">
                     {selectedHostel.description || 'No description provided.'}
                   </p>
                 </div>
@@ -464,8 +464,8 @@ export default function StudentDashboard() {
                     <h3 className="text-xs font-heading font-bold text-hosteloom-muted uppercase tracking-wider mb-3">Facilities</h3>
                     <ul className="space-y-4">
                       {selectedHostel.facilities.map((facility: string, idx: number) => (
-                        <li key={idx} className="flex items-center gap-3 text-sm text-white font-body">
-                          <MdCheckCircle className="w-5 h-5 text-green-400 shrink-0" />
+                        <li key={idx} className="flex items-center gap-3 text-sm text-hosteloom-heading font-body">
+                          <MdCheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
                           {facility}
                         </li>
                       ))}
@@ -484,7 +484,7 @@ export default function StudentDashboard() {
                     }
                   }}
                   disabled={appsLoading}
-                  className="px-6 py-2.5 bg-white text-black text-sm font-heading font-bold rounded-xl hover:bg-hosteloom-accent hover:text-white transition-all disabled:opacity-50 flex items-center gap-2"
+                  className="px-6 py-2.5 bg-hosteloom-accent text-white text-sm font-heading font-bold rounded-xl hover:bg-hosteloom-accent-hover transition-all disabled:opacity-50 flex items-center gap-2"
                 >
                   {appsLoading ? 'Applying...' : 'Apply Now'}
                   <FiArrowRight />

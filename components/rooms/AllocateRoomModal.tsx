@@ -57,11 +57,11 @@ export default function AllocateRoomModal({ open, onClose, students, availableRo
                   <MdPersonAdd className="w-5 h-5 text-hosteloom-accent" />
                 </div>
                 <div>
-                  <p className="font-heading font-semibold text-white text-sm">Allocate Room</p>
+                  <p className="font-heading font-semibold text-hosteloom-heading text-sm">Allocate Room</p>
                   <p className="text-xs text-hosteloom-muted">Assign a student to a room</p>
                 </div>
               </div>
-              <button onClick={onClose} className="text-hosteloom-muted hover:text-white transition-colors">
+              <button onClick={onClose} className="text-hosteloom-muted hover:text-hosteloom-heading transition-colors">
                 <MdClose className="w-5 h-5" />
               </button>
             </div>
@@ -72,7 +72,7 @@ export default function AllocateRoomModal({ open, onClose, students, availableRo
                 <select
                   value={studentId}
                   onChange={(e) => setStudentId(e.target.value)}
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm appearance-none cursor-pointer"
+                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm appearance-none cursor-pointer"
                   required
                 >
                   <option value="">Select a student…</option>
@@ -89,7 +89,7 @@ export default function AllocateRoomModal({ open, onClose, students, availableRo
                 <select
                   value={roomId}
                   onChange={(e) => setRoomId(e.target.value)}
-                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-white focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm appearance-none cursor-pointer"
+                  className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl py-2.5 px-3 text-hosteloom-heading focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm appearance-none cursor-pointer"
                   required
                 >
                   <option value="">Select a room…</option>
@@ -103,7 +103,7 @@ export default function AllocateRoomModal({ open, onClose, students, availableRo
 
               <div className="flex gap-3 justify-end pt-1">
                 <button type="button" onClick={onClose}
-                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-white border border-hosteloom-border rounded-xl transition-all">
+                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-hosteloom-heading border border-hosteloom-border rounded-xl transition-all">
                   Cancel
                 </button>
                 <button type="submit" disabled={loading || !studentId || !roomId}

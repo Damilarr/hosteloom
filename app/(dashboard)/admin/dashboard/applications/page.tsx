@@ -88,7 +88,7 @@ export default function AdminApplicationsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <p className="text-hosteloom-muted text-sm font-body mb-1 uppercase tracking-widest font-medium">Administration</p>
-          <h1 className="font-heading text-3xl font-bold text-white">Hostel Applications</h1>
+          <h1 className="font-heading text-3xl font-bold text-hosteloom-heading">Hostel Applications</h1>
           <p className="text-hosteloom-muted font-body text-sm mt-1">Review and manage guest applications for your hostel.</p>
         </div>
         
@@ -101,7 +101,7 @@ export default function AdminApplicationsPage() {
             >
               {processingAction === 'approve-all' ? (
                 <>
-                  <Loader size={16} className="text-white" />
+                  <Loader size={16} className="text-hosteloom-heading" />
                   Approving All...
                 </>
               ) : (
@@ -135,7 +135,7 @@ export default function AdminApplicationsPage() {
           <div className="w-16 h-16 bg-hosteloom-bg rounded-full flex items-center justify-center mx-auto mb-6">
             <MdHourglassTop className="w-8 h-8 text-hosteloom-muted" />
           </div>
-          <h3 className="text-white font-heading font-bold text-xl mb-2">No Applications Found</h3>
+          <h3 className="text-hosteloom-heading font-heading font-bold text-xl mb-2">No Applications Found</h3>
           <p className="text-hosteloom-muted font-body max-w-sm mx-auto">There are currently no hostel applications to display.</p>
         </div>
       ) : (
@@ -151,15 +151,15 @@ export default function AdminApplicationsPage() {
                     <MdPerson className="w-7 h-7 text-hosteloom-accent" />
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-white font-heading font-bold text-lg flex items-center gap-3">
+                    <h3 className="text-hosteloom-heading font-heading font-bold text-lg flex items-center gap-3">
                       {app.student?.profile 
                         ? `Application: ${app.student.profile.firstName} ${app.student.profile.lastName}`
                         : `Application #${app.id.slice(0, 8)}`
                       }
                       <span className={`text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full font-bold ${
-                        app.status === 'APPROVED' ? 'bg-green-500/10 text-green-400' :
+                        app.status === 'APPROVED' ? 'bg-green-500/10 text-emerald-600' :
                         app.status === 'REJECTED' ? 'bg-red-500/10 text-red-400' :
-                        'bg-yellow-500/10 text-yellow-400'
+                        'bg-yellow-500/10 text-amber-600'
                       }`}>
                         {app.status}
                       </span>
@@ -217,7 +217,7 @@ export default function AdminApplicationsPage() {
                       <button
                         onClick={() => handleApprove(app.id)}
                         disabled={!!processingId || appsLoading}
-                        className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 bg-white text-black hover:bg-hosteloom-accent hover:text-white rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex-1 lg:flex-none items-center justify-center gap-2 px-6 py-3 bg-hosteloom-accent text-white hover:bg-hosteloom-accent-hover rounded-xl transition-all font-heading font-bold text-sm tracking-widest uppercase flex disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {processingId === app.id && processingAction === 'approve' ? (
                           <>
@@ -257,14 +257,14 @@ export default function AdminApplicationsPage() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6 w-full max-w-md shadow-2xl"
             >
-              <h3 className="font-heading font-bold text-xl text-white mb-2">Approve All Pending?</h3>
+              <h3 className="font-heading font-bold text-xl text-hosteloom-heading mb-2">Approve All Pending?</h3>
               <p className="text-hosteloom-muted text-sm font-body mb-6">
                 Are you sure you want to approve all {pendingCount} pending applications at once? This action cannot be easily undone.
               </p>
               <div className="flex items-center gap-3 justify-end">
                 <button
                   onClick={() => setApproveAllModalOpen(false)}
-                  className="px-4 py-2 border border-hosteloom-border text-white hover:bg-hosteloom-surface-light rounded-xl text-sm font-heading font-bold transition-colors"
+                  className="px-4 py-2 border border-hosteloom-border text-hosteloom-heading hover:bg-hosteloom-surface-light rounded-xl text-sm font-heading font-bold transition-colors"
                 >
                   Cancel
                 </button>
@@ -287,7 +287,7 @@ export default function AdminApplicationsPage() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="bg-hosteloom-surface border border-hosteloom-border rounded-2xl p-6 w-full max-w-md shadow-2xl"
             >
-              <h3 className="font-heading font-bold text-xl text-white mb-2">Reject Application</h3>
+              <h3 className="font-heading font-bold text-xl text-hosteloom-heading mb-2">Reject Application</h3>
               <p className="text-hosteloom-muted text-sm font-body mb-4">
                 Please provide a reason for rejecting this application. This reason will be recorded and shared with the applicant.
               </p>
@@ -295,12 +295,12 @@ export default function AdminApplicationsPage() {
                 value={rejectReason}
                 onChange={(e) => setRejectReason(e.target.value)}
                 placeholder="E.g., No available spaces for your academic level."
-                className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all font-body mb-6 min-h-[100px] resize-none"
+                className="w-full bg-hosteloom-bg border border-hosteloom-border rounded-xl px-4 py-3 text-sm text-hosteloom-heading focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all font-body mb-6 min-h-[100px] resize-none"
               />
               <div className="flex items-center gap-3 justify-end">
                 <button
                   onClick={() => setRejectModalOpen(null)}
-                  className="px-4 py-2 border border-hosteloom-border text-white hover:bg-hosteloom-surface-light rounded-xl text-sm font-heading font-bold transition-colors"
+                  className="px-4 py-2 border border-hosteloom-border text-hosteloom-heading hover:bg-hosteloom-surface-light rounded-xl text-sm font-heading font-bold transition-colors"
                 >
                   Cancel
                 </button>

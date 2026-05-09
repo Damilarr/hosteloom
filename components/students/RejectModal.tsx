@@ -44,7 +44,7 @@ export default function RejectModal({ student, onConfirm, onClose }: Props) {
                 <MdCancel className="w-5 h-5 text-red-400" />
               </div>
               <div>
-                <p className="font-heading font-semibold text-white text-sm">Reject registration</p>
+                <p className="font-heading font-semibold text-hosteloom-heading text-sm">Reject registration</p>
                 <p className="text-xs text-hosteloom-muted">
                   {student.firstName} {student.lastName}
                 </p>
@@ -64,13 +64,13 @@ export default function RejectModal({ student, onConfirm, onClose }: Props) {
                   rows={3}
                   required
                   autoFocus
-                  className="w-full bg-transparent border border-hosteloom-border rounded-xl p-3.5 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm resize-none"
+                  className="w-full bg-transparent border border-hosteloom-border rounded-xl p-3.5 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent transition-all font-body text-sm resize-none"
                 />
               </div>
 
               <div className="flex gap-3 justify-end">
                 <button type="button" onClick={onClose}
-                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-white border border-hosteloom-border rounded-xl transition-all">
+                  className="px-4 py-2 text-sm font-heading text-hosteloom-muted hover:text-hosteloom-heading border border-hosteloom-border rounded-xl transition-all">
                   Cancel
                 </button>
                 <button

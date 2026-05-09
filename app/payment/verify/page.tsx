@@ -73,7 +73,7 @@ function VerifyPaymentContent() {
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-2xl font-heading font-bold tracking-tight text-white">
+          <h2 className="text-2xl font-heading font-bold tracking-tight text-hosteloom-heading">
             {status === 'verifying' ? 'Processing...' : status === 'success' ? 'Payment Successful' : 'Verification Failed'}
           </h2>
           <p className="text-hosteloom-muted font-body text-sm">{message}</p>

@@ -26,7 +26,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="w-full flex flex-col relative z-20">
       <div className="mb-10 text-left">
-        <Link href="/login" className="inline-flex items-center gap-2 text-hosteloom-accent hover:text-white transition-colors text-sm font-heading uppercase tracking-widest mb-6 group">
+        <Link href="/login" className="inline-flex items-center gap-2 text-hosteloom-accent hover:text-hosteloom-heading transition-colors text-sm font-heading uppercase tracking-widest mb-6 group">
           <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" />
           Back to login
         </Link>
@@ -41,7 +41,7 @@ export default function ForgotPasswordPage() {
       {!isSubmitted ? (
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiMail className="w-5 h-5" />
             </div>
             <input 
@@ -49,7 +49,7 @@ export default function ForgotPasswordPage() {
               value={email} 
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email address"
-              className="w-full bg-transparent border border-hosteloom-border rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface/50 transition-all font-body"
+              className="w-full bg-transparent border border-hosteloom-border rounded-xl py-4 pl-12 pr-4 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface/50 transition-all font-body"
               required 
             />
           </div>
@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full py-4 mt-4 bg-white text-black font-heading font-bold uppercase tracking-widest rounded-xl hover:bg-hosteloom-accent hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-hosteloom-accent focus:ring-offset-2 focus:ring-offset-hosteloom-bg border-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-4 mt-4 bg-hosteloom-accent text-white font-heading font-bold uppercase tracking-widest rounded-xl hover:bg-hosteloom-accent-hover transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-hosteloom-accent focus:ring-offset-2 focus:ring-offset-hosteloom-bg border-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isLoading && <Loader className="text-current" />}
             {isLoading ? 'Sending link…' : 'Send Reset Link'}
@@ -68,13 +68,13 @@ export default function ForgotPasswordPage() {
           <div className="w-16 h-16 bg-hosteloom-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <FiMail className="w-8 h-8 text-hosteloom-accent" />
           </div>
-          <h3 className="text-white font-heading font-semibold mb-2">Check your email</h3>
+          <h3 className="text-hosteloom-heading font-heading font-semibold mb-2">Check your email</h3>
           <p className="text-hosteloom-muted text-sm font-body mb-6">
-            We've sent a password reset link to <span className="text-white font-medium">{email}</span>.
+            We've sent a password reset link to <span className="text-hosteloom-heading font-medium">{email}</span>.
           </p>
           <button 
             onClick={() => setIsSubmitted(false)}
-            className="text-hosteloom-accent hover:text-white transition-colors text-xs font-heading font-bold uppercase tracking-tighter"
+            className="text-hosteloom-accent hover:text-hosteloom-heading transition-colors text-xs font-heading font-bold uppercase tracking-tighter"
           >
             Didn't receive it? Try again
           </button>

@@ -11,10 +11,10 @@ import type { ReportType } from '@/types';
 import { generateAndDownloadCSV } from '@/lib/exportUtils';
 
 const reportTypes: Array<{ type: ReportType; label: string; icon: any; color: string }> = [
-  { type: 'occupancy', label: 'Occupancy Status', icon: MdPeople, color: 'text-green-400' },
-  { type: 'allocations', label: 'Student Allocations', icon: MdBedroomParent, color: 'text-blue-400' },
-  { type: 'payments', label: 'Payment Records', icon: MdPayment, color: 'text-yellow-400' },
-  { type: 'maintenance', label: 'Maintenance Issues', icon: MdBuild, color: 'text-orange-400' },
+  { type: 'occupancy', label: 'Occupancy Status', icon: MdPeople, color: 'text-emerald-600' },
+  { type: 'allocations', label: 'Student Allocations', icon: MdBedroomParent, color: 'text-blue-600' },
+  { type: 'payments', label: 'Payment Records', icon: MdPayment, color: 'text-amber-600' },
+  { type: 'maintenance', label: 'Maintenance Issues', icon: MdBuild, color: 'text-orange-600' },
 ];
 
 export default function ReportsPage() {
@@ -46,7 +46,7 @@ export default function ReportsPage() {
           <button
             onClick={handleRefresh}
             disabled={reportLoading}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-white hover:border-hosteloom-accent transition-all text-sm font-heading"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-hosteloom-border text-hosteloom-muted hover:text-hosteloom-heading hover:border-hosteloom-accent transition-all text-sm font-heading"
           >
             <MdRefresh className={`w-4 h-4 ${reportLoading ? 'animate-spin' : ''}`} />
             Refresh
@@ -54,7 +54,7 @@ export default function ReportsPage() {
           <button
             onClick={handleExportCSV}
             disabled={reportLoading || !reportData || reportData.length === 0}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-heading font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-hosteloom-heading text-sm font-heading font-bold transition-all ${
               reportLoading || !reportData || reportData.length === 0 
                 ? 'bg-hosteloom-surface/50 text-hosteloom-muted cursor-not-allowed border border-hosteloom-border' 
                 : 'bg-hosteloom-accent hover:bg-hosteloom-accent-hover'
@@ -76,7 +76,7 @@ export default function ReportsPage() {
               onClick={() => setActiveType(rt.type)}
               className={`flex flex-col items-center gap-3 p-5 rounded-2xl border transition-all ${
                 isActive 
-                  ? 'bg-hosteloom-accent/10 border-hosteloom-accent text-white shadow-[0_0_15px_rgba(168,85,247,0.2)]' 
+                  ? 'bg-hosteloom-accent/10 border-hosteloom-accent text-hosteloom-heading shadow-[0_0_15px_rgba(168,85,247,0.2)]' 
                   : 'bg-hosteloom-surface border-hosteloom-border text-hosteloom-muted hover:border-hosteloom-accent/40'
               }`}
             >
@@ -142,23 +142,23 @@ export default function ReportsPage() {
               <tbody className="divide-y divide-hosteloom-border">
                 {activeType === 'allocations' ? (
                   (reportData as any[]).map((allocation) => (
-                    <tr key={allocation.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={allocation.id} className="hover:bg-hosteloom-hover-bg transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
-                          <span className="font-body text-sm text-white font-medium">
+                          <span className="font-body text-sm text-hosteloom-heading font-medium">
                             {allocation.student?.profile?.firstName} {allocation.student?.profile?.lastName}
                           </span>
                           <span className="text-[10px] text-hosteloom-muted">{allocation.student?.email}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 font-body text-sm text-white">{allocation.room?.roomNumber}</td>
+                      <td className="px-6 py-4 font-body text-sm text-hosteloom-heading">{allocation.room?.roomNumber}</td>
                       <td className="px-6 py-4 font-body text-xs text-hosteloom-muted">{allocation.student?.profile?.matricNo}</td>
                       <td className="px-6 py-4 font-body text-xs text-hosteloom-muted">
                         {new Date(allocation.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4">
                         <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2 py-1 rounded-full ${
-                          allocation.status === 'ACTIVE' ? 'bg-green-400/10 text-green-400' : 'bg-hosteloom-muted/10 text-hosteloom-muted'
+                          allocation.status === 'ACTIVE' ? 'bg-green-400/10 text-emerald-600' : 'bg-hosteloom-muted/10 text-hosteloom-muted'
                         }`}>
                           {allocation.status}
                         </span>
@@ -167,10 +167,10 @@ export default function ReportsPage() {
                   ))
                 ) : activeType === 'payments' ? (
                   (reportData as any[]).map((invoice) => (
-                    <tr key={invoice.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={invoice.id} className="hover:bg-hosteloom-hover-bg transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
-                          <span className="font-body text-sm text-white font-medium">
+                          <span className="font-body text-sm text-hosteloom-heading font-medium">
                             {invoice.student?.profile?.firstName} {invoice.student?.profile?.lastName}
                           </span>
                           <span className="text-[10px] text-hosteloom-muted">{invoice.student?.email}</span>
@@ -178,11 +178,11 @@ export default function ReportsPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
-                          <span className="font-body text-sm text-white">{invoice.allocation?.room?.roomNumber}</span>
+                          <span className="font-body text-sm text-hosteloom-heading">{invoice.allocation?.room?.roomNumber}</span>
                           <span className="text-[10px] text-hosteloom-muted">{invoice.description}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 font-body text-sm text-white">
+                      <td className="px-6 py-4 font-body text-sm text-hosteloom-heading">
                         ₦{Number(invoice.amount).toLocaleString()}
                       </td>
                       <td className="px-6 py-4 font-body text-xs text-hosteloom-muted">
@@ -190,7 +190,7 @@ export default function ReportsPage() {
                       </td>
                       <td className="px-6 py-4">
                         <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2 py-1 rounded-full ${
-                          invoice.status === 'PAID' ? 'bg-green-400/10 text-green-400' : 'bg-yellow-400/10 text-yellow-400'
+                          invoice.status === 'PAID' ? 'bg-green-400/10 text-emerald-600' : 'bg-yellow-400/10 text-amber-600'
                         }`}>
                           {invoice.status}
                         </span>
@@ -199,10 +199,10 @@ export default function ReportsPage() {
                   ))
                 ) : activeType === 'maintenance' ? (
                   (reportData as any[]).map((complaint) => (
-                    <tr key={complaint.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={complaint.id} className="hover:bg-hosteloom-hover-bg transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
-                          <span className="font-body text-sm text-white font-medium">{complaint.title}</span>
+                          <span className="font-body text-sm text-hosteloom-heading font-medium">{complaint.title}</span>
                           <span className="text-[10px] text-hosteloom-muted max-w-[200px] truncate">{complaint.description}</span>
                         </div>
                       </td>
@@ -213,7 +213,7 @@ export default function ReportsPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
-                          <span className="font-body text-sm text-white">
+                          <span className="font-body text-sm text-hosteloom-heading">
                             {complaint.student?.profile?.firstName} {complaint.student?.profile?.lastName}
                           </span>
                           <span className="text-[10px] text-hosteloom-muted">{complaint.student?.email}</span>
@@ -224,8 +224,8 @@ export default function ReportsPage() {
                       </td>
                       <td className="px-6 py-4">
                         <span className={`text-[10px] font-heading font-bold uppercase tracking-widest px-2 py-1 rounded-full ${
-                          complaint.status === 'RESOLVED' ? 'bg-green-400/10 text-green-400' : 
-                          complaint.status === 'IN_PROGRESS' ? 'bg-yellow-400/10 text-yellow-400' : 
+                          complaint.status === 'RESOLVED' ? 'bg-green-400/10 text-emerald-600' : 
+                          complaint.status === 'IN_PROGRESS' ? 'bg-yellow-400/10 text-amber-600' : 
                           'bg-red-400/10 text-red-400'
                         }`}>
                           {complaint.status}
@@ -235,19 +235,19 @@ export default function ReportsPage() {
                   ))
                 ) : (
                   (reportData as any[]).map((room) => (
-                    <tr key={room.id} className="hover:bg-white/[0.02] transition-colors">
-                      <td className="px-6 py-4 font-body text-sm text-white font-medium">{room.roomNumber}</td>
+                    <tr key={room.id} className="hover:bg-hosteloom-hover-bg transition-colors">
+                      <td className="px-6 py-4 font-body text-sm text-hosteloom-heading font-medium">{room.roomNumber}</td>
                       <td className="px-6 py-4 font-body text-xs text-hosteloom-muted">
                         {room.floor?.block?.hostel?.name ? (
                           <>
-                            <span className="text-white">{room.floor.block.hostel.name}</span>
+                            <span className="text-hosteloom-heading">{room.floor.block.hostel.name}</span>
                             <br />
                             {room.floor.block.name} — {room.floor.name}
                           </>
                         ) : '—'}
                       </td>
                       <td className="px-6 py-4 font-body text-sm text-hosteloom-muted">
-                        <span className="text-white">{room.allocations?.length ?? 0}</span> / {room.capacity}
+                        <span className="text-hosteloom-heading">{room.allocations?.length ?? 0}</span> / {room.capacity}
                       </td>
                       <td className="px-6 py-4 font-body text-sm text-hosteloom-muted">
                         ₦{room.price ? Number(room.price).toLocaleString() : '0'}
@@ -256,7 +256,7 @@ export default function ReportsPage() {
                         {room.allocations && room.allocations.length > 0 ? (
                           <div className="flex -space-x-2">
                             {room.allocations.map((a: any, i: number) => (
-                              <div key={i} className="w-7 h-7 rounded-full bg-hosteloom-accent border-2 border-hosteloom-surface flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-1 ring-black/10" title={a.studentId}>
+                              <div key={i} className="w-7 h-7 rounded-full bg-hosteloom-accent border-2 border-hosteloom-surface flex items-center justify-center text-[10px] font-bold text-hosteloom-heading shadow-sm ring-1 ring-black/10" title={a.studentId}>
                                 {i + 1}
                               </div>
                             ))}

@@ -51,12 +51,12 @@ export default function LoginPage() {
         {/* Inputs */}
         <div className="space-y-4">
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiMail className="w-5 h-5" />
             </div>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
               placeholder="Email address"
-              className="w-full bg-transparent border border-hosteloom-border rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface/50 transition-all font-body"
+              className="w-full bg-transparent border border-hosteloom-border rounded-xl py-4 pl-12 pr-4 text-hosteloom-heading placeholder:text-hosteloom-muted focus:outline-none focus:border-hosteloom-accent focus:bg-hosteloom-surface/50 transition-all font-body"
               required />
           </div>
 
@@ -69,22 +69,22 @@ export default function LoginPage() {
         </div>
 
         <div className="flex items-center justify-between mt-2">
-          <label className="flex items-center gap-2 text-sm text-hosteloom-muted cursor-pointer hover:text-white transition-colors">
+          <label className="flex items-center gap-2 text-sm text-hosteloom-muted cursor-pointer hover:text-hosteloom-heading transition-colors">
             <input type="checkbox" className="rounded border-hosteloom-border bg-hosteloom-surface text-hosteloom-accent focus:ring-1 focus:ring-hosteloom-accent focus:ring-offset-0" />
             Keep me signed in
           </label>
-          <Link href="/forgot-password" title="reset password" className="font-heading text-[10px] uppercase tracking-widest text-hosteloom-accent hover:text-white transition-colors">Forgot password?</Link>
+          <Link href="/forgot-password" title="reset password" className="font-heading text-[10px] uppercase tracking-widest text-hosteloom-accent hover:text-hosteloom-heading transition-colors">Forgot password?</Link>
         </div>
 
         <button type="submit" disabled={isLoading}
-          className="w-full py-4 mt-8 bg-white text-black font-heading font-bold uppercase tracking-widest rounded-xl hover:bg-hosteloom-accent hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-hosteloom-accent focus:ring-offset-2 focus:ring-offset-hosteloom-bg border-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          className="w-full py-4 mt-8 bg-hosteloom-accent text-white font-heading font-bold uppercase tracking-widest rounded-xl hover:bg-hosteloom-accent-hover transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-hosteloom-accent focus:ring-offset-2 focus:ring-offset-hosteloom-bg border-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
           {isLoading && <Loader className="text-current" />}
           {isLoading ? 'Signing in…' : 'Sign In'}
         </button>
 
         <p className="mt-8 text-center text-sm font-body text-hosteloom-muted">
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-heading text-white border-b border-hosteloom-accent pb-[2px] hover:text-hosteloom-accent transition-colors">
+          <Link href="/register" className="font-heading text-hosteloom-heading border-b border-hosteloom-accent pb-[2px] hover:text-hosteloom-accent transition-colors">
             Create one
           </Link>
         </p>

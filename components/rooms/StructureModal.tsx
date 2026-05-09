@@ -54,7 +54,7 @@ export default function StructureModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-hosteloom-bg/80 backdrop-blur-xl"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -79,7 +79,7 @@ export default function StructureModal({
                 </div>
                 <button
                   onClick={onClose}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-hosteloom-muted hover:text-white hover:bg-hosteloom-surface-light transition-all"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-hosteloom-muted hover:text-hosteloom-heading hover:bg-hosteloom-surface-light transition-all"
                 >
                   <FiX />
                 </button>
@@ -91,21 +91,21 @@ export default function StructureModal({
                     <div>
                       <label className={labelClass}>Hostel Name</label>
                       <div className="relative group">
-                        <FiTag className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
+                        <FiTag className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors" />
                         <input required type="text" placeholder="e.g. Royal Pride" className={inputClass} value={formData.name || ''} onChange={e => setFormData({...formData, name: e.target.value})} />
                       </div>
                     </div>
                     <div>
                       <label className={labelClass}>Short Description</label>
                       <div className="relative group">
-                        <FiInfo className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
+                        <FiInfo className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors" />
                         <input required type="text" placeholder="e.g. Luxury student hostel" className={inputClass} value={formData.description || ''} onChange={e => setFormData({...formData, description: e.target.value})} />
                       </div>
                     </div>
                     <div>
                       <label className={labelClass}>Full Address</label>
                       <div className="relative group">
-                        <FiTag className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
+                        <FiTag className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors" />
                         <input required type="text" placeholder="Location details..." className={inputClass} value={formData.address || ''} onChange={e => setFormData({...formData, address: e.target.value})} />
                       </div>
                     </div>
@@ -114,14 +114,14 @@ export default function StructureModal({
                       <div>
                         <label className={labelClass}>Min Room Price (₦)</label>
                         <div className="relative group">
-                          <TbCurrencyNaira className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors text-lg" />
+                          <TbCurrencyNaira className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors text-lg" />
                           <input type="number" placeholder="50000" className={`${inputClass} !pl-10`} value={formData.priceRangeMin || ''} onChange={e => setFormData({...formData, priceRangeMin: e.target.value})} />
                         </div>
                       </div>
                       <div>
                         <label className={labelClass}>Max Room Price (₦)</label>
                         <div className="relative group">
-                          <TbCurrencyNaira className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors text-lg" />
+                          <TbCurrencyNaira className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors text-lg" />
                           <input type="number" placeholder="120000" className={`${inputClass} !pl-10`} value={formData.priceRangeMax || ''} onChange={e => setFormData({...formData, priceRangeMax: e.target.value})} />
                         </div>
                       </div>
@@ -131,7 +131,7 @@ export default function StructureModal({
                       <div className="flex items-center gap-2 mb-2">
                         <label className={`${labelClass} !mb-0`}>Facilities</label>
                         <div className="group/tooltip relative flex items-center">
-                          <FiInfo className="w-4 h-4 text-hosteloom-muted hover:text-white transition-colors cursor-help" />
+                          <FiInfo className="w-4 h-4 text-hosteloom-muted hover:text-hosteloom-heading transition-colors cursor-help" />
                           <div className="absolute left-1/2 -top-2 -translate-y-full -translate-x-1/2 w-48 p-2 bg-hosteloom-surface-light border border-hosteloom-border rounded-lg text-xs font-body leading-tight text-hosteloom-text opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all text-center shadow-xl z-50 pointer-events-none">
                             Add as many facilities as possible. Type a comma (,) or press Enter to add each facility.
                             <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-hosteloom-surface-light border-b border-r border-hosteloom-border rotate-45"></div>
@@ -140,7 +140,7 @@ export default function StructureModal({
                       </div>
                       <div className="flex gap-2 mb-3">
                         <div className="relative group flex-1">
-                          <FiList className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
+                          <FiList className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors" />
                           <input 
                             type="text" 
                             placeholder="e.g. WiFi, 24/7 Power..." 
@@ -158,7 +158,7 @@ export default function StructureModal({
                         <button 
                           type="button" 
                           onClick={handleAddFacility}
-                          className="w-12 rounded-xl bg-hosteloom-surface-light border border-hosteloom-border flex items-center justify-center text-white hover:bg-hosteloom-accent transition-colors"
+                          className="w-12 rounded-xl bg-hosteloom-surface-light border border-hosteloom-border flex items-center justify-center text-hosteloom-heading hover:bg-hosteloom-accent transition-colors"
                         >
                           <FiPlus />
                         </button>
@@ -183,7 +183,7 @@ export default function StructureModal({
                   <div>
                     <label className={labelClass}>Block Identification</label>
                     <div className="relative group">
-                      <FiBox className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
+                      <FiBox className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors" />
                       <input required type="text" placeholder="e.g. Block A" className={inputClass} value={formData.name || ''} onChange={e => setFormData({...formData, name: e.target.value})} />
                     </div>
                   </div>
@@ -193,7 +193,7 @@ export default function StructureModal({
                   <div>
                     <label className={labelClass}>Floor Label</label>
                     <div className="relative group">
-                      <FiLayers className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
+                      <FiLayers className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors" />
                       <input required type="text" placeholder="e.g. Ground Floor" className={inputClass} value={formData.name || ''} onChange={e => setFormData({...formData, name: e.target.value})} />
                     </div>
                   </div>
@@ -204,7 +204,7 @@ export default function StructureModal({
                     <div>
                       <label className={labelClass}>Room ID / Number</label>
                       <div className="relative group">
-                        <FiGrid className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
+                        <FiGrid className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors" />
                         <input required type="text" placeholder="e.g. R1" className={inputClass} value={formData.roomNumber || ''} onChange={e => setFormData({...formData, roomNumber: e.target.value})} />
                       </div>
                     </div>
@@ -212,14 +212,14 @@ export default function StructureModal({
                       <div>
                         <label className={labelClass}>Capacity</label>
                         <div className="relative group">
-                          <FiActivity className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors" />
+                          <FiActivity className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors" />
                           <input required type="number" placeholder="4" className={inputClass} value={formData.capacity || ''} onChange={e => setFormData({...formData, capacity: e.target.value})} />
                         </div>
                       </div>
                       <div>
                         <label className={labelClass}>Price (₦)</label>
                         <div className="relative group">
-                          <TbCurrencyNaira className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors text-lg" />
+                          <TbCurrencyNaira className="absolute left-4 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors text-lg" />
                           <input required type="number" placeholder="250000" className={`${inputClass} !pl-10`} value={formData.price || ''} onChange={e => setFormData({...formData, price: e.target.value})} />
                         </div>
                       </div>
@@ -251,7 +251,7 @@ export default function StructureModal({
                       <div>
                         <label className={labelClass}>Price (₦)</label>
                         <div className="relative group">
-                          <TbCurrencyNaira className="absolute left-3 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-white transition-colors text-lg" />
+                          <TbCurrencyNaira className="absolute left-3 top-1/2 -translate-y-1/2 text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors text-lg" />
                           <input required type="number" placeholder="150000" className={`${inputClass} !pl-10`} value={formData.price || ''} onChange={e => setFormData({...formData, price: e.target.value})} />
                         </div>
                       </div>

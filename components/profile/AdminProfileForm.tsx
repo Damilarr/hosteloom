@@ -59,7 +59,7 @@ export default function AdminProfileForm() {
         <div>
           <label className={labelClass}>First name</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiUser className="w-4 h-4" />
             </div>
             <input type="text" name="firstName" value={form.firstName} onChange={handleChange}
@@ -70,7 +70,7 @@ export default function AdminProfileForm() {
         <div>
           <label className={labelClass}>Last name</label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
               <FiUser className="w-4 h-4" />
             </div>
             <input type="text" name="lastName" value={form.lastName} onChange={handleChange}
@@ -83,7 +83,7 @@ export default function AdminProfileForm() {
       <div>
         <label className={labelClass}>Phone number</label>
         <div className="relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
             <FiPhone className="w-4 h-4" />
           </div>
           <input type="tel" name="phone" value={form.phone} onChange={handleChange}
@@ -97,7 +97,7 @@ export default function AdminProfileForm() {
       <div>
         <label className={labelClass}>Position / Role</label>
         <div className="relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-white transition-colors">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-hosteloom-muted group-focus-within:text-hosteloom-heading transition-colors">
             <FiBriefcase className="w-4 h-4" />
           </div>
           <input type="text" name="position" value={form.position} onChange={handleChange}
